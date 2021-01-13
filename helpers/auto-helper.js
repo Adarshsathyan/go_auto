@@ -81,5 +81,28 @@ module.exports={
                 resolve()
             })
         })
+    },
+
+    //login authentication
+    autoAuth:(loginDetails)=>{
+        return new Promise(async(resolve,reject)=>{
+            let response={}
+            let auto=await db.get().collection(collections.AUTO_COLLECTION).findOne({username:loginDetails.username}) 
+            if(auto){
+                bcrypt.compare(loginDetails.password,auto.password).then((status)=>{
+                    if(status){
+                        response.auto=auto
+                        response.status=true
+                        resolve(response)
+                    }else{
+                        resolve({status:false})
+                        
+                    }
+                })
+            }else{
+                resolve({status:false})
+                
+            }
+        })
     }
 }
