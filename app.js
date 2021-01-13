@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs=require('express-handlebars')
 var adminRouter = require('./routes/admin');
-var usersRouter = require('./routes/users');
+var autoRouter = require('./routes/auto');
+var fileUpload = require("express-fileupload")
 var db=require('./config/connection')
 var session=require('express-session')
 var app = express();
@@ -22,6 +23,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret:"key",cookie:{maxAge:6000000}}));
 db.connect((err)=>{
@@ -30,7 +32,7 @@ db.connect((err)=>{
 })
 
 app.use('/admin', adminRouter);
-app.use('/', usersRouter);
+app.use('/auto', autoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

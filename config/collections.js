@@ -1,3 +1,5 @@
 module.exports={
-    ADMIN_COLLECTION:'admin'
+    ADMIN_COLLECTION:'admin',
+    AUTO_COLLECTION:'auto',
+    PAYMENT_COLLECTION:'payment'
 }

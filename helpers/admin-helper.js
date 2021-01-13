@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 
 module.exports = {
+    
     // doSign:(details) => {
     //     return new Promise(async (resolve, reject) => {
     //         details.password = await bcrypt.hash(details.password, 10)
@@ -12,6 +13,7 @@ module.exports = {
     //     })
     // }
 
+    //admin authentication
     adminLogin:(adminData)=>{
         return new Promise(async(resolve,reject)=>{
             let response={}

@@ -2,8 +2,18 @@ var express = require('express');
 var router = express.Router();
 const adminHelper=require('../helpers/admin-helper')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+//to check whether admin is logged in
+let verifyLogin=(req,res,next)=>{
+  if(req.session.adminLoggedIn){
+    next()
+  }else{
+    res.redirect('/admin')
+  }
+}
+
+
+// get login page
+router.get('/', (req,res,next)=>{
   if(req.session.adminLoggedIn){
     res.redirect('/admin/home')
   }else{
@@ -12,7 +22,9 @@ router.get('/', function(req, res, next) {
   }
   
 });
-router.post('/', function(req, res, next) {
+
+//login authentication
+router.post('/', (req,res,next)=>{
   adminHelper.adminLogin(req.body).then((response)=>{
     if(response.status){
       req.session.adminLoggedIn=true
@@ -25,39 +37,54 @@ router.post('/', function(req, res, next) {
   }) 
 });
 
-router.get('/home', function(req, res, next) {
+//logout admin
+router.get('/logout',(req,res,next)=>{
+  req.session.adminLoggedIn=null
+  res.redirect('/admin')
+});
+
+//view home page
+router.get('/home',verifyLogin, (req,res,next)=>{
   res.render('admin/index',{admin:true} );
 });
 
-router.get('/auto', function(req, res, next) {
+//view autos
+router.get('/auto',verifyLogin,(req,res,next)=>{
   res.render('admin/auto-drivers',{admin:true});
 });
 
-router.get('/users', function(req, res, next) {
+//view users
+router.get('/users',verifyLogin, (req,res,next)=>{
   res.render('admin/users',{admin:true} );
 });
 
-router.get('/blockedauto', function(req, res, next) {
+//view blocked autos
+router.get('/blockedauto',verifyLogin,(req,res,next)=>{
   res.render('admin/blocked_auto', {admin:true});
 });
 
-router.get('/blockeduser', function(req, res, next) {
+//view blocked user
+router.get('/blockeduser',verifyLogin, (req,res,next)=> {
   res.render('admin/blocked_user', {admin:true});
 });
 
-router.get('/status', function(req, res, next) {
+//view auto statuses
+router.get('/status',verifyLogin, (req,res,next)=>{
   res.render('admin/auto-status',{admin:true} );
 });
 
-router.get('/feedback', function(req, res, next) {
+//view feedbacks & reports
+router.get('/feedback',verifyLogin, (req,res,next)=>{
   res.render('admin/feedback',{admin:true} );
 });
 
-router.get('/travelcharge', function(req, res, next) {
+//view the trave charges
+router.get('/travelcharge',verifyLogin, (req,res,next)=>{
   res.render('admin/travel-charge',{admin:true} );
 });
 
-router.get('/addtravelrate', function(req, res, next) {
+//add travel charges
+router.get('/addtravelrate',verifyLogin, (req,res,next)=>{
   res.render('admin/add-travel-charge',{admin:true} );
 });
 

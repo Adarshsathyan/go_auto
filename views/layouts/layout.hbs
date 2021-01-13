@@ -23,9 +23,12 @@
 <body>
   {{#if admin}}
     {{>admin-header}}
+    {{else if auto}}
+    {{>auto-header}}
     {{/if}}
     {{{body}}}
-
+  <script src="/auto/auto-payment.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="/admin/assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="/admin/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/admin/assets/vendor/js-cookie/js.cookie.js"></script>
