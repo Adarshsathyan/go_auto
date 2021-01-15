@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 var Razorpay = require('razorpay');
 const objectId = require("mongodb").ObjectID
-const { ObjectId } = require('mongodb');
+
 var instance = new Razorpay({
     key_id: 'rzp_test_aXiLerJwygr3M5',
     key_secret: 'HjXinQy80vkLrKQg5VwtjQ3V',

@@ -99,6 +99,16 @@ router.post('/verify-payment',verifyLogin,(req,res,next)=>{
   })
 })
 
+//get profile
+router.get('/profile',verifyLogin,(req,res,next)=>{
+  res.render('auto/profile',{auto:true})
+})
+
+//edit profile form
+router.get('/edit-profile',verifyLogin,(req,res,next)=>{
+  res.render('auto/edit-profile',{auto:true})
+})
+
 
 router.get('/home',verifyLogin, (req, res, next) =>{
   res.render('auto/index',{auto:true,autoDriver:req.session.autoDriver})
