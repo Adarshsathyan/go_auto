@@ -50,8 +50,53 @@ router.get('/home',verifyLogin, (req,res,next)=>{
 
 //view autos
 router.get('/auto',verifyLogin,(req,res,next)=>{
-  res.render('admin/auto-drivers',{admin:true});
+  adminHelper.getAllAuto().then((autos)=>{
+    res.render('admin/auto-drivers',{admin:true,autos,deleted:req.session.deleted});
+    req.session.deleted=false
+  })
 });
+
+//block Auto
+router.get('/block-auto/:id',verifyLogin,(req,res,next)=>{
+  adminHelper.blockAuto(req.params.id).then((blocked)=>{
+    if(blocked.block==="1"){
+     res.redirect('/admin/auto')
+    }
+    else{
+      res.redirect('/admin/auto')
+    }
+  }).catch((err)=>{
+    res.redirect('/admin/auto')
+  })
+})
+
+//unblock user
+router.get('/unblock-auto/:id',verifyLogin,(req,res,next)=>{
+  
+  adminHelper.unblockAuto(req.params.id).then((unblocked)=>{
+    if(unblocked.block==="1"){
+      res.redirect('/admin/blockedauto')
+     }
+     else{
+       res.redirect('/admin/blockedauto')
+     }
+   }).catch((err)=>{
+     res.redirect('/admin/blockedauto')
+  })
+})
+
+//delete auto-driver
+router.get('/delete-auto/:id',verifyLogin,(req,res,next)=>{
+  adminHelper.deleteAuto(req.params.id).then((status)=>{
+    req.session.deleted=true
+    res.redirect('/admin/auto')
+  })
+})
+
+//view auto profile
+router.get('/view-auto/:id',verifyLogin,(req,res,next)=>{
+  res.render('admin/auto-profile',{admin:true})
+})
 
 //view users
 router.get('/users',verifyLogin, (req,res,next)=>{
@@ -60,7 +105,10 @@ router.get('/users',verifyLogin, (req,res,next)=>{
 
 //view blocked autos
 router.get('/blockedauto',verifyLogin,(req,res,next)=>{
-  res.render('admin/blocked_auto', {admin:true});
+  adminHelper.getBlockedAuto().then((blockedAutos)=>{
+    res.render('admin/blocked_auto', {admin:true,blockedAutos});
+  })
+ 
 });
 
 //view blocked user
@@ -78,14 +126,25 @@ router.get('/feedback',verifyLogin, (req,res,next)=>{
   res.render('admin/feedback',{admin:true} );
 });
 
+
 //view the trave charges
 router.get('/travelcharge',verifyLogin, (req,res,next)=>{
-  res.render('admin/travel-charge',{admin:true} );
+  adminHelper.getCharge().then((charges)=>{
+  res.render('admin/travel-charge',{admin:true,charges});
+  })
 });
+
 
 //add travel charges
 router.get('/addtravelrate',verifyLogin, (req,res,next)=>{
-  res.render('admin/add-travel-charge',{admin:true} );
+    res.render('admin/add-travel-charge',{admin:true});
 });
 
+
+//addtravelrate post request
+router.post('/addtravelrate',verifyLogin,(req,res,next)=>{
+  adminHelper.addTravelRate(req.body).then(()=>{
+    res.redirect('/admin/travelcharge')
+  })
+})
 module.exports = router;

@@ -1,21 +1,21 @@
 <div class="header bg-primary pb-6">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="header-body">
-          <div class="row align-items-center py-4">
-            <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
-              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="#">Auto Drivers</a></li>
-                </ol>
-              </nav>
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Auto Drivers</a></li>
+                        </ol>
+                    </nav>
+                </div>
+
             </div>
-            
-          </div>
         </div>
-      </div>
     </div>
+</div>
 <div class="container-fluid mt--6">
     <div class="row">
         <div class="col">
@@ -25,6 +25,11 @@
                     <h3 class="mb-0">Autos</h3>
                 </div>
                 <div class="table-responsive">
+                    {{#if deleted}}
+                    <div class="alert col-md-11 ml-auto mr-auto" id="alert" role="alert" style=" height:50px; background-color:#b7d7e8;color:black; ">
+                       Deleted Successfully !
+                    </div>
+                  {{/if}}
                     <table class="table align-items-center table-flush" id="data_tables">
                         <thead class="thead-light">
                             <tr>
@@ -37,120 +42,40 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each autos}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    Kl-02 BJ 1505
+                                    {{this.regno}}
                                 </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
-                                    
-                                    <div class="dropdown">
 
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                           <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
+                                        <i class="bg-success"></i>
+                                        <span class="status">{{this.drive}}</span>
                                     </span>
                                 </td>
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
 
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
+                                <td>
+                                    {{this.location}}
+                                </td>
+                                <td>
+                                    {{this.revenue}}/-
+                                </td>
+                                <td class="text-center">
+                                    <a href="/admin/block-auto/{{this._id}}" class="btn btn-sm btn-warning">Block</a>
+                                    <a href="/admin/view-auto/{{this._id}}" class="btn btn-sm btn-primary">View</a>
+                                    <a href="/admin/delete-auto/{{this._id}}" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {{/each}}
+
                         </tbody>
                     </table>
                 </div>
@@ -158,3 +83,8 @@
         </div>
     </div>
 </div>
+<script>
+    setTimeout(function(){
+        $('#alert').css('display','none')
+    },3000)
+</script>

@@ -37,16 +37,17 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each charges}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">2km</span>
+                                            <span class="name mb-0 text-sm">{{this.kilometer}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    29/-
+                                    {{this.charge}}/-
                                 </td>
                                 <td class="text-center">
                                     <a class=" text-white btn btn-danger" href="#">Delete</a>
@@ -56,44 +57,7 @@
 
 
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">2km</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    29/-
-                                </td>
-                                <td class="text-center">
-                                    <a class=" text-white btn btn-danger" href="#">Delete</a>
-                                    <a class=" text-white btn btn-primary" href="#">Edit</a>
-
-                                </td>
-
-
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">2km</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    29/-
-                                </td>
-                                <td class="text-center">
-                                    <a class=" text-white btn btn-danger" href="#">Delete</a>
-                                    <a class=" text-white btn btn-primary" href="#">Edit</a>
-
-                                </td>
-
-
-                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
