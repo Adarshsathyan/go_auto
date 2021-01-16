@@ -141,6 +141,30 @@ router.get('/addtravelrate',verifyLogin, (req,res,next)=>{
 });
 
 
+//edit charge entered
+router.get('/editcharge/:id',verifyLogin,(req,res,next)=>{
+  adminHelper.editCharge(req.params.id).then((details)=>{
+    res.render('admin/edit-travel-rate',{admin:true,details})
+  }).catch((err)=>{
+    res.send(err)
+  })
+})
+
+//delete charge
+router.get('/deletecharge/:id',verifyLogin,(req,res,next)=>{
+  adminHelper.deleteCharge(req.params.id).then(()=>{
+    res.redirect('/admin/travelcharge')
+  })
+})
+
+//update charges
+router.post('/updatetravelrate/:id',verifyLogin,(req,res,next)=>{
+  adminHelper.updateCharge(req.params.id,req.body).then(()=>{
+    res.redirect('/admin/travelcharge')
+  })
+})
+
+
 //addtravelrate post request
 router.post('/addtravelrate',verifyLogin,(req,res,next)=>{
   adminHelper.addTravelRate(req.body).then(()=>{

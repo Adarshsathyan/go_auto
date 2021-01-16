@@ -113,5 +113,39 @@ module.exports = {
                 resolve(charges)
             })
         })
+    },
+
+    //get the details of travel charge by id
+    editCharge:(chargeId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELCHARGE_COLLECTION).findOne({_id:objectId(chargeId)}).then((result)=>{
+                if(result){
+                    resolve(result)
+                }else{
+                    reject()
+                }
+            })
+        })
+    },
+
+    //update charges
+    updateCharge:(chargeId,details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELCHARGE_COLLECTION).updateOne({_id:objectId(chargeId)},{$set:{
+                kilometer:details.kilometer,
+                charge:details.charge
+            }}).then(()=>{
+                resolve()
+            })
+        })
+    },
+    
+    //delete charge
+    deleteCharge:(chargeId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELCHARGE_COLLECTION).removeOne({_id:objectId(chargeId)}).then(()=>{
+                resolve()
+            })
+        })
     }
 }
