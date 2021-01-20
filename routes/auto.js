@@ -121,12 +121,37 @@ router.get('/status', verifyLogin,(req, res, next)=> {
 router.get('/booking',verifyLogin, (req, res, next)=> {
   res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver})
 });
+
+
+//get the added places details
 router.get('/travel-places',verifyLogin, (req, res, next)=> {
-  res.render('auto/places',{auto:true,autoDriver:req.session.autoDriver})
+  autoHelper.getPlaces(req.session.autoDriver._id).then((places)=>{
+    res.render('auto/places',{auto:true,autoDriver:req.session.autoDriver,places})
+  })
 });
+
+
+//add destinations
 router.get('/add-destinations',verifyLogin,(req, res, next) =>{
-  res.render('auto/add-destinations',{auto:true,autoDriver:req.session.autoDriver})
+  autoHelper.getKm().then((km)=>{
+    res.render('auto/add-destinations',{auto:true,autoDriver:req.session.autoDriver,km})
+  })
 });
+
+
+//post for adding destinations
+router.post('/add-destinations',verifyLogin,(req,res,next)=>{
+  autoHelper.addPlace(req.body).then(()=>{
+    res.redirect('/auto/travel-places')
+  })
+})
+
+//take charge
+router.post('/take-charge',verifyLogin,(req,res,next)=>{
+  autoHelper.takeCharge(req.body).then((charge)=>{
+    res.json(charge)
+  })
+})
 router.get('/users',verifyLogin,(req, res, next)=> {
   res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver})
 });

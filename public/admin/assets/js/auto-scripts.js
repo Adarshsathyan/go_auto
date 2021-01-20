@@ -15,3 +15,16 @@
 //        }
 //    })
 // }
+
+
+$('#kilo').on('change',function(){
+  let km=this.value
+  $.ajax({
+      url:'/auto/take-charge',
+      data:{km:km},
+      method:'post',
+      success:(response)=>{
+         $('#rate').val(response.charge)
+      }
+  })
+});

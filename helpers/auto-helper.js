@@ -2,7 +2,8 @@ var db = require('../config/connection')
 var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 var Razorpay = require('razorpay');
-const objectId = require("mongodb").ObjectID
+const objectId = require("mongodb").ObjectID;
+const { resolve } = require('path');
 
 var instance = new Razorpay({
     key_id: 'rzp_test_aXiLerJwygr3M5',
@@ -103,6 +104,45 @@ module.exports={
                 resolve({status:false})
                 
             }
+        })
+    },
+
+
+    //get kilomteres added by admin
+    getKm:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELCHARGE_COLLECTION).find().toArray().then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+
+
+    //take charge
+    takeCharge:(km)=>{
+        return new Promise((resolve,reject)=>{
+            
+            db.get().collection(collections.TRAVELCHARGE_COLLECTION).findOne({kilometer:km.km}).then((charge)=>{
+                resolve(charge)
+            })
+        })
+    },
+
+    //add tavel place
+    addPlace:(placeDetails)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).insertOne(placeDetails).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    //get added places for logged in auto driver
+    getPlaces:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).find({auto:autoId}).toArray().then((places)=>{
+                resolve(places)
+            })
         })
     }
 }

@@ -38,23 +38,24 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each places}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Maddnada</span>
+                                            <span class="name mb-0 text-sm">{{this.from}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                   Pallimukku
+                                   {{this.location}}
                                 </td>
                                 <td class="budget">
-                                  3km
+                                  {{this.kilometer}}KM
                                 </td>
         
                                 <td>
-                                    6000/-
+                                    {{this.charge}}/-
                                 </td>
                                 <td class="text-right">
                                     <a href="" class="btn btn-default">Edit</a>
@@ -62,7 +63,7 @@
                                     
                                 </td>
                             </tr>
-                
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
