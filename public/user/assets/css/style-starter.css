@@ -15284,7 +15284,7 @@ h2.resp-accordion:first-child {
 }
 
 .w3l-bottom-grids-6 span.fa {
-  color: var(--primary-color);
+  color: #4d7ae3;
   font-size: 24px;
   background: transparent;
   width: 60px;
@@ -15295,8 +15295,8 @@ h2.resp-accordion:first-child {
 
 .w3l-bottom-grids-6 .area-box:hover span.fa,
 .w3l-bottom-grids-6 .box-active span.fa {
-  color: var(--primary-dark);
-  background: var(--primary-color);
+  color: #fff;
+  background: #4d7ae3;
 }
 
 .w3l-bottom-grids-6 h4 a.title-head {
@@ -15398,7 +15398,7 @@ h2.resp-accordion:first-child {
 }
 
 .w3l-features .icon span.fa {
-  color: var(--primary-color);
+  color: #4d7ae3;
   font-size: 36px;
 }
 
@@ -16303,10 +16303,10 @@ ul.social-icons li a {
   line-height: 50px;
   text-align: center;
   border-radius: 50%;
-  background: var(--primary-color);
+  background: #4d7ae3;
   box-shadow: 0 0 30px -5px rgba(56, 80, 152, 0.15);
   transition: .3s ease;
-  color: var(--primary-dark);
+  color: #fff;
   -webkit-ransition: .3s ease;
   -moz-ransition: .3s ease;
   -ms-ransition: .3s ease;
