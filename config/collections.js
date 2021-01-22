@@ -3,5 +3,7 @@ module.exports={
     AUTO_COLLECTION:'auto',
     PAYMENT_COLLECTION:'payment',
     TRAVELCHARGE_COLLECTION:'travelrate',
-    TRAVELPLACES_COLLECTION:'tavelplaces'
+    TRAVELPLACES_COLLECTION:'tavelplaces',
+    USER_COLLECTION:'users',
+    BOOKING_COLLECTION:'books'
 }

@@ -1,0 +1,104 @@
+<section class="w3l-cts py-5">
+    <div class="container mt-5">
+        <div class="header-section text-center">
+          <span class="subhny-title text-center mb-2">Book</span>
+            <h3 class="hny-title text-center mb-3"> Auto</h3>
+        </div>
+        <div class="row">
+            <div class="col-xl-4  ">
+                <div class="card card-profile  mt-5">
+                    <img src="/user/assets/images/auto1.jpg" alt="Image placeholder" class="card-img-top">
+                    <div class="row justify-content-center">
+
+                    </div>
+                    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                        <h5>{{autoDetails.regno}}</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card-profile-stats d-flex justify-content-center">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="h3">
+                                {{autoDetails.name}}
+                            </h5>
+                            <div class="h5 font-weight-300">
+                                <i class="ni location_pin mr-2"></i>{{autoDetails.location}}
+                            </div>
+
+                            <div>
+                                <i class="fa fa-star text-warning "></i>
+                                <i class="fa fa-star text-warning "></i>
+                                <i class="fa fa-star text-warning "></i>
+                                <i class="fa fa-star text-warning "></i>
+                                <i class="fa fa-star text-warning "></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8 order-xl-1 mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3 class="mb-4">Select Destinations</h3>
+                                <hr>
+                            </div>
+                            <div class="col-md-8">
+                                <form action="/book-auto" method="POST" >
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">From</label>
+                                        <div class="col-sm-10">
+                                           <input type="text" readonly value="{{autoDetails.location}}" class="form-control" id="from" name="from">
+                                           <input type="hidden" name="autoId" value="{{autoDetails._id}}">
+                                           <input type="hidden" name="status" value="0">
+                                           <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Pick at</label>
+                                        <div class="col-sm-10">
+                                           <input type="text" name="landmark" class="form-control" placeholder="Landmark of the exact location to pick " required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword3" class="col-sm-2 col-form-label">To</label>
+                                        <div class="col-sm-10">
+                                             <select name="to"  class="form-control" id="to" required>
+                                                <option value="" selected>--select--</option>
+                                                {{#each places}}
+                                                <option value="{{this.location}}">{{this.location}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword3" class="col-sm-2 col-form-label">Charge</label>
+                                        <div class="col-sm-10">
+                                             <input type="text" class="form-control" readonly id="charge" name="charge">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword3" class="col-sm-2 col-form-label"></label>
+                                        <div class="col-sm-10">
+                                              <button class="btn text-white w-25" style="background-color: #4d7ae3;">Book</button>
+                                                <a href="/" class="btn text-white w-25" style="background-color: #4d7ae3;">Cancel</a>
+                                        </div>
+                                    </div>
+                                   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

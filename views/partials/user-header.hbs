@@ -14,7 +14,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-lg-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home </a>
+                            <a class="nav-link" href="/">Home </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">Bookings</a>
@@ -29,13 +29,8 @@
                     <ul class="navbar-nav search-right mt-lg-0 mt-2">
                         {{!-- <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
                                 <span class="fa fa-search" aria-hidden="true"></span></a></li> --}}
-                        <li class="nav-item"><a href="tel:+(12)234-11-24"
-                                class="btn text-white btn-style d-none d-md-block btn-style mr-2"
-                                style="background-color:#4d7ae3;"><span class="fa fa-user mr-3"
-                                    aria-hidden="true"></span>Login</a>
-                        </li>
-                        
-                        <li class="nav-item dropdown">
+                                {{#if userDetails}}
+                                <li class="nav-item dropdown">
                             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 <div class="media align-items-center">
@@ -43,7 +38,7 @@
                                         <img alt="Image placeholder"style="width:40px;height:40px;"class="rounded-circle" src="/admin/assets/img/theme/team-4.jpg">
                                     </span>
                                     <div class="media-body  ml-2  d-none d-lg-block">
-                                        <span class="mb-0 text-sm  font-weight-bold ">Adarsh</span>
+                                        <span class="mb-0 text-sm  font-weight-bold ">{{userDetails.name}}</span>
                                     </div>
                                 </div>
                             </a>
@@ -54,12 +49,21 @@
                                     <span >My Account</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a href="/admin/logout" class="dropdown-item">
+                                <a href="/logout" class="dropdown-item">
                                     <i class="fa fa-sign-out"></i>
                                     <span >Logout</span>
                                 </a>
                             </div>
                         </li>
+                                {{else}}
+                        <li class="nav-item"><a href="/select-login"
+                                class="btn text-white btn-style d-none d-md-block btn-style mr-2"
+                                style="background-color:#4d7ae3;"><span class="fa fa-user mr-3"
+                                    aria-hidden="true"></span>Login</a>
+                        </li>
+                        {{/if}}
+                        
+                        
                     </ul>
 
                     <!-- //toggle switch for light and dark theme -->
