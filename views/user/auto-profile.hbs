@@ -53,7 +53,12 @@
                             <i class="fa fa-star text-yellow "></i>
                         </div>
                         <div>
+                            {{#if profileView}}
+                            <a href="" class="btn btn-sm btn-primary mt-1">Click to Rate</a>
+                            <a href="" class="btn btn-sm btn-danger mt-1">Report</a>
+                            {{else}}
                             <a href="/auto/edit-profile" class="btn btn-sm btn-primary mt-1">Edit</a>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -70,7 +75,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                         <table class="table align-items-center table-flush">
+                        <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">User</th>
@@ -110,7 +115,7 @@
                         </tbody>
                     </table>
                     </div>
-                   
+                    
                     <br>
                     <h3>Recent Drives</h5>
                     <hr>

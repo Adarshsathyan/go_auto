@@ -99,5 +99,19 @@ module.exports={
                 resolve()
             })
         })
+    },
+
+    //get booking
+    getBookings:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            let response={}
+            db.get().collection(collections.BOOKING_COLLECTION).findOne({userId:userId}).then((booking)=>{
+                response.booking=booking
+                db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(booking.autoId)}).then((auto)=>{
+                    response.auto=auto
+                    resolve(response)
+                })
+            })
+        })
     }
 }

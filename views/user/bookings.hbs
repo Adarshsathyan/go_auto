@@ -1,0 +1,75 @@
+<section class="w3l-cts py-5" id="auto">
+    <div class="container py-lg-3">
+        <div class="header-section text-center mx-auto">
+            <span class="subhny-title text-center mb-2">Quick Pick</span>
+            <h3 class="hny-title text-center mb-5">Booking</h3>
+        </div>
+        <div class="mt-5">
+            <div class="mx-auto">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="/user/assets/images/auto1.jpg" alt="Card image cap">
+                                <div class="card-body p-4">
+                                    <p class="card-text h6 text-dark ">Regno - <span style="float: right;">{{auto.regno}}</span></p>
+                                    <p class="card-text h6 text-dark mt-2">Name - <span
+                                            style="float: right;">{{auto.name}}</span></p>
+                                    <p class="card-text h6 text-dark mt-2">Location - <span
+                                            style="float: right;">{{auto.location}}</span></p>
+                                    <i class="fa fa-star text-warning mt-4"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                    <a href="/auto-profile/{{auto._id}}" class="btn text-white mt-3"
+                                        style="background-color: #4d7ae3; float:right;"> View</a>
+                                        <button class="btn btn-primary mt-1 ml-1">Rate</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="table-responsive" >
+                                <table class="table-borderless table bg-light ">
+                                    <thead>
+                                        <tr >
+                                            <th scope="col">Auto</th>
+                                            <th scope="col">From</th>
+                                            <th scope="col">To</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{auto.regno}}</td>
+                                            <td>{{booking.from}}</td>
+                                            <td>{{booking.to}}</td>
+                                            <td>{{booking.charge}}/-</td>
+                                            <td>
+                                                <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm" style="background-color: #4d7ae3;">Call</a>
+                                                <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm btn-danger">Report</a>
+                                            </td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h6 class="mb-3 text-danger">Find the fraud.</h6>
+                                
+                                <p>1.Compare the Registration number that provided with the auto.</p>
+                                <p>2.Report if charge greater the total amount shown.</p>
+                                <p>3.Rate if statisfied</p>
+                                <p>4.To cancel the order please call and ask for cancellation</p>
+                                <br>
+                                
+                                <h6 class="">"Enjoy Travel with Go Auto 😇"</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

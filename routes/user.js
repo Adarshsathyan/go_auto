@@ -101,4 +101,18 @@ router.post('/charge',verifyLogin,(req,res)=>{
     })
 })
 
+//get bookings
+router.get('/bookings/:id',verifyLogin,(req,res)=>{
+    userHelper.getBookings(req.params.id).then((response)=>{
+
+        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',booking:response.booking,
+    auto:response.auto})
+    })
+})
+
+//auto profile
+router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
+    res.render('user/auto-profile',{auto:true,profileView:true})
+})
+
 module.exports = router;
