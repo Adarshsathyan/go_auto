@@ -24,6 +24,16 @@
                 <div class="card-header border-0">
                     <h3 class="mb-0">Details</h3>
                 </div>
+                {{#if catchErr}}
+                <div class="table-responsive">
+                    <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; " 
+                    class="col-md-4 ml-auto mr-auto">
+                    <div>
+                        <h3 class=" text-center ml-5 mt-3 mb-5">No bookings !</h3>
+                    </div>
+                </div>
+                
+                {{else}}
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush" >
                         <thead class="thead-light">
@@ -40,31 +50,35 @@
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{booking.user.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                   Madannada
+                                   {{booking.booking.from}}
                                 </td>
                                 <td class="budget">
-                                   Pallimukku
+                                  {{booking.booking.to}}
                                 </td>
         
                                 <td>
-                                    6000/-
+                                    {{booking.booking.charge}}/-
                                 </td>
                                 <td class="text-right">
-                                    <a href="" class="btn btn-default">Change Status</a>
-                                    <a href="tel:9400794876" class="btn btn-primary">Call</a>
-                                    <a href="" class="btn btn-success">Completed</a>
+                                    {{#if drive}}
+                                    {{else}}
+                                    <a href="#" onclick="accept_drive('{{autoDriver._id}}')" class="btn btn-default">Accept</a>
+                                    {{/if}}
+                                    <a href="tel:{{booking.booking.mobile}}" class="btn btn-primary">Call</a>
+                                    <a href="/auto/completed/{{autoDriver._id}}" class="btn btn-success">Completed</a>
                                 </td>
                             </tr>
                 
                         </tbody>
                     </table>
                 </div>
+                {{/if}}
             </div>
-        </div>
+        </div> 
     </div>
 </div>

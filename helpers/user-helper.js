@@ -95,8 +95,8 @@ module.exports={
     //book auto
     bookAuto:(bookDetails)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then(()=>{
-                resolve()
+            db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then((response)=>{
+                resolve(response.ops[0]._id)
             })
         })
     },
@@ -107,10 +107,15 @@ module.exports={
             let response={}
             db.get().collection(collections.BOOKING_COLLECTION).findOne({userId:userId}).then((booking)=>{
                 response.booking=booking
-                db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(booking.autoId)}).then((auto)=>{
-                    response.auto=auto
-                    resolve(response)
-                })
+                if(booking){
+                    db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(booking.autoId)}).then((auto)=>{
+                        response.auto=auto
+                        resolve(response)
+                    })
+                }else{
+                    reject()
+                }
+                
             })
         })
     }

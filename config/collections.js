@@ -5,5 +5,6 @@ module.exports={
     TRAVELCHARGE_COLLECTION:'travelrate',
     TRAVELPLACES_COLLECTION:'tavelplaces',
     USER_COLLECTION:'users',
-    BOOKING_COLLECTION:'books'
+    BOOKING_COLLECTION:'books',
+    DRIVE_COLLECTION:'drives'
 }

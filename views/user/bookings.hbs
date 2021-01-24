@@ -7,6 +7,16 @@
         <div class="mt-5">
             <div class="mx-auto">
                 <div class="container">
+                    {{#if noBookings}}
+                    <div class="table-responsive">
+                    <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; " 
+                    class="col-md-4 ml-auto mr-auto">
+                    <div>
+                        <h3 class=" text-center ml-5 mt-3 mb-5">No bookings !</h3>
+                        <center><a href="/" class="btn text-white  ml-5" style="background-color:#4d7ae3 ; ">BOOK AUTO</a></center>
+                    </div>
+                </div>
+                    {{else}}
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card" style="width: 18rem;">
@@ -35,7 +45,7 @@
                                         <tr >
                                             <th scope="col">Auto</th>
                                             <th scope="col">From</th>
-                                            <th scope="col">To</th>
+                                            <th scope="col">To</th> 
                                             <th scope="col">Total</th>
                                             <th scope="col"></th>
                                         </tr>
@@ -67,6 +77,7 @@
                             </div>
                         </div>
                     </div>
+                    {{/if}}
                 </div>
             </div>
         </div>

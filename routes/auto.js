@@ -99,7 +99,7 @@ router.post('/verify-payment',verifyLogin,(req,res,next)=>{
   })
 })
 
-//get profile
+//get profile 
 router.get('/profile',verifyLogin,(req,res,next)=>{
   res.render('auto/profile',{auto:true})
 })
@@ -119,9 +119,21 @@ router.get('/status', verifyLogin,(req, res, next)=> {
 });
 
 router.get('/booking',verifyLogin, (req, res, next)=> {
-  res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver})
+  autoHelper.getbooking(req.session.autoDriver._id).then((booking)=>{
+    req.session.catchErr=null
+    if(req.session.autoDriver.drive==="ondrive"){
+      req.session.drive=true
+    }else{
+      req.session.drive=null
+    }
+    res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver,booking,drive:req.session.drive})
+  }).catch(()=>{
+    req.session.catchErr=true
+    res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver,catchErr:req.session.catchErr,drive:req.session.drive})
+  })
+ 
 });
-
+ 
 
 //get the added places details
 router.get('/travel-places',verifyLogin, (req, res, next)=> {
@@ -152,7 +164,32 @@ router.post('/take-charge',verifyLogin,(req,res,next)=>{
     res.json(charge)
   })
 })
+
+//view users travlled
 router.get('/users',verifyLogin,(req, res, next)=> {
   res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver})
 });
+
+//change drive status
+router.get('/change-drive/:id',verifyLogin,(req,res)=>{
+  autoHelper.changeDriveStatus(req.params.id).then((auto)=>{
+    if(auto.drive==="ondrive"){
+      req.session.drive=true
+      req.session.autoDriver=auto
+      res.json({status:true})
+    }else{
+      res.json({status:false})
+    }
+  })
+})
+
+//complete drive
+router.get('/completed/:id',verifyLogin,(req,res)=>{
+  autoHelper.completeDrive(req.params.id).then((auto)=>{
+    req.session.drive=null
+    req.session.autoDriver=auto
+    console.log(req.session.autoDriver);
+    res.redirect('/auto/booking')
+  })
+})
 module.exports = router;

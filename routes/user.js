@@ -88,8 +88,8 @@ router.get('/book-auto/:id',verifyLogin,(req,res)=>{
 
 //book auto
 router.post('/book-auto',verifyLogin,(req,res)=>{
-    userHelper.bookAuto(req.body).then(()=>{
-        res.redirect('/')
+    userHelper.bookAuto(req.body).then((bookId)=>{
+        res.redirect('/bookings/'+bookId)
     })
 })
 
@@ -107,6 +107,8 @@ router.get('/bookings/:id',verifyLogin,(req,res)=>{
 
         res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',booking:response.booking,
     auto:response.auto})
+    }).catch(()=>{
+        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',noBookings:true})
     })
 })
 
@@ -114,5 +116,5 @@ router.get('/bookings/:id',verifyLogin,(req,res)=>{
 router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
     res.render('user/auto-profile',{auto:true,profileView:true})
 })
-
+ 
 module.exports = router;

@@ -103,7 +103,7 @@ module.exports={
             }else{
                 resolve({status:false})
                 
-            }
+            } 
         })
     },
 
@@ -142,6 +142,79 @@ module.exports={
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.TRAVELPLACES_COLLECTION).find({auto:autoId}).toArray().then((places)=>{
                 resolve(places)
+            })
+        })
+    },
+
+
+    //get booking
+    getbooking:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            booking={}
+            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((result)=>{
+                booking.booking=result
+                if(result){
+                    db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(result.userId)}).then((user)=>{
+                        booking.user=user
+                        resolve(booking)
+                    })
+                }else{
+                    reject()
+                }
+               
+                
+                
+            })
+        })
+    },
+
+    //change drive ststus while accept booking
+    changeDriveStatus:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                drive:"ondrive"
+            }}).then(()=>{
+                db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
+                    resolve(auto)
+                })
+            })
+        })
+        
+    },
+
+    //complete drive
+    completeDrive:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.BOOKING_COLLECTION).updateOne({autoId:autoId},{$set:{
+                status:"1"
+            }}).then(()=>{
+                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                    drive:"Available"
+                }}).then(()=>{
+                    db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
+                        let drive={
+                            bookId:booking._id,
+                            from:booking.from,
+                            status:booking.status,
+                            autoId:booking.autoId,
+                            userId:booking.userId,
+                            mobile:booking.mobile,
+                            landmark:booking.landmark,
+                            to:booking.to,
+                            charge:booking.charge
+
+                        }
+                        db.get().collection(collections.DRIVE_COLLECTION).insertOne(drive).then(()=>{
+                            db.get().collection(collections.BOOKING_COLLECTION).removeOne({_id:objectId(drive.bookId)}).then(()=>{
+                                db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
+                                    resolve(auto)
+                                })
+                               
+                            })
+                            
+                        })
+                    })
+                })
             })
         })
     }
