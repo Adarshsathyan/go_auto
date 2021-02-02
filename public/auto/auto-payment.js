@@ -53,7 +53,7 @@ function razropayPayment(order){
             method:'post',
             success:(response)=>{
                 if(response.status){
-                   location.href='/auto/home'
+                   location.href='/auto/invoice/'+autoDetails.autoDetails._id
 
                 }else{
                     alert("Transaction Failed")

@@ -16,9 +16,11 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="/">Home </a>
                         </li>
+                        {{#if userDetails}}
                         <li class="nav-item">
                             <a class="nav-link" href="/bookings/{{userDetails._id}}">Bookings</a>
                         </li>
+                        {{/if}}
                         <li class="nav-item">
                             <a class="nav-link" href="services.html">About</a>
                         </li>
@@ -44,7 +46,7 @@
                             </a>
                             <div class="dropdown-menu">
                                 </a>
-                                <a href="#!" class="dropdown-item">
+                                <a href="/profile/{{userDetails._id}}" class="dropdown-item">
                                     <i class="fa fa-user"></i>
                                     <span >My Account</span>
                                 </a>

@@ -6,5 +6,9 @@ module.exports={
     TRAVELPLACES_COLLECTION:'tavelplaces',
     USER_COLLECTION:'users',
     BOOKING_COLLECTION:'books',
-    DRIVE_COLLECTION:'drives'
+    DRIVE_COLLECTION:'drives',
+    FEEDBACK_COLLECTION:'feedback',
+    REPORT_AUTO:"auto_report",
+    REPORT_USER:'user_report'
+
 }

@@ -96,7 +96,7 @@ module.exports={
     bookAuto:(bookDetails)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then((response)=>{
-                resolve(response.ops[0]._id)
+                resolve(response.ops[0].userId)
             })
         })
     },
@@ -115,6 +115,49 @@ module.exports={
                 }else{
                     reject()
                 }
+                
+            })
+        })
+    },
+
+    //get user details
+    getUserDetails:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId)}).then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+
+    //rides
+    rideDetails:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.DRIVE_COLLECTION).find({userId:userId}).toArray().then((rides)=>{ 
+                resolve(rides)
+            })
+        })
+    },
+
+    //send feedback
+    sendFeedback:(feedback)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.FEEDBACK_COLLECTION).insertOne(feedback).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    //report auto
+    sendReport:(details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.REPORT_AUTO).insertOne(details).then(()=>{
+                db.get().collection(collections.BOOKING_COLLECTION).findOne({userId:details.userId}).then((result)=>{
+                    db.get().collection(collections.DRIVE_COLLECTION).insertOne(result).then(()=>{
+                        db.get().collection(collections.BOOKING_COLLECTION).removeOne({userId:details.userId}).then(()=>{
+                            resolve()
+                        })
+                    })
+                })
                 
             })
         })

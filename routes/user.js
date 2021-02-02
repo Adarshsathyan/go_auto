@@ -1,6 +1,18 @@
 var express = require('express');
 var router = express.Router();
 const userHelper=require('../helpers/user-helper')
+// const publicVapidKey='BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
+// const privateVapidKey='KPRS6a4w6mOGFRLmcpITp0MECc5jTFtKHQdQmhYmcN8';
+// const webPush = require('web-push')
+// const bodyParser = require('body-parser');
+// var path = require('path');
+// app.use(bodyParser.json());
+// //web-push
+// webPush.setVapidDetails('mailto:test@example.com', publicVapidKey, privateVapidKey);
+
+// router.post('/book-notification')
+
+
 const verifyLogin=(req,res,next)=>{
     if(req.session.userLoggedIn){
         next()
@@ -89,6 +101,7 @@ router.get('/book-auto/:id',verifyLogin,(req,res)=>{
 //book auto
 router.post('/book-auto',verifyLogin,(req,res)=>{
     userHelper.bookAuto(req.body).then((bookId)=>{
+        req.session.autoBooked=true
         res.redirect('/bookings/'+bookId)
     })
 })
@@ -116,5 +129,31 @@ router.get('/bookings/:id',verifyLogin,(req,res)=>{
 router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
     res.render('user/auto-profile',{auto:true,profileView:true})
 })
- 
+
+
+//user profile
+router.get('/profile/:id',verifyLogin,(req,res)=>{
+    userHelper.getUserDetails(req.params.id).then((userDetails)=>{
+        userHelper.rideDetails(req.params.id).then((rides)=>{
+            res.render('user/profile',{user:true,userDetails:userDetails,rides,layout:'./user-layout'})
+        })
+        
+    })
+    
+})
+
+//rate and feedbacks
+router.post('/rate',verifyLogin,(req,res)=>{
+    userHelper.sendFeedback(req.body).then(()=>{
+        res.redirect('/profile/'+req.body.userId)
+    })
+})
+
+
+//report auto
+router.post('/report-auto/',verifyLogin,(req,res)=>{
+    userHelper.sendReport(req.body).then(()=>{
+        res.redirect('/bookings/'+req.body.userId)
+    })
+})
 module.exports = router;

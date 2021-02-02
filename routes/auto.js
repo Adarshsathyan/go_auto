@@ -92,6 +92,7 @@ router.get('/razorpay/:id',verifyLogin,(req,res,next)=>{
 router.post('/verify-payment',verifyLogin,(req,res,next)=>{
   autoHelper.verifyPayment(req.body).then(()=>{
     autoHelper.changePaidStatus(req.body['order[receipt]']).then(()=>{
+      req.session.autoRequest=true
       res.json({status:true})
     })
   }).catch((err)=>{
@@ -101,32 +102,33 @@ router.post('/verify-payment',verifyLogin,(req,res,next)=>{
 
 //get profile 
 router.get('/profile',verifyLogin,(req,res,next)=>{
-  res.render('auto/profile',{auto:true})
+  res.render('auto/profile',{auto:true,autoBooked:req.session.autoBooked})
 })
 
 //edit profile form
 router.get('/edit-profile',verifyLogin,(req,res,next)=>{
-  res.render('auto/edit-profile',{auto:true})
+  res.render('auto/edit-profile',{auto:true,autoBooked:req.session.autoBooked})
 })
 
 
 router.get('/home',verifyLogin, (req, res, next) =>{
-  res.render('auto/index',{auto:true,autoDriver:req.session.autoDriver})
+  res.render('auto/index',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
 });
 
 router.get('/status', verifyLogin,(req, res, next)=> {
-  res.render('auto/status',{auto:true,autoDriver:req.session.autoDriver})
+  res.render('auto/status',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
 });
 
 router.get('/booking',verifyLogin, (req, res, next)=> {
   autoHelper.getbooking(req.session.autoDriver._id).then((booking)=>{
+    
     req.session.catchErr=null
     if(req.session.autoDriver.drive==="ondrive"){
       req.session.drive=true
     }else{
       req.session.drive=null
     }
-    res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver,booking,drive:req.session.drive})
+    res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver,booking,drive:req.session.drive,autoBooked:req.session.autoBooked})
   }).catch(()=>{
     req.session.catchErr=true
     res.render('auto/booking',{auto:true,autoDriver:req.session.autoDriver,catchErr:req.session.catchErr,drive:req.session.drive})
@@ -138,7 +140,7 @@ router.get('/booking',verifyLogin, (req, res, next)=> {
 //get the added places details
 router.get('/travel-places',verifyLogin, (req, res, next)=> {
   autoHelper.getPlaces(req.session.autoDriver._id).then((places)=>{
-    res.render('auto/places',{auto:true,autoDriver:req.session.autoDriver,places})
+    res.render('auto/places',{auto:true,autoDriver:req.session.autoDriver,places,autoBooked:req.session.autoBooked})
   })
 });
 
@@ -146,7 +148,7 @@ router.get('/travel-places',verifyLogin, (req, res, next)=> {
 //add destinations
 router.get('/add-destinations',verifyLogin,(req, res, next) =>{
   autoHelper.getKm().then((km)=>{
-    res.render('auto/add-destinations',{auto:true,autoDriver:req.session.autoDriver,km})
+    res.render('auto/add-destinations',{auto:true,autoDriver:req.session.autoDriver,km,autoBooked:req.session.autoBooked})
   })
 });
 
@@ -167,7 +169,7 @@ router.post('/take-charge',verifyLogin,(req,res,next)=>{
 
 //view users travlled
 router.get('/users',verifyLogin,(req, res, next)=> {
-  res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver})
+  res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
 });
 
 //change drive status
@@ -176,6 +178,7 @@ router.get('/change-drive/:id',verifyLogin,(req,res)=>{
     if(auto.drive==="ondrive"){
       req.session.drive=true
       req.session.autoDriver=auto
+      req.session.autoBooked=null
       res.json({status:true})
     }else{
       res.json({status:false})
@@ -189,6 +192,21 @@ router.get('/completed/:id',verifyLogin,(req,res)=>{
     req.session.drive=null
     req.session.autoDriver=auto
     console.log(req.session.autoDriver);
+    res.redirect('/auto/booking')
+  })
+})
+
+//invoice for payment
+router.get('/invoice/:id',verifyLogin,(req,res)=>{
+  autoHelper.getAuto(req.params.id).then((autoDetails)=>{
+    res.render('auto/invoice',{autoDetails})
+  })
+  
+})
+
+//report user
+router.post('/report-user',verifyLogin,(req,res)=>{
+  autoHelper.reportUser(req.body).then(()=>{
     res.redirect('/auto/booking')
   })
 })

@@ -21,6 +21,13 @@ module.exports={
                 resolve({status:false})
             }else{
                 autoDetails.password = await bcrypt.hash(autoDetails.password, 10)
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = mm + '/' + dd + '/' + yyyy;
+                autoDetails.joined=today
                 db.get().collection(collections.AUTO_COLLECTION).insertOne(autoDetails).then((response)=>{
                     response.autoDriver=response.ops[0]
                     response.status=true
@@ -89,7 +96,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let response={}
             let auto=await db.get().collection(collections.AUTO_COLLECTION).findOne({username:loginDetails.username}) 
-            if(auto){
+            if(auto.status==="2"){
                 bcrypt.compare(loginDetails.password,auto.password).then((status)=>{
                     if(status){
                         response.auto=auto
@@ -188,10 +195,10 @@ module.exports={
             db.get().collection(collections.BOOKING_COLLECTION).updateOne({autoId:autoId},{$set:{
                 status:"1"
             }}).then(()=>{
-                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
-                    drive:"Available"
-                }}).then(()=>{
                     db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
+                        db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((autoDetails)=>{
+
+                        
                         let drive={
                             bookId:booking._id,
                             from:booking.from,
@@ -201,12 +208,18 @@ module.exports={
                             mobile:booking.mobile,
                             landmark:booking.landmark,
                             to:booking.to,
-                            charge:booking.charge
+                            charge:booking.charge,
+                            regno:autoDetails.regno
 
                         }
                         db.get().collection(collections.DRIVE_COLLECTION).insertOne(drive).then(()=>{
                             db.get().collection(collections.BOOKING_COLLECTION).removeOne({_id:objectId(drive.bookId)}).then(()=>{
+                                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                                    drive:"Available",
+                                    revenue:booking.charge
+                                }}).then(()=>{
                                 db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
+                                    
                                     resolve(auto)
                                 })
                                
@@ -214,8 +227,26 @@ module.exports={
                             
                         })
                     })
+                    })
+                })
+            })
+        })
+    },
+
+    //report user
+    reportUser:(details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.REPORT_USER).insertOne(details).then(()=>{
+                db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:details.autoId}).then((result)=>{
+                    db.get().collection(collections.DRIVE_COLLECTION).insertOne(result).then(()=>{
+                        db.get().collection(collections.BOOKING_COLLECTION).removeOne({autoId:details.autoId}).then(()=>{
+                            resolve()
+                        })
+                    })
                 })
             })
         })
     }
+        
+    
 }

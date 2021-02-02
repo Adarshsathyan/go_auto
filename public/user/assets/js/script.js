@@ -11,3 +11,16 @@ $(document).ready(function(){
         })
     })
 })
+
+function rate(autoId){
+    $('#rateFeedback').modal('show')
+    $('#autoId').val(autoId)
+    $('#send').on('click',function(){
+        alert("sohoedn")
+    })
+} 
+
+function report_auto(autoId){
+    $('#report').modal('show');
+    
+}

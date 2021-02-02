@@ -40,10 +40,26 @@ module.exports = {
     //get all registered auto drivers
     getAllAuto:()=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.AUTO_COLLECTION).find({status:"1",block:"0"}).toArray().then((result)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"2",block:"0"}).toArray().then((result)=>{
                 resolve(result)
             })       
          })
+    },
+
+    //block user
+    blockUser:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(userId)},{$set:{
+                status:"1"
+            }}).then(async()=>{
+              let blocked = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId),status:"1"})
+              if(blocked){
+                  resolve(blocked)
+              }else{
+                  reject()
+              }
+            })
+        })
     },
 
     //block auto drivers
@@ -79,10 +95,35 @@ module.exports = {
         })
     },
 
+    //unblock users
+    unblockUser:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(userId)},{$set:{
+                status:"0"
+            }}).then(async()=>{
+              let unblocked = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId),status:"0"})
+              if(unblocked){
+                  resolve(unblocked)
+              }else{
+                  reject()
+              }
+            })
+        })
+    },
+
+    //get blocked users
+    getBlockedUsers:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).find({status:"1"}).toArray().then((result)=>{
+                resolve(result)
+            })       
+         })
+    },
+
     //get blocked auto
     getBlockedAuto:()=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.AUTO_COLLECTION).find({status:"1",block:"1"}).toArray().then((result)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"2",block:"1"}).toArray().then((result)=>{
                 resolve(result)
             })       
          })
@@ -147,5 +188,113 @@ module.exports = {
                 resolve()
             })
         })
+    },
+    
+    //delete user
+    deleteUser:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).removeOne({_id:objectId(userId)}).then(()=>{
+                resolve()
+            })
+        })
+    },
+ 
+    //auto drivers request
+    getRequests:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"1"}).toArray().then((requests)=>{
+                if(requests){
+                    resolve(requests)
+                }else{
+                    reject()
+                }
+                
+            })
+        })
+    },
+
+    //auto accept
+    acceptAuto:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                status:"2"
+            
+            }}).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    //get al registered users
+    getUsers:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).find({status:"0"}).toArray().then((users)=>{
+                resolve(users)
+            })
+        })
+    },
+
+    //get all autos for status viewing
+    getAuto:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find().toArray().then((autos)=>{
+                resolve(autos)
+            })
+        })
+    },
+    getFeedback:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.FEEDBACK_COLLECTION).find().toArray().then((feedbacks)=>{
+                resolve(feedbacks)
+            })
+        })
+    },
+
+
+    //get reports about auto
+    getAutoReport:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.REPORT_AUTO).find().toArray().then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+
+    //get reports about user by auto 
+    getUserReport:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.REPORT_USER).find().toArray().then((result)=>{
+                resolve(result)
+            })
+        })  
+    },
+
+    //change password
+    changePass:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+
+            details.password = await bcrypt.hash(details.password,10)
+            let password = details.password
+            let admin = await db.get().collection(collections.ADMIN_COLLECTION).findOne({_id:objectId(details.adminId)})
+            if(admin){
+                bcrypt.compare(details.password1,admin.password).then((status)=>{
+                    if(status){
+                        db.get().collection(collections.ADMIN_COLLECTION).updateOne({_id:objectId(details.adminId)},{$set:{
+                            password:password
+                        }}).then(()=>{
+                            resolve({status:true})
+                        })
+                    }else{
+                        resolve({status:false})
+                    }
+                })
+            }else{
+                resolve({status:false})
+            }
+          
+                
+          
+        })
     }
+
 }

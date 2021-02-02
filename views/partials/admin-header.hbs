@@ -22,7 +22,7 @@
             <li class="nav-item " data-toggle="dropdown">
               <a class="nav-link" href="/admin/auto">
                 <i class="ni ni-delivery-fast text-orange"></i>
-                <span class="nav-link-text">Auto Managment</span>
+                <span class="nav-link-text">Auto Managment{{#if notify}}<span class="badge-dot badge badge-lg"> <sup> <i class="bg-danger ml-1"></i></sup></span>{{/if}}</span>
               </a>
             </li>
 
@@ -37,6 +37,13 @@
                 <a class="nav-link" href="/admin/blockedauto">
                   <i class="fa fa-ban text-success"></i>
                   <span class="nav-link-text">Blocked Auto drivers</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/auto-request">
+                  <i class="ni ni-bell-55 text-dark"></i>
+                  <span class="nav-link-text">Auto Driver Request{{#if notify}}<span class="badge-dot badge badge-lg"> <sup> 
+                    <i class="bg-danger ml-1"></i></sup></span>{{/if}}</span>
                 </a>
               </li>
             </div>
@@ -244,7 +251,7 @@
             </a>
             <div class="dropdown-menu  dropdown-menu-right ">
               </a>
-              <a href="#!" class="dropdown-item">
+              <a href="/admin/change-pass" class="dropdown-item">
                 <i class="ni ni-settings-gear-65"></i>
                 <span>Change Password</span>
               </a>
