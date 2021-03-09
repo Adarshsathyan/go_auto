@@ -7,7 +7,7 @@
                     <div class="col-lg-3 order-lg-2">
                         <div class="card-profile-image">
                             <a href="#">
-                                <img src="/admin/assets/img/theme/profile.jpg" class="rounded-circle">
+                                <img src="/auto/auto-profile/{{autoDriver._id}}.jpg" class="rounded-circle">
                             </a>
                         </div>
                     </div>
@@ -25,11 +25,11 @@
                                     <span class="description">Bookings</span>
                                 </div>
                                 <div>
-                                    <span class="status badge badge-success">Active</span>
+                                    <span class="status badge badge-success">{{autoDriver.drive}}</span>
                                     <span class="description">Status</span>
                                 </div>
                                 <div>
-                                    <span class="status h5 ">04/04/2020</span>
+                                    <span class="status h5 ">{{autoDriver.joined}}</span>
                                     <span class="description">Joined</span>
                                 </div>
                             </div>
@@ -37,13 +37,13 @@
                     </div>
                     <div class="text-center">
                         <h5 class="h3">
-                            Adarsh
+                            {{autoDriver.name}}
                         </h5>
                         <div class="h5 font-weight-300">
-                            <i class="ni location_pin mr-2"></i>Madannada,Kollam
+                            <i class="ni location_pin mr-2"></i>{{autoDriver.location}}
                         </div>
                         <div class="h5 mt-4">
-                            <i class="ni business_briefcase-24 mr-2"></i>Vehicle Regno - KL02-BJ-1505
+                            <i class="ni business_briefcase-24 mr-2"></i>Vehicle Regno - {{autoDriver.regno}}
                         </div>
                         <div>
                             <i class="fa fa-star text-yellow "></i>
@@ -61,6 +61,7 @@
         </div>
         <div class="col-xl-8 order-xl-1">
             <div class="card">
+                {{#if booking}}
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-8">
@@ -68,128 +69,98 @@
                         </div>
                     </div>
                 </div>
+                {{/if}}
                 <div class="card-body">
-                    <div class="table-responsive">
-                         <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col" class="sort" data-sort="name">User</th>
-                                <th scope="col" class="sort" data-sort="budget">From</th>
-                                <th scope="col" class="sort" data-sort="status">To</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Madannada
-                                </td>
-                                <td class="budget">
-                                    Pallimukku
-                                </td>
-
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-left">
-                                    <span class="badge badge-dot mr-2">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                    </div>
-                   
-                    <br>
-                    <h3>Recent Drives</h5>
-                    <hr>
+                    {{#if booking}}
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col" class="sort" data-sort="name">User</th>
-                                <th scope="col" class="sort" data-sort="budget">From</th>
-                                <th scope="col" class="sort" data-sort="status">To</th>
-                                <th scope="col">Paid</th>
-                            
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="sort" data-sort="name">User</th>
+                                    <th scope="col" class="sort" data-sort="budget">From</th>
+                                    <th scope="col" class="sort" data-sort="status">To</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Status</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="name mb-0 text-sm">{{booking.name}}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Madannada
-                                </td>
-                                <td class="budget">
-                                    Pallimukku
-                                </td>
+                                    </th>
+                                    <td class="budget">
+                                        {{booking.from}}
+                                    </td>
+                                    <td class="budget">
+                                        {{booking.to}}
+                                    </td>
 
-                                <td>
-                                    6000/-
-                                </td>
-                                
-                            </tr>
-                             <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Madannada
-                                </td>
-                                <td class="budget">
-                                    Pallimukku
-                                </td>
+                                    <td>
+                                        {{booking.charge}}/-
+                                    </td>
+                                    <td class="text-left">
+                                        <span class="badge badge-dot mr-2">
+                                            <i class="bg-warning"></i>
+                                            <span class="status">{{autoDriver.drive}}</span>
+                                        </span>
+                                    </td>
+                                     
+                                </tr>
 
-                                <td>
-                                    6000/-
-                                </td>
-                               
-                            </tr>
-                             <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Madannada
-                                </td>
-                                <td class="budget">
-                                    Pallimukku
-                                </td>
-
-                                <td>
-                                    6000/-
-                                </td>
-                                
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
                     </div>
-                     
+                    {{else}}
+                    {{/if}}
+                    <br>
+                    <h3>Recent Drives</h3>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col" class="sort" data-sort="name">User</th>
+                                        <th scope="col" class="sort" data-sort="budget">From</th>
+                                        <th scope="col" class="sort" data-sort="status">To</th>
+                                        <th scope="col">Paid</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    {{#each drives}}
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="name mb-0 text-sm">{{this.customer}}</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="budget">
+                                            {{this.from}}
+                                        </td>
+                                        <td class="budget">
+                                            {{this.to}}
+                                        </td>
+
+                                        <td>
+                                            {{this.charge}}/-
+                                        </td>
+                                        <td>
+                                        {{this.date}}
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <a href="/auto/users" class="h4 text-primary">View more <i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>

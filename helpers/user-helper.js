@@ -4,7 +4,7 @@ var collections = require('../config/collections')
 const objectId = require("mongodb").ObjectID
 
 
-module.exports={
+module.exports={ 
     //user signup
     userSignUp:(userDetails)=>{
         return new Promise(async(resolve,reject)=>{
@@ -95,6 +95,13 @@ module.exports={
     //book auto
     bookAuto:(bookDetails)=>{
         return new Promise((resolve,reject)=>{
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = dd + '/' + mm + '/' + yyyy;
+            bookDetails.date=today
             db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then((response)=>{
                 resolve(response.ops[0].userId)
             })
@@ -119,7 +126,7 @@ module.exports={
             })
         })
     },
-
+ 
     //get user details
     getUserDetails:(userId)=>{
         return new Promise((resolve,reject)=>{

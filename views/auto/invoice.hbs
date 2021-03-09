@@ -123,6 +123,7 @@
             <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 mr-2 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
             </span>
             Go Auto, Inc
+           
          </div>
          <!-- end invoice-company -->
          <!-- begin invoice-header -->
@@ -202,6 +203,12 @@
                   <small>TOTAL</small> <span class="f-w-600">&#8377 1000/-</span>
                </div>
             </div>
+            {{#if confirmed}}
+            <a href="/auto/home" class="btn btn-primary btn-sm m-4"><i class="fa fa-arrow-left"></i> Back to Home</a>
+            {{else}}
+            <a href="/auto" class="btn btn-dark m-4">Login <i class="fa fa-arrow-right"></i></a>
+            <p class="font-weight-bold">Can login only after confirmation please wait for it..</p>
+            {{/if}}
             <!-- end invoice-price -->
          </div>
          <!-- end invoice-content -->
@@ -209,7 +216,7 @@
          <div class="invoice-note">
             * You can only login to only after verification of your documents<br>
             * If we found any fraud reject your request and will be refunded within 24hrs<br>
-            * If you have any questions concerning this invoice, contact  [Name, Phone Number, Email]
+            * If you have any questions concerning this invoice, contact  [goauto@gmail.com,9400794876]
          </div>
          <!-- end invoice-note -->
          <!-- begin invoice-footer -->

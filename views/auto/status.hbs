@@ -1,21 +1,85 @@
+<style>/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #fd2f63;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #6727fd;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
 <div class="header bg-primary pb-6">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="header-body">
-          <div class="row align-items-center py-4">
-            <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Current</h6>
-              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="#">Status</a></li>
-                </ol>
-              </nav>
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Current</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Status</a></li>
+                        </ol>
+                    </nav>
+                </div>
+
             </div>
-            
-          </div>
         </div>
-      </div>
     </div>
+</div>
 <div class="container-fluid mt--6">
     <div class="row">
         <div class="col">
@@ -24,13 +88,14 @@
                 <div class="card-header border-0">
                     <h3 class="mb-0">Change</h3>
                 </div>
+                <p style="display: none;" id="autoId">{{autoDriver._id}}</p>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">Current Status</th>
-                                <th scope="col" class="sort" data-sort="budget">Change To</th>
-                                
+                                <th scope="col" class="sort" data-sort="budget">Available</th>
+
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -38,17 +103,26 @@
                                 <td>
                                     <span class="badge badge-dot mr-4">
                                         <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
+                                        <span class="status" id="auto_status">{{autoDriver.drive}}</span>
                                     </span>
                                 </td>
-                                
+                                {{#if available}}
                                 <td class="text-left">
-                                    <a href="" class="btn btn-warning">On Drive</a>
-                                     <a href="" class="btn btn-success">Available</a>
-                                    <a href="" class="btn btn-default">Offline</a>
+                                    <label class="switch"> 
+                                        <input type="checkbox" checked id="offline" value="2" name="offline">
+                                        <span class="slider round"></span> 
+                                    </label>
                                 </td>
+                                {{else}}
+                                    <td class="text-left">
+                                    <label class="switch"> 
+                                        <input type="checkbox"  id="offline" value="2" name="offline">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                {{/if}}
                             </tr>
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -56,3 +130,20 @@
         </div>
     </div>
 </div>
+<script>
+    $('#offline').on('change',function(){
+        let autoId=document.getElementById('autoId').innerText
+        let auto_status=document.getElementById('auto_status').innerText
+        $.ajax({
+            url:'/auto/change-status/'+autoId,
+            data:{value:"1",status:auto_status},
+            method:'post',
+            success:(response)=>{
+               location.href="/auto/status"
+            }
+        })
+    })
+   
+
+   
+</script>

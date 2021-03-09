@@ -11,6 +11,11 @@
                   
                 </ol>
               </nav>
+               {{#if changedPass}}
+          <h4 class="alert alert-success " role="alert" id="passchange">
+            Password Changed Succesfully !!
+          </h4>
+          {{/if}}
             </div>
           </div>
           <!-- Card stats -->
@@ -411,3 +416,8 @@
       </footer>
     </div>
 </div>
+<script>
+    setTimeout(function(){
+        $('#passchange').css('display','none')
+    },3000)
+</script>

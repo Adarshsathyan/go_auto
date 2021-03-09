@@ -1,24 +1,20 @@
 var express = require('express');
 var router = express.Router();
 const userHelper=require('../helpers/user-helper')
-// const publicVapidKey='BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
-// const privateVapidKey='KPRS6a4w6mOGFRLmcpITp0MECc5jTFtKHQdQmhYmcN8';
-// const webPush = require('web-push')
-// const bodyParser = require('body-parser');
-// var path = require('path');
-// app.use(bodyParser.json());
-// //web-push
-// webPush.setVapidDetails('mailto:test@example.com', publicVapidKey, privateVapidKey);
+const webPush = require('web-push')
 
-// router.post('/book-notification')
-
-
+// router.post('/book-notification',(req,res)=>{
+//     let subscription = req.body
+//     const payload = JSON.stringify({title:"You Have Booking"+req.session.userDetails.name})
+//     webPush.sendNotification(subscription,payload).catch(err=>console.log(err))
+// })
+  
 const verifyLogin=(req,res,next)=>{
     if(req.session.userLoggedIn){
         next()
     }else{
         res.redirect('/login')
-    }
+    } 
 }
 
 //get user home page

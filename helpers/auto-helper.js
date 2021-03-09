@@ -3,7 +3,8 @@ var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 var Razorpay = require('razorpay');
 const objectId = require("mongodb").ObjectID;
-const { resolve } = require('path');
+var otpAuth = require('../config/otpauth');
+const twilio = require('twilio')(otpAuth.accountSId, otpAuth.authToken)
 
 var instance = new Razorpay({
     key_id: 'rzp_test_aXiLerJwygr3M5',
@@ -15,18 +16,22 @@ module.exports={
     //signup for auto
     signUp:(autoDetails)=>{
         return new Promise(async(resolve,reject)=>{
-            response={}
+            let response={}
             let autoDriver = await db.get().collection(collections.AUTO_COLLECTION).findOne({username:autoDetails.username})
+            let autoPhn = await db.get().collection(collections.AUTO_COLLECTION).findOne({mobile:autoDetails.mobile})
             if(autoDriver){
                 resolve({status:false})
-            }else{
+            }else if(autoPhn){
+                resolve({status:false})  
+            }
+            else{
                 autoDetails.password = await bcrypt.hash(autoDetails.password, 10)
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
                 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var yyyy = today.getFullYear();
 
-                today = mm + '/' + dd + '/' + yyyy;
+                today = dd + '/' + mm + '/' + yyyy;
                 autoDetails.joined=today
                 db.get().collection(collections.AUTO_COLLECTION).insertOne(autoDetails).then((response)=>{
                     response.autoDriver=response.ops[0]
@@ -96,21 +101,26 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let response={}
             let auto=await db.get().collection(collections.AUTO_COLLECTION).findOne({username:loginDetails.username}) 
-            if(auto.status==="2"){
-                bcrypt.compare(loginDetails.password,auto.password).then((status)=>{
-                    if(status){
-                        response.auto=auto
-                        response.status=true
-                        resolve(response)
-                    }else{
-                        resolve({status:false})
-                        
-                    }
-                })
+            if(auto){
+                if(auto.status==="2"){
+                    bcrypt.compare(loginDetails.password,auto.password).then((status)=>{
+                        if(status){
+                            response.auto=auto
+                            response.status=true
+                            resolve(response)
+                        }else{
+                            resolve({status:false})
+                            
+                        }
+                    })
+                }else{
+                    resolve({status:false})
+                    
+                } 
             }else{
                 resolve({status:false})
-                
-            } 
+            }
+            
         })
     },
 
@@ -157,7 +167,7 @@ module.exports={
     //get booking
     getbooking:(autoId)=>{
         return new Promise((resolve,reject)=>{
-            booking={}
+           let booking={}
             db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((result)=>{
                 booking.booking=result
                 if(result){
@@ -179,7 +189,7 @@ module.exports={
     changeDriveStatus:(autoId)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
-                drive:"ondrive"
+                drive:"Ondrive"
             }}).then(()=>{
                 db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
                     resolve(auto)
@@ -196,10 +206,12 @@ module.exports={
                 status:"1"
             }}).then(()=>{
                     db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
-                        db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((autoDetails)=>{
-
+                        db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then(async(autoDetails)=>{
+                            let user = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(booking.userId)})
                         
                         let drive={
+                            customer:user.name,
+                            email:user.username,
                             bookId:booking._id,
                             from:booking.from,
                             status:booking.status,
@@ -209,7 +221,8 @@ module.exports={
                             landmark:booking.landmark,
                             to:booking.to,
                             charge:booking.charge,
-                            regno:autoDetails.regno
+                            regno:autoDetails.regno,
+                            date:booking.date
 
                         }
                         db.get().collection(collections.DRIVE_COLLECTION).insertOne(drive).then(()=>{
@@ -232,7 +245,7 @@ module.exports={
             })
         })
     },
-
+ 
     //report user
     reportUser:(details)=>{
         return new Promise((resolve,reject)=>{
@@ -245,6 +258,192 @@ module.exports={
                     })
                 })
             })
+        })
+    },
+
+    //change drive status manually by auto
+    changeStatus:(autoId,value)=>{
+        return new Promise(async(resolve,reject)=>{
+            let auto =await db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)})
+            if(auto.drive==="Available"){
+                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                    drive:"Offline"
+                }}).then(()=>{
+                    resolve({status:"Offline"})
+                })
+            }else if (auto.drive==="Offline"){
+                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                    drive:"Available"
+                }}).then(()=>{
+                    resolve({status:"Available"})
+                }) 
+            }else {
+                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                    drive:"Ondrive"
+                }}).then(()=>{
+                    resolve({status:"Available"})
+                }) 
+            }
+            
+        })
+    },
+
+    //take all the details of places for editing
+    getPlaceDetails:(placeId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).findOne({_id:objectId(placeId)}).then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+
+    updatePlace:(placeId,details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).updateOne({_id:objectId(placeId)},{$set:{
+                location:details.location,
+                auto:details.auto,
+                from:details.from,
+                kilometer:details.kilometer,
+                charge:details.charge
+            }}).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+
+    //get users travelled in auto
+    getUsersTravelled:(autoId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let drive = await db.get().collection(collections.DRIVE_COLLECTION).find({autoId:autoId,status:"1"}).toArray()
+            if(drive){
+                resolve(drive)
+            }else{
+                reject()
+            }
+        })
+    },
+
+    //update profile of auto
+    updateProfile:(autoId,autoDetails)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                name:autoDetails.name,
+                username:autoDetails.username,
+                location:autoDetails.location,
+            }}).then(()=>{
+                db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
+                    resolve(auto)
+                })
+                
+            })
+        })
+    },
+
+    //get all details for profile
+    getProfileDetails:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            let response={}
+            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
+                if(booking){
+                    response.booking=booking
+                    db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(booking.userId)}).then((result)=>{
+                        response.booking.name=result.name
+                    })
+                }
+                db.get().collection(collections.DRIVE_COLLECTION).find({autoId:autoId,status:"1"}).limit(5).toArray().then((drives)=>{
+                    response.drives=drives
+                    resolve(response)
+                })
+            })
+        })
+    },
+     //change password
+     changePass:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+
+            details.password = await bcrypt.hash(details.password,10)
+            let password = details.password
+            let auto = await db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(details.autoId)})
+            if(auto){
+                bcrypt.compare(details.password1,auto.password).then((status)=>{
+                    if(status){
+                        db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(details.autoId)},{$set:{
+                            password:password
+                        }}).then(()=>{
+                            resolve({status:true})
+                        })
+                    }else{
+                        resolve({status:false})
+                    }
+                })
+            }else{
+                resolve({status:false})
+            }
+          
+                
+          
+        })
+    },
+
+    //send otp for forgot password
+    sendOtp:(phoneDetails)=>{
+        return new Promise(async(resolve,reject)=>{
+            let response={}
+            let auto = await db.get().collection(collections.AUTO_COLLECTION).findOne({mobile:phoneDetails.mobile})
+            if(auto){
+                twilio
+                    .verify
+                    .services(otpAuth.serviceID)
+                    .verifications
+                    .create({
+                        to:"+91" + phoneDetails.mobile,
+                        channel:"sms"
+                    }).then((data)=>{
+                        response.data=data
+                        response.auto=auto
+                        resolve(response)
+                    })
+            }else{
+                response.data.status=false
+                resolve(response)
+            }
+        })
+    },
+
+
+    //verify otp  for forgot password
+    verifyOtp:(mobile,otpDetails)=>{
+        return new Promise((resolve,reject)=>{
+            console.log("MObile",mobile,"Otp",otpDetails);
+            twilio
+                .verify
+                .services(otpAuth.serviceID)
+                .verificationChecks
+                .create({
+                    to:mobile,
+                    code:otpDetails.otp
+                }).then((data)=>{
+                    resolve(data)
+                })
+        })
+    },
+
+
+    //change password by forgot password
+    changeForgotPass:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+            let auto = await db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(details.userId)})
+            if(auto){
+                details.password = await bcrypt.hash(details.password,10)
+                db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(details.userId)},{$set:{
+                    password:details.password
+                }}).then((response)=>{
+                    resolve({status:true})
+                })
+            }else{
+                resolve({status:false})
+            }
         })
     }
         

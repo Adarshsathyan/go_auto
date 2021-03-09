@@ -4,7 +4,7 @@ function accept_drive(autoId){
         url:'/auto/change-drive/'+autoId,
         method:'get',
         success:(response)=>{
-           alert("accpted")
+           alert("accepted")
            location.href="/auto/booking"
         }
     })

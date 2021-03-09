@@ -32,78 +32,39 @@
                                 <th scope="col" class="sort" data-sort="budget">Email</th>
                                 <th scope="col">From</th>
                                 <th scope="col" class="sort" data-sort="completion">To</th>
+                                <th scope="col">Date</th>
                                 <th scope="col">Charged</th>
+                                
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each drives}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.customer}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                   something@gmail.com
+                                   {{this.email}}
                                 </td>
                                
                                 <td>
-                                    Madannada
+                                    {{this.from}}
                                 </td>
                                 <td>
-                                   Pallimuku
+                                  {{this.to}}
                                 </td>
-                                <td class="text-left  badge badge-danger">
-                                    30/-
+                                <td>
+                                  {{this.date}}
+                                </td>
+                                <td class="text-center text-danger">
+                                    {{this.charge}}/-
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                   something@gmail.com
-                                </td>
-                               
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                   Pallimuku
-                                </td>
-                                <td class="text-left  badge badge-danger">
-                                    30/-
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                   something@gmail.com
-                                </td>
-                               
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                   Pallimuku
-                                </td>
-                                <td class="text-left badge badge-danger">
-                                    30/-
-                                </td>
-                            </tr>
-                            
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

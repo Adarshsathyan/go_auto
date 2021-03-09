@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 let autoHelper= require('../helpers/auto-helper')
 
+
 //verifylogin
 let verifyLogin=(req,res,next)=>{
-  if(req.session.autoLoggedIn){
+  if(req.session.autoLoggedIn){ 
     next()
   }else{
     res.redirect('/auto')
@@ -14,8 +15,12 @@ let verifyLogin=(req,res,next)=>{
 
 //get login page
 router.get('/',(req, res, next)=> {
-  res.render('auto/login',{loginErr:req.session.loginErr})
-  req.session.loginErr=false
+  if(req.session.autoLoggedIn){
+    res.redirect('/auto/home')
+  }else{
+    res.render('auto/login',{loginErr:req.session.loginErr})
+    req.session.loginErr=false
+  }
 });
 
 
@@ -61,6 +66,9 @@ router.post('/signup', (req, res, next) =>{
         }if(req.files.lisence){
           let lisence = req.files.lisence
           lisence.mv('./public/auto/auto-lisences/'+response.autoDriver._id+'.jpg')
+        }if(req.files.autophoto){
+          let photo = req.files.autophoto
+          photo.mv('./public/auto/auto-profile/'+response.autoDriver._id+'.jpg')
         }
       }
       res.redirect('/auto/payment/'+response.autoDriver._id)
@@ -102,28 +110,62 @@ router.post('/verify-payment',verifyLogin,(req,res,next)=>{
 
 //get profile 
 router.get('/profile',verifyLogin,(req,res,next)=>{
-  res.render('auto/profile',{auto:true,autoBooked:req.session.autoBooked})
+  autoHelper.getProfileDetails(req.session.autoDriver._id).then((details)=>{
+    res.render('auto/profile',{auto:true,autoBooked:req.session.autoBooked,autoDriver:req.session.autoDriver
+      ,booking:details.booking,drives:details.drives})
+  })
+  
+  
 })
 
 //edit profile form
 router.get('/edit-profile',verifyLogin,(req,res,next)=>{
-  res.render('auto/edit-profile',{auto:true,autoBooked:req.session.autoBooked})
+  res.render('auto/edit-profile',{auto:true,autoBooked:req.session.autoBooked,autoDriver:req.session.autoDriver})
+})
+
+//update profile
+router.post('/edit-profile/:id',verifyLogin,(req,res)=>{
+  autoHelper.updateProfile(req.params.id,req.body).then((auto)=>{
+    req.session.autoDriver=auto
+    if(req.files){
+      let image=req.files.profile
+      image.mv('./public/auto/auto-profile/'+req.params.id+'.jpg')
+    }
+    res.redirect('/auto/profile')
+  })
 })
 
 
+//show dashboard
 router.get('/home',verifyLogin, (req, res, next) =>{
-  res.render('auto/index',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
+  res.render('auto/index',{auto:true,autoDriver:req.session.autoDriver,
+    autoBooked:req.session.autoBooked,changedPass:req.session.autoPassChange})
+    req.session.autoPassChange=null
 });
 
 router.get('/status', verifyLogin,(req, res, next)=> {
-  res.render('auto/status',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
+  autoHelper.getAuto(req.session.autoDriver._id).then((auto)=>{
+    if(auto.drive==="Available"){
+       available=true
+       offline = false
+    }else if(auto.drive==="Ondrive"){
+      available=true
+      offline=false
+    }else{
+      available=false
+      offline=true
+    }
+    res.render('auto/status',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked,available:available
+      ,offline:offline})
+  })
+  
 });
 
 router.get('/booking',verifyLogin, (req, res, next)=> {
   autoHelper.getbooking(req.session.autoDriver._id).then((booking)=>{
     
     req.session.catchErr=null
-    if(req.session.autoDriver.drive==="ondrive"){
+    if(req.session.autoDriver.drive==="Ondrive"){
       req.session.drive=true
     }else{
       req.session.drive=null
@@ -169,13 +211,18 @@ router.post('/take-charge',verifyLogin,(req,res,next)=>{
 
 //view users travlled
 router.get('/users',verifyLogin,(req, res, next)=> {
-  res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked})
+  autoHelper.getUsersTravelled(req.session.autoDriver._id).then((drives)=>{
+    res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked,drives})
+  }).catch(()=>{
+    res.render('auto/users',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked,drives})
+  })
+ 
 });
 
 //change drive status
 router.get('/change-drive/:id',verifyLogin,(req,res)=>{
   autoHelper.changeDriveStatus(req.params.id).then((auto)=>{
-    if(auto.drive==="ondrive"){
+    if(auto.drive==="Ondrive"){
       req.session.drive=true
       req.session.autoDriver=auto
       req.session.autoBooked=null
@@ -191,7 +238,6 @@ router.get('/completed/:id',verifyLogin,(req,res)=>{
   autoHelper.completeDrive(req.params.id).then((auto)=>{
     req.session.drive=null
     req.session.autoDriver=auto
-    console.log(req.session.autoDriver);
     res.redirect('/auto/booking')
   })
 })
@@ -199,7 +245,12 @@ router.get('/completed/:id',verifyLogin,(req,res)=>{
 //invoice for payment
 router.get('/invoice/:id',verifyLogin,(req,res)=>{
   autoHelper.getAuto(req.params.id).then((autoDetails)=>{
-    res.render('auto/invoice',{autoDetails})
+    if(autoDetails.status==="2"){
+      req.session.confirmed=true
+    }else{
+      req.session.confirmed=null
+    }
+    res.render('auto/invoice',{autoDetails,confirmed:req.session.confirmed})
   })
   
 })
@@ -209,5 +260,110 @@ router.post('/report-user',verifyLogin,(req,res)=>{
   autoHelper.reportUser(req.body).then(()=>{
     res.redirect('/auto/booking')
   })
+})
+ 
+//change- status or drive
+router.post('/change-status/:id',(req,res)=>{
+ 
+  autoHelper.changeStatus(req.params.id,req.body).then((response)=>{
+    autoHelper.getAuto(req.params.id).then((auto)=>{
+      req.session.autoDriver=auto
+      res.json(response)
+    })
+    
+  })
+})
+
+//edit the places
+router.get('/edit-place/:id',verifyLogin,(req,res)=>{
+  autoHelper.getPlaceDetails(req.params.id).then((charges)=>{
+    autoHelper.getKm().then((km)=>{
+      res.render('auto/edit-places',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked,charges,km})
+    })
+    
+  })
+  
+})
+
+//uapdete the edited travel charges
+router.post('/edit-place/:id',(req,res)=>{
+  autoHelper.updatePlace(req.params.id,req.body).then(()=>{
+    res.redirect('/auto/travel-places')
+  })
+})
+
+//change passwword manually typing old password
+//this is get page
+router.get('/change-pass/',verifyLogin,(req,res)=>{
+  res.render('auto/change-pass',{auto:true,autoDriver:req.session.autoDriver,autoBooked:req.session.autoBooked
+    ,passChangeErr:req.session.passChangeErr})
+    req.session.passChangeErr=null
+})
+
+//to handle chAange pass request
+router.post('/change-pass',verifyLogin,(req,res)=>{
+  autoHelper.changePass(req.body).then((response)=>{
+    if(response.status){
+      req.session.autoPassChange=true
+      res.redirect('/auto/home')
+    }else{
+      req.session.passChangeErr=true
+      res.redirect('/auto/change-pass')
+    }
+  })
+})
+
+//forgot password landing page
+router.get('/forgot-pass',(req,res)=>{
+  res.render('auto/forgot-pass',{otpErr:req.session.otpErr})
+  req.session.otpErr=null
+})
+
+//post function for forgot password
+router.post('/forgot-pass',(req,res)=>{
+  autoHelper.sendOtp(req.body).then((response)=>{
+    if(response.data.status){
+      req.session.mobile=response.data.to
+      req.session.PassChanger=response.auto
+      req.session.otpSent=true
+      res.redirect('/auto/verify-otp')
+    }else{
+      req.session.otpErr=true
+      res.redirect('/auto/forgot-pass')
+    }
+   
+  })
+})
+
+//verify otp landing page
+router.get('/verify-otp',(req,res)=>{
+  res.render('auto/verify-otp')
+})
+
+router.post('/verify',(req,res)=>{
+  autoHelper.verifyOtp(req.session.mobile,req.body).then((response)=>{
+    if(response.valid){
+      req.session.verifiedOtp=true
+      res.redirect('/auto/new-pass')
+    }
+  })
+})
+
+//page for new password
+router.get('/new-pass',(req,res)=>{
+  res.render('auto/new-pass',{details:req.session.PassChanger})
+})
+
+//change password based on forgot passowrd
+router.post('/change-forgot-pass',(req,res)=>{
+autoHelper.changeForgotPass(req.body).then((response)=>{
+  if(response.status){
+    req.session.autoPassChange=true
+    res.redirect('/auto')
+  }else{
+    req.session.passChangeErr=true
+    res.redirect('/auto/new-pass')
+  }
+})
 })
 module.exports = router;

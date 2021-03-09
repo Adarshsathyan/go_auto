@@ -22,7 +22,7 @@
                             <div class="card" style="width: 18rem;">
                                 <img class="card-img-top" src="/user/assets/images/auto1.jpg" alt="Card image cap">
                                 <div class="card-body p-4">
-                                    <p class="card-text h6 text-dark ">Regno - <span style="float: right;">{{auto.regno}}</span></p>
+                                    <p class="card-text h6 text-dark ">Regno - <span style="float: right;" id="auto_regno">{{auto.regno}}</span></p>
                                     <p class="card-text h6 text-dark mt-2">Name - <span
                                             style="float: right;">{{auto.name}}</span></p>
                                     <p class="card-text h6 text-dark mt-2">Location - <span
@@ -119,3 +119,51 @@
         </div>
     </div>
 </div>
+{{!-- <script>
+    
+    const publicVapidKey='BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
+
+    if('serviceWorker' in navigator) {
+        send().catch(err =>console.log(err))
+    }
+
+    async function send(){
+        console.log('registering sw')
+        const register = await navigator.serviceWorker.register('/auto/worker.js',{
+            scope:'/auto/profile/'
+        });
+        console.log('Service worker Registered')
+
+        console.log('registering push.')
+        let subscription = await register.pushManager.subscribe({
+            userVisibleOnly:true,
+            applicationServerKey:urlBase64ToUint8Array(publicVapidKey)
+        })
+        console.log('sending push')
+        await fetch('/book-notification',{
+            method:'POST',
+            body:JSON.stringify(subscription),
+            headers: {
+                'Content-Type':'application/json'
+            }
+        })
+        console.log('push send')
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+    }
+
+    
+</script> --}}

@@ -7,6 +7,7 @@
             <div class="col-xl-5 col-lg-6 col-md-8 px-5">
               <h1 class="text-white">Create an account</h1>
               <p class="text-lead text-white"> create new account with valid documents </p>
+                    <a href="/auto" class="text-white btn btn-sm btn-dark"><small>Already have an account? Login</small></a>
             </div>
           </div>
         </div>
@@ -27,7 +28,7 @@
             <div class="card-body px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
                 {{#if error}}
-              <small class="text-warning">Email already exists / not available</small>
+              <small class="text-warning">Email/mobile already exists </small>
               {{else}}
                 <small>Sign in with credentials</small>
                 {{/if}}
@@ -104,6 +105,14 @@
                 <div class="form-group">
                   <div class="input-group input-group-merge input-group-alternative mb-3">
                     <div class="input-group-prepend">
+                      <span class="input-group-text">Photo of Auto</span>
+                    </div>
+                    <input class="form-control" type="file" name="autophoto" required="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative mb-3">
+                    <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fa fa-globe"></i></span>
                     </div>
                     <input class="form-control" placeholder="Location" type="text" name="location" required="">
@@ -126,8 +135,12 @@
                   <small class="text-muted ">*should pay 1000/- for registration</small>
                 </div>
               </form>
+              
             </div>
           </div>
+          
+        
+            
         </div>
       </div>
     </div>
