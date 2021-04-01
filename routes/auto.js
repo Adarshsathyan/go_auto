@@ -111,8 +111,9 @@ router.post('/verify-payment',verifyLogin,(req,res,next)=>{
 //get profile 
 router.get('/profile',verifyLogin,(req,res,next)=>{
   autoHelper.getProfileDetails(req.session.autoDriver._id).then((details)=>{
+    let bookings = details.drives.length
     res.render('auto/profile',{auto:true,autoBooked:req.session.autoBooked,autoDriver:req.session.autoDriver
-      ,booking:details.booking,drives:details.drives})
+      ,booking:details.booking,drives:details.drives,bookings})
   })
   
   

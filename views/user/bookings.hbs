@@ -1,4 +1,4 @@
-<section class="w3l-cts py-5" id="auto">
+<section class="w3l-cts py-5" id="auto" style="background-image:url(/user/assets/images/BlueBackground-1.jpg);">
     <div class="container py-lg-3">
         <div class="header-section text-center mx-auto">
             <span class="subhny-title text-center mb-2">Quick Pick</span>
@@ -9,20 +9,129 @@
                 <div class="container">
                     {{#if noBookings}}
                     <div class="table-responsive">
-                    <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; " 
-                    class="col-md-4 ml-auto mr-auto">
-                    <div>
-                        <h3 class=" text-center ml-5 mt-3 mb-5">No bookings !</h3>
-                        <center><a href="/" class="btn text-white  ml-5" style="background-color:#4d7ae3 ; ">BOOK AUTO</a></center>
+                        <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; "
+                            class="col-md-4 ml-auto mr-auto">
+                        <div>
+                            <h3 class=" text-center ml-5 mt-3 mb-5">No bookings !</h3>
+                            <center><a href="/" class="btn text-white  ml-5" style="background-color:#4d7ae3 ; ">BOOK
+                                    AUTO</a></center>
+                        </div>
                     </div>
-                </div>
                     {{else}}
-                    <div class="row">
+                    <div class="container p-3">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <div class="card" style="width: 18rem;">
+                                    <img class="card-img-top" src="/auto/auto-profile/{{auto._id}}.jpg"
+                                        alt="Card image cap" style="width:100% ;">
+                                    <div class="card-body p-4">
+                                        <p class="card-text h6 text-dark ">Regno - <span style="float: right;"
+                                                id="auto_regno">{{auto.regno}}</span></p>
+                                        <p class="card-text h6 text-dark mt-2">Name - <span
+                                                style="float: right;">{{auto.name}}</span></p>
+                                        <p class="card-text h6 text-dark mt-2">Location - <span
+                                                style="float: right;">{{auto.location}}</span></p>
+                                        <i class="fa fa-star text-success  mt-4 "></i>
+                                        <p class="badge badge-success mt-4">4.1</p>
+
+                                        <a href="/auto-profile/{{auto._id}}" class="btn btn-sm text-white mt-3"
+                                            style="background-color: #4d7ae3 ;float:right;"> View</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2"
+                                style="background-image:url(/user/assets/images/BlueBackround-2.jpg);">
+                                <div class="crd">
+
+                                    <div class="card-body ">
+                                        <p class="card-text h5 font-weight-bold mt-2 mb-3  ">{{auto.regno}}</p>
+                                        <p class="card-text h5  mt-2 mb-3 font-weight-bold ">{{booking.from}} <small><i
+                                                    class="fa fa-arrow-right"></i></small> <span>{{booking.to}}</span></p>
+                                        <p class="card-text h6 text-dark  mt-2 ">Pick at Near kareelakavu temple
+                                        </p>
+                                        <p class="card-text h6 text-dark mt-2 ">&#8377; {{booking.charge}}</p>
+                                        <i class="fa fa-star text-success  mt-2 "></i>
+                                        <p class="badge badge-success">4.1</p>
+                                        <a href="#" onclick="report_auto('{{auto._id}}')" style="float: right;"
+                                            class="btn text-white btn-sm mr-2 btn-danger">Report</a>
+                                        <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm mr-2"
+                                            style="background-color: #4d7ae3;float:right;">Call</a>
+                                        <a href="#" style="float: right;" onclick="rate('{{auto.autoId}}')"
+                                            class="btn text-white btn-sm mr-2 btn-dark">Rate</a>
+
+
+
+
+                                        <hr>
+                                        <h6 class="mb-3 text-danger">Find the fraud.</h6>
+                                        <p>1.To cancel the order please call and ask for cancellation</p>
+                                        <p>2.Compare the Registration number that provided with the auto.</p>
+                                        <p>3.Report if charge greater the total amount shown.</p>
+                                        <p>4.Rate if statisfied</p>
+
+                                        <br>
+
+                                        <h6 class="text-center">"Enjoy Travel with Go Auto 😇"</h6>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="rateFeedback" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Rate and Feedback</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+
+                                    <form method="POST" action="/rate">
+                                        <div class="form-group">
+                                            <label for="">Rate </label>
+                                            <input type="number" class="form-control col-md-2" max="5" min="0"
+                                                name="rate" style="display: inline;height:25px;" required>
+                                            <span class="text-dark h5 ml-2" style="display: inline;">/ 5</span>
+                                        </div>
+                                            
+                                        <input type="hidden" name="autoId" value="{{auto._id}}" >
+                                        <input type="hidden" name="userId" value="{{userDetails._id}}">
+                                        <input type="hidden" name="name" value="{{userDetails.name}}">
+                                        <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
+                                        <input type="hidden" name="email" value="{{userDetails.username}}">
+
+                                        <div class="form-group">
+                                            <label for="message" class="col-form-label">Message:</label>
+                                            <textarea class="form-control" name="message" id="message"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button class="btn text-white "
+                                                style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Send
+                                                message</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {{!-- <div class="row">
                         <div class="col-md-4">
                             <div class="card" style="width: 18rem;">
-                                <img class="card-img-top" src="/user/assets/images/auto1.jpg" alt="Card image cap">
+                                <img class="card-img-top" src="/auto/auto-profile/{{auto._id}}.jpg" alt="Card image cap"
+                                    style="width:100% ;">
                                 <div class="card-body p-4">
-                                    <p class="card-text h6 text-dark ">Regno - <span style="float: right;" id="auto_regno">{{auto.regno}}</span></p>
+                                    <p class="card-text h6 text-dark ">Regno - <span style="float: right;"
+                                            id="auto_regno">{{auto.regno}}</span></p>
                                     <p class="card-text h6 text-dark mt-2">Name - <span
                                             style="float: right;">{{auto.name}}</span></p>
                                     <p class="card-text h6 text-dark mt-2">Location - <span
@@ -34,18 +143,18 @@
                                     <i class="fa fa-star text-warning"></i>
                                     <a href="/auto-profile/{{auto._id}}" class="btn text-white mt-3"
                                         style="background-color: #4d7ae3; float:right;"> View</a>
-                                        <button class="btn btn-primary mt-1 ml-1">Rate</button>
+                                    <button class="btn btn-primary mt-1 ml-1">Rate</button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <div class="table-responsive" >
-                                <table class="table-borderless table bg-light ">
+                            <div class="table-responsive">
+                                <table class="table-borderless table ">
                                     <thead>
-                                        <tr >
+                                        <tr>
                                             <th scope="col">Auto</th>
                                             <th scope="col">From</th>
-                                            <th scope="col">To</th> 
+                                            <th scope="col">To</th>
                                             <th scope="col">Total</th>
                                             <th scope="col"></th>
                                         </tr>
@@ -57,26 +166,28 @@
                                             <td>{{booking.to}}</td>
                                             <td>{{booking.charge}}/-</td>
                                             <td>
-                                                <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm" style="background-color: #4d7ae3;">Call</a>
-                                                <a href="#" onclick="report_auto('{{auto._id}}')" class="btn text-white btn-sm btn-danger">Report</a>
+                                                <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm"
+                                                    style="background-color: #4d7ae3;">Call</a>
+                                                <a href="#" onclick="report_auto('{{auto._id}}')"
+                                                    class="btn text-white btn-sm btn-danger">Report</a>
                                             </td>
                                         </tr>
-                                       
+
                                     </tbody>
                                 </table>
                                 <hr>
                                 <h6 class="mb-3 text-danger">Find the fraud.</h6>
-                                
+
                                 <p>1.Compare the Registration number that provided with the auto.</p>
                                 <p>2.Report if charge greater the total amount shown.</p>
                                 <p>3.Rate if statisfied</p>
                                 <p>4.To cancel the order please call and ask for cancellation</p>
                                 <br>
-                                
+
                                 <h6 class="">"Enjoy Travel with Go Auto 😇"</h6>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{/if}}
                 </div>
             </div>
@@ -84,8 +195,7 @@
     </div>
 
 </section>
-<div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,75 +205,78 @@
                 </button>
             </div>
             <div class="modal-body">
-               
-                
-                <form method="POST" action="/report-auto" >
-                    
+
+
+                <form method="POST" action="/report-auto">
+
                     <input type="hidden" name="userId" value="{{userDetails._id}}">
                     <input type="hidden" name="autoId" value="{{auto._id}}">
                     <input type="hidden" name="name" value="{{auto.name}}">
-                   <input type="hidden" name="regno" value="{{auto.regno}}">
-                   <input type="hidden" name="lisenceno" value="{{auto.lisenceno}}">
-                    <input type="hidden" name="reported" value="{{userDetails.name}}"> 
+                    <input type="hidden" name="regno" value="{{auto.regno}}">
+                    <input type="hidden" name="lisenceno" value="{{auto.lisenceno}}">
+                    <input type="hidden" name="reported" value="{{userDetails.name}}">
                     <div class="form-group">
                         <label for="message" class="col-form-label">Issue:</label>
                         <textarea class="form-control" name="message" id="message"></textarea>
                     </div>
                     <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button  class="btn text-white " style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Report</button>
-            </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn text-white "
+                            style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Report</button>
+                            <p><small>Reporting auto will cancel the order.</small></p>
+                    </div>
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>
-{{!-- <script>
-    
-    const publicVapidKey='BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
+{{!--
+<script>
 
-    if('serviceWorker' in navigator) {
-        send().catch(err =>console.log(err))
+    const publicVapidKey = 'BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
+
+    if ('serviceWorker' in navigator) {
+        send().catch(err => console.log(err))
     }
 
-    async function send(){
+    async function send() {
         console.log('registering sw')
-        const register = await navigator.serviceWorker.register('/auto/worker.js',{
-            scope:'/auto/profile/'
+        const register = await navigator.serviceWorker.register('/auto/worker.js', {
+            scope: '/auto/profile/'
         });
         console.log('Service worker Registered')
 
         console.log('registering push.')
         let subscription = await register.pushManager.subscribe({
-            userVisibleOnly:true,
-            applicationServerKey:urlBase64ToUint8Array(publicVapidKey)
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
         })
         console.log('sending push')
-        await fetch('/book-notification',{
-            method:'POST',
-            body:JSON.stringify(subscription),
+        await fetch('/book-notification', {
+            method: 'POST',
+            body: JSON.stringify(subscription),
             headers: {
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json'
             }
         })
         console.log('push send')
     }
 
     function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-    
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
     }
 
-    
+
 </script> --}}

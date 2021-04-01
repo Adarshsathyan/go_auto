@@ -24,3 +24,7 @@ function report_auto(autoId){
     $('#report').modal('show');
     
 }
+
+function auto_report(autoId){
+    $('#report').modal('show');
+}

@@ -252,66 +252,115 @@
         text-align: center;
     }
 </style>
-
-<div class="container" style="margin-top:121px;">
-    <div class="profile">
-        <div class="profile-header">
-            <div class="profile-header-cover"></div>
-            <div class="profile-header-content">
-                <div class="profile-header-img">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                </div>
-                <h4 class="ml-auto mr-auto">Drives</h4>
-            </div>
-        </div>
-
-        <div class="profile-container">
-            <div class="profile-sidebar">
-                <div class="desktop-sticky-top">
-                    <h4>{{userDetails.name}}</h4>
-
-                    <div class="mb-1 mt-2"><i class="fa fa-map-marker fa-fw text-muted"></i> {{userDetails.location}}
+<section>
+    <div class="container" style="margin-top:121px;">
+        <div class="profile  col-md-12 col-6">
+            <div class="profile-header">
+                <div class="profile-header-cover"></div>
+                <div class="profile-header-content">
+                    <div class="profile-header-img">
+                        <img src="/user/profile-images/{{userDetails._id}}.jpg" alt="" />
                     </div>
-                    <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> {{userDetails.username}}</div>
-                    <div class="mb-1 text-center"><a href="" class="btn btn-dark btn-sm">Edit Profile</a></div>
-                    <hr class="mt-4 mb-4" />
+                    <h4 class="ml-auto mr-auto">Drives</h4>
                 </div>
             </div>
 
-            <div class="profile-content">
-                <div class="container">
-                    {{#each rides}}
-                    <div class="col-md-12 border mb-3 hover">
-                        <div class="row">
-                            <div class="col-md-3 col-12 p-2 ">
-                                <img src="https://static.toiimg.com/thumb/75392033.cms?resizemode=75&width=1200&height=900"
-                                    style="width:170px; height:100%;" alt="" class=" image-fluid rounded "><br>
-                            </div>
-                            <div class="col-md-9 col-12 p-2 ">
-                                <p class="text-dark h5" style="font-family: 'Vidaloka', serif;"><i
-                                        class="fa fa-map-marker" aria-hidden="true">
+            <div class="profile-container">
+                <div class="profile-sidebar">
+                    <div class="desktop-sticky-top ">
+                        <h4>{{userDetails.name}}</h4>
 
-                                    </i> {{this.from}} - {{this.to}}</p>
-                                <p style="font-family: 'Vidaloka', serif;" class="text-dark mt-2"><i
-                                        class="fa fa-regisered" aria-hidden="true">
-
-                                    </i>{{this.regno}}</p>
-                                <p style="font-family: 'Vidaloka', serif;" class="text-dark mt-2"> {{this.charge}}/-</p>
-                                <small>How was the travel ? please rate it. <i class="fa fa-arrow-right"></i></small>
-
-                                <a href="#" class="btn text-white  w-25 " onclick="rate('{{this.autoId}}')"
-                                    style="float: right;background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Rate
-                                    it</a>
-                            </div>
-
+                        <div class="mb-1 mt-2"><i class="fa fa-map-marker fa-fw text-muted"></i>
+                            {{userDetails.location}}
                         </div>
+                        <div class="mb-1"><i class="fa fa-envelope-open-o fa-fw text-muted"></i>
+                            {{userDetails.username}}</div>
+                        <div class="mb-3"><i class="fa fa-phone fa-fw text-muted"></i> {{userDetails.mobile}}</div>
+                        <div class="mb-1 text-center"><a href="/edit-profile" class="btn btn-dark btn-sm" data-toggle="modal"
+                            data-target="#exampleModalCenter">Edit
+                                Profile</a></div>
+                        
+
+                        <!-- Edit profile Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                       <form action="/edit-profile/{{userDetails._id}}" method="POST" class="form-group" enctype="multipart/form-data">
+                                           <label for="name">Name</label>
+                                           <input type="text" class="form-control col-md-8" id="name" name="name" value="{{userDetails.name}}">
+                                            <label for="mobile">Mobile</label>
+                                           <input type="tel" class="form-control col-md-8" id="mobile" name="mobile" value="{{userDetails.mobile}}">
+                                            <label for="email">Email (Username)</label>
+                                            <input type="email" class="form-control col-md-8" id="email" name="username" value="{{userDetails.username}}">
+                                            <label for="location">Location</label>
+                                           <input type="text" class="form-control col-md-8" id="location" name="location" value="{{userDetails.location}}">
+                                            <label for="image">Profile</label>
+                                           <input type="file" class="form-control col-md-8" id="image" name="profile">
+                                           
+                                           <button  class="btn btn-danger m-2">Save</button>
+                                            <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                       </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                       
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <hr class="mt-4 mb-4" />
                     </div>
-                    {{/each}}
+                </div>
+
+                <div class="profile-content">
+                    <div class="container">
+                        {{#each rides}}
+                        <div class="col-md-12 border mb-3 hover">
+                            <div class="row">
+                                <div class="col-md-3 col-12 p-2 ">
+                                    <img src="https://static.toiimg.com/thumb/75392033.cms?resizemode=75&width=1200&height=900"
+                                        style="width:170px; height:100%;" alt="" class=" image-fluid rounded "><br>
+                                </div>
+                                <div class="col-md-9 col-12 p-2 ">
+                                    <p class="text-dark h5" style="font-family: 'Vidaloka', serif;"><i
+                                            class="fa fa-map-marker" aria-hidden="true">
+
+                                        </i> {{this.from}} - {{this.to}}</p>
+                                    <p style="font-family: 'Vidaloka', serif;" class="text-dark mt-2"><i
+                                            class="fa fa-regisered" aria-hidden="true">
+
+                                        </i>{{this.regno}}</p>
+                                    <p style="font-family: 'Vidaloka', serif;" class="text-dark mt-2"> {{this.charge}}/-
+                                    </p>
+                                    <small>How was the travel ? please rate it. <i
+                                            class="fa fa-arrow-right"></i></small>
+
+                                    <a href="#" class="btn text-white  w-25 " onclick="rate('{{this.autoId}}')"
+                                        style="float: right;background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Rate
+                                        it</a>
+                                </div>
+
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
 
 <div class="modal fade" id="rateFeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -324,31 +373,34 @@
                 </button>
             </div>
             <div class="modal-body">
-               
-                
-                <form method="POST" action="/rate" >
+
+
+                <form method="POST" action="/rate">
                     <div class="form-group">
                         <label for="">Rate </label>
-                    <input type="number" class="form-control col-md-2" max="5" min="0" name="rate" style="display: inline;height:25px;" required>
-                    <span class="text-dark h5 ml-2" style="display: inline;">/ 5</span>
+                        <input type="number" class="form-control col-md-2" max="5" min="0" name="rate"
+                            style="display: inline;height:25px;" required>
+                        <span class="text-dark h5 ml-2" style="display: inline;">/ 5</span>
                     </div>
                     <input type="hidden" name="autoId" value="" id="autoId">
                     <input type="hidden" name="userId" value="{{userDetails._id}}">
                     <input type="hidden" name="name" value="{{userDetails.name}}">
-                   <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
-                   <input type="hidden" name="email" value="{{userDetails.username}}">
-                     
+                    <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
+                    <input type="hidden" name="email" value="{{userDetails.username}}">
+
                     <div class="form-group">
                         <label for="message" class="col-form-label">Message:</label>
                         <textarea class="form-control" name="message" id="message"></textarea>
                     </div>
                     <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button  class="btn text-white " style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Send message</button>
-            </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn text-white "
+                            style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Send
+                            message</button>
+                    </div>
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>

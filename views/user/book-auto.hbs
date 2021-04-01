@@ -1,4 +1,4 @@
-<section class="w3l-cts py-5">
+<section class="w3l-cts py-5" style="background-image:url(/user/assets/images/BlueBackground-3.jpg);">
     <div class="container ">
         <div class="header-section text-center">
             <br>
@@ -7,48 +7,39 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <div class="card" style="width: 18rem; height:23rem;">
+                <div class="card" style="width: 18rem; height:29rem;">
                     <img class="card-img-top"
-                        src="https://media.istockphoto.com/vectors/auto-rickshaw-taxi-vector-id1212399643"
+                        src="/auto/auto-profile/{{autoDetails._id}}.jpg" style="width:100% ;"
                         alt="Card image cap">
                     <div class="card-body p-4">
-                        <p class="card-text h6 text-dark  ">Regno - <span style="float: right;">KL02 BJ
-                                1505</span></p>
-                        <p class="card-text h6 text-dark mt-2">Name - <span style="float: right;">Adarsh</span></p>
-                        <p class="card-text h6 text-dark mt-2">Location - <span style="float: right;">Madannada</span>
+                        <p class="card-text h6 text-dark font-weight-bolder ">Regno - <span style="float: right;">{{autoDetails.regno}}
+                                </span></p>
+                        <p class="card-text h6 text-dark mt-2 font-weight-bolder">Name - <span style="float: right;">{{autoDetails.name}}</span></p>
+                        <p class="card-text h6 text-dark mt-2 font-weight-bolder">Location - <span style="float: right;">{{autoDetails.location}}</span>
                         </p>
-                        <i class="fa fa-star text-warning mt-4"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-success mt-4 "></i> <i class="badge badge-success font-weight-bolder"> 4.1</i>
                         <a href="/auto-profile/{{autoDetails._id}}" class="btn text-white mt-3" style="background-color: #4d7ae3; float:right;"> View</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 bg-light pt-5">
+            <div class="col-md-8  pt-5">
                 
                     <form action="/book-auto" method="POST">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">From</label>
+                            <label  class="col-sm-2 col-form-label font-weight-bolder">From <i class="fa fa-arrow-left"></i></label>
                             <div class="col-sm-8">
-                                <input type="text" readonly value="{{autoDetails.location}}" class="form-control"
+                                <input type="text" readonly value="{{autoDetails.location}}" class="form-control bg-light"
                                     id="from" name="from">
                                 <input type="hidden" name="autoId" value="{{autoDetails._id}}">
                                 <input type="hidden" name="status" value="0">
                                 <input type="hidden" name="userId" value="{{userDetails._id}}">
-                                <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
+                                <input type="hidden" name="usermobile" value="{{userDetails.mobile}}">
+                                <input type="hidden" name="automobile" value="{{autoDetails.mobile}}">
                             </div>
                         </div>
+                        
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Pick at</label>
-                            <div class="col-sm-8">
-                                <input type="text" name="landmark" class="form-control"
-                                    placeholder="Landmark of the exact location to pick " required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 col-form-label">To</label>
+                            <label  class="col-sm-2 col-form-label font-weight-bolder">To <i class="fa fa-arrow-right"></i></label>
                             <div class="col-sm-8">
                                 <select name="to" class="form-control" id="to" required>
                                     <option value="" selected>--select--</option>
@@ -59,16 +50,23 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 col-form-label">Charge</label>
+                            <label  class="col-sm-2 col-form-label font-weight-bolder">Pick at</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="landmark" class="form-control"
+                                    placeholder="Landmark of the exact location to pick " required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label  class="col-sm-2 col-form-label font-weight-bolder">Charge</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" readonly id="charge" name="charge">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 col-form-label"></label>
+                            <label  class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-8">
                                 <button class="btn text-white w-25" style="background-color: #4d7ae3;">Book</button>
-                                <a href="/" class="btn text-white w-25" style="background-color: #4d7ae3;">Cancel</a>
+                                <a href="/" class="btn text-white w-25" style="background-color: #111624;">Cancel</a>
                             </div>
                         </div>
 
