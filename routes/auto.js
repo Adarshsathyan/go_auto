@@ -117,6 +117,8 @@ router.get('/profile', verifyLogin, (req, res, next) => {
   autoHelper.getProfileDetails(req.session.autoDriver._id).then(async(details) => {
     let rating = await autoHelper.getRating(req.session.autoDriver._id)
     let bookings = details.drives.length
+    
+    
     res.render('auto/profile', { 
       auto: true, autoBooked: req.session.autoBooked, autoDriver: req.session.autoDriver
       , booking: details.booking, drives: details.drives, bookings,rating
@@ -145,10 +147,15 @@ router.post('/edit-profile/:id', verifyLogin, (req, res) => {
 
 
 //show dashboard
-router.get('/home', verifyLogin, (req, res, next) => {
+router.get('/home', verifyLogin, async(req, res, next) => {
+  let total_booking = await autoHelper.getAllBookings(req.session.autoDriver._id)
+  let total_travel = await autoHelper.getCompletedTravels(req.session.autoDriver._id)
+  let total_place = await autoHelper.getTotalPlaces(req.session.autoDriver._id)
+  let ratings  = await autoHelper.getRating(req.session.autoDriver._id)
+  console.log(total_booking);
   res.render('auto/index', {
     auto: true, autoDriver: req.session.autoDriver,
-    autoBooked: req.session.autoBooked, changedPass: req.session.autoPassChange
+    autoBooked: req.session.autoBooked, changedPass: req.session.autoPassChange,total_booking,total_travel,total_place,ratings
   })
   req.session.autoPassChange = null
 });

@@ -472,13 +472,53 @@ module.exports={
                 feedbacks.forEach(element => {
                    rate.push(parseInt(element.rate))
                 });
-                console.log(rate);
+                
                 let total = 0
                 for(i in rate){
                     total = total+rate[i]
                 }
                 let rating = total/10
                 resolve(rating)
+            })
+        })
+    },
+
+    //get all booking number for displaying in home
+    getAllBookings:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.DRIVE_COLLECTION).find({autoId:objectId(autoId)}).toArray().then((result)=>{
+                if(result){
+                    let total = result.length
+                    resolve(total)
+                }else{
+                    resolve(0)
+                }
+            })
+        })
+    },
+
+    //get all complted trave auto number for displaying in the total travel card in home
+    getCompletedTravels:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.DRIVE_COLLECTION).find({autoId:objectId(autoId),status:"1"}).toArray().then((result)=>{
+                if(result){
+                    let total = result.length
+                    resolve(total)
+                }else{
+                    resolve(0)
+                }
+            })
+        })
+    },
+    getTotalPlaces:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).find({auto:autoId}).toArray().then((result)=>{
+                if(result){
+                    let total = result.length
+                    resolve(total)
+                }else{
+                    resolve(0)
+                }
             })
         })
     }
