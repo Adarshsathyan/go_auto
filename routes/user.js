@@ -106,6 +106,7 @@ router.get('/book-auto/:id',verifyLogin,(req,res)=>{
 //confirm booking auto
 router.post('/book-auto',verifyLogin,(req,res)=>{
     userHelper.bookAuto(req.body).then((bookId)=>{
+        
         req.session.autoBooked=true
         res.redirect('/bookings/'+bookId)
     })

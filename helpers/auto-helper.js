@@ -6,6 +6,7 @@ const objectId = require("mongodb").ObjectID;
 var otpAuth = require('../config/otpauth');
 const twilio = require('twilio')(otpAuth.accountSId, otpAuth.authToken)
 
+
 var instance = new Razorpay({
     key_id: 'rzp_test_aXiLerJwygr3M5',
     key_secret: 'HjXinQy80vkLrKQg5VwtjQ3V',
@@ -39,7 +40,7 @@ module.exports={
                     resolve(response)
                 })
             } 
-        })
+        }) 
     },
 
     //create payment order
@@ -168,7 +169,7 @@ module.exports={
     getbooking:(autoId)=>{
         return new Promise((resolve,reject)=>{
            let booking={}
-            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((result)=>{
+            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:objectId(autoId)}).then((result)=>{
                 booking.booking=result
                 if(result){
                     db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(result.userId)}).then((user)=>{
@@ -188,11 +189,17 @@ module.exports={
     //change drive ststus while accept booking
     changeDriveStatus:(autoId)=>{
         return new Promise((resolve,reject)=>{
+            let response={}
             db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
                 drive:"Ondrive"
             }}).then(()=>{
                 db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
-                    resolve(auto)
+                    db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:objectId(auto._id)}).then((booking)=>{
+                        response.auto=auto
+                        response.booking=booking
+                        resolve(response)
+                    })
+                    
                 })
             })
         })
@@ -202,10 +209,10 @@ module.exports={
     //complete drive
     completeDrive:(autoId)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.BOOKING_COLLECTION).updateOne({autoId:autoId},{$set:{
+            db.get().collection(collections.BOOKING_COLLECTION).updateOne({autoId:objectId(autoId)},{$set:{
                 status:"1"
             }}).then(()=>{
-                    db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
+                    db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:objectId(autoId)}).then((booking)=>{
                         db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then(async(autoDetails)=>{
                             let user = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(booking.userId)})
                         
@@ -315,7 +322,7 @@ module.exports={
     //get users travelled in auto
     getUsersTravelled:(autoId)=>{
         return new Promise(async(resolve,reject)=>{
-            let drive = await db.get().collection(collections.DRIVE_COLLECTION).find({autoId:autoId,status:"1"}).toArray()
+            let drive = await db.get().collection(collections.DRIVE_COLLECTION).find({autoId:objectId(autoId),status:"1"}).toArray()
             if(drive){
                 resolve(drive)
             }else{
@@ -344,14 +351,14 @@ module.exports={
     getProfileDetails:(autoId)=>{
         return new Promise((resolve,reject)=>{
             let response={}
-            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:autoId}).then((booking)=>{
+            db.get().collection(collections.BOOKING_COLLECTION).findOne({autoId:objectId(autoId)}).then((booking)=>{
                 if(booking){
                     response.booking=booking
                     db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(booking.userId)}).then((result)=>{
                         response.booking.name=result.name
                     })
                 }
-                db.get().collection(collections.DRIVE_COLLECTION).find({autoId:autoId,status:"1"}).limit(5).toArray().then((drives)=>{
+                db.get().collection(collections.DRIVE_COLLECTION).find({autoId:objectId(autoId),status:"1"}).limit(5).toArray().then((drives)=>{
                     response.drives=drives
                     resolve(response)
                 })
@@ -444,6 +451,35 @@ module.exports={
             }else{
                 resolve({status:false})
             }
+        })
+    },
+
+
+    //get feedbacks
+    getFeedbacks:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.FEEDBACK_COLLECTION).find({autoId:autoId}).toArray().then((result)=>{
+                resolve(result)
+            })
+        })
+    },
+ 
+    //get rating number
+    getRating:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.FEEDBACK_COLLECTION).find({autoId:autoId}).toArray().then((feedbacks)=>{
+                let rate =[]
+                feedbacks.forEach(element => {
+                   rate.push(parseInt(element.rate))
+                });
+                console.log(rate);
+                let total = 0
+                for(i in rate){
+                    total = total+rate[i]
+                }
+                let rating = total/10
+                resolve(rating)
+            })
         })
     }
         

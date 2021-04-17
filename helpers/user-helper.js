@@ -2,8 +2,8 @@ var db = require('../config/connection')
 var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 const objectId = require("mongodb").ObjectID
-const accountSid = "AC4db84b176bdbe25c246705cf14d10db5";
-const authToken = "ae18ec2709362d3f0aecb7c387a8d1eb";
+const accountSid = "AC33edf996551919434ee6a3d9664217ed";
+const authToken = "7291649537bf825e7441f23534f5a176";
 const twilio = require('twilio');
 const client = new twilio(accountSid, authToken);
 
@@ -52,7 +52,7 @@ module.exports = {
     //get auto by locations when rendering home page 
     getAuto: (location) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.AUTO_COLLECTION).find().toArray().then((autos) => {
+            db.get().collection(collections.AUTO_COLLECTION).find({drive:"Available"}).toArray().then((autos) => {
                 resolve(autos)
             })
 
@@ -105,20 +105,29 @@ module.exports = {
 
             today = dd + '/' + mm + '/' + yyyy;
             bookDetails.date = today
+            bookDetails.autoId = objectId(bookDetails.autoId)
             db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then((response) => {
-                console.log(bookDetails);
-                    client.messages
-                        .create({
-                            body: 'You have one booking',
-                            from: '+18305005989',
-                            to: '+91'+bookDetails.automobile
-                        })
-                        .then((message=>{
-                            console.log(message);
-                            resolve(response.ops[0].userId)
-                        }));
-             
-                            
+                automobile = "+91" + String(bookDetails.automobile)
+                usermobile = "+91" + String(bookDetails.usermobile)
+                client.messages
+                    .create({
+                        body: 'Hello Auto You have a booking from ' + bookDetails.from + ' to ' + bookDetails.to + '. Passenger is waiting at ' + bookDetails.landmark + ". Date :" + bookDetails.date + " Sender : GoAuto",
+                        from: '+12245019575',
+                        to: automobile
+                    })
+                    .then((message => {
+                        //sending booking placed sms to passenger
+                        client.messages
+                            .create({
+                                body: 'Your Booking from '+bookDetails.from+' to '+bookDetails.to+' have confirmed .',
+                                from: '+12245019575',
+                                to: usermobile
+                            })
+                            .then((message => {
+                                resolve(response.ops[0].userId)
+                            }));
+
+                    }));
             })
         })
     },
