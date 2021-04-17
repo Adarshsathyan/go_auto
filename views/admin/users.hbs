@@ -25,6 +25,11 @@
                     <h3 class="mb-0">Autos</h3>
                 </div>
                 <div class="table-responsive">
+                     {{#if deletedUser}}
+                    <div class="alert col-md-11 ml-auto mr-auto" id="alert" role="alert" style=" height:50px; background-color:#b7d7e8;color:black; ">
+                       Deleted Successfully !
+                    </div>
+                  {{/if}}
                     <table class="table align-items-center table-flush" id="data_tables">
                         <thead class="thead-light">
                             <tr>
@@ -37,105 +42,32 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each users}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    Kl-02 BJ 1505
+                                   {{this.username}}
                                 </td>
                                
                                 <td>
-                                    Madannada
+                                   {{this.location}}
                                 </td>
                                 <td>
-                                    6000/-
+                                    {{this.mobile}}
                                 </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
+                                <td class="text-center">
                                     
-                                    <div class="dropdown">
-
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                           <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
+                                    <a href="/admin/block-user/{{this._id}}" class="btn btn-warning btn-sm">Block</a>
+                                    <a href="/admin/delete-user/{{this._id}}" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
-                                
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
-
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
-                                
-                                <td>
-                                    Madannada
-                                </td>
-                                <td>
-                                    6000/-
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger">Block</a>
-                                    <div class="dropdown">
-                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            <a class="dropdown-item text-primary" href="#">View</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -143,3 +75,8 @@
         </div>
     </div>
 </div>
+<script>
+    setTimeout(function(){
+        $('#alert').css('display','none')
+    },3000)
+</script>

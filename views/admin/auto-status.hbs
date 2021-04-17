@@ -36,72 +36,30 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each autos}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    Kl-02 BJ 1505
+                                    {{this.regno}}
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4">
                                         <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
+                                        <span class="status">{{this.drive}}</span>
                                     </span>
                                 </td>
                                 <td>
-                                    Madannada
+                                    {{this.location}}
                                 </td>
                                 
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    Madannada
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    Kl-02 BJ 1505
-                                </td>
-                                <td>
-                                    <span class="badge badge-dot mr-4">
-                                        <i class="bg-warning"></i>
-                                        <span class="status">on Drive</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    Madannada
-                                </td>
-                               
-                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

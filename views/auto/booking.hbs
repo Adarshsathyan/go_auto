@@ -24,6 +24,16 @@
                 <div class="card-header border-0">
                     <h3 class="mb-0">Details</h3>
                 </div>
+                {{#if catchErr}}
+                <div class="table-responsive">
+                    <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; " 
+                    class="col-md-4 ml-auto mr-auto">
+                    <div>
+                        <h3 class=" text-center ml-5 mt-3 mb-5">No bookings !</h3>
+                    </div>
+                </div>
+                
+                {{else}}
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush" >
                         <thead class="thead-light">
@@ -40,31 +50,75 @@
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{booking.user.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                   Madannada
+                                   {{booking.booking.from}}
                                 </td>
                                 <td class="budget">
-                                   Pallimukku
+                                  {{booking.booking.to}}
                                 </td>
         
                                 <td>
-                                    6000/-
+                                    {{booking.booking.charge}}/-
                                 </td>
                                 <td class="text-right">
-                                    <a href="" class="btn btn-default">Change Status</a>
-                                    <a href="" class="btn btn-primary">Call</a>
-                                    <a href="" class="btn btn-success">Completed</a>
+                                    {{#if drive}} 
+                                    {{else}}
+                                    <a href="#" onclick="accept_drive('{{autoDriver._id}}')" class="btn btn-default" id="accept">Accept</a>
+                                    {{/if}}
+                                    {{#if drive}}
+                                     
+                                    <a href="tel:{{booking.booking.mobile}}" class="btn btn-primary btn-sm" id="call" >Call</a>
+                                    <a href="/auto/completed/{{autoDriver._id}}" class="btn btn-success btn-sm" id="complete" >Completed</a>
+                                    <a href="#" onclick="reportUser()" class="btn btn-danger btn-sm" id="reported_user" >Report</a>
+                                    {{else}}
+                                    {{/if}}
                                 </td>
                             </tr>
                 
                         </tbody>
                     </table>
                 </div>
+                {{/if}}
             </div>
+        </div> 
+    </div>
+</div>
+<div class="modal fade" id="reportusermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                
+                <form method="POST" action="/auto/report-user" >
+                    
+                    <input type="hidden" name="userId" value="{{booking.user._id}}">
+                    <input type="hidden" name="autoId" value="{{autoDriver._id}}">
+                    <input type="hidden" name="name" value="{{booking.user.name}}">
+                   <input type="hidden" name="email" value="{{booking.user.username}}">
+                   <input type="hidden" name="reported" value="{{autoDriver.regno}}">
+                    <input type="hidden" name="mobile" value="{{booking.user.mobile}}"> 
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Issue:</label>
+                        <textarea class="form-control" name="message" id="message"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button  class="btn text-white " style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Report</button>
+            </div>
+                </form>
+            </div>
+            
         </div>
     </div>
 </div>

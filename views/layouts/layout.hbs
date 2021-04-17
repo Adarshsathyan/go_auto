@@ -17,7 +17,16 @@
   <!-- Page plugins -->
   <!-- Argon CSS -->
   <link rel="stylesheet" href="/admin/assets/css/argon.css?v=1.2.0" type="text/css">
+  <link rel="stylesheet" href="/auto/lightbox.css" type="text/css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" >
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+  <script src="/admin/assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="/auto/script.js"></script>
+  <script src="/auto/lightbox.js"></script>
+  <script src="/auto/auto-payment.js"></script>
+  <script src="/user/assets/js/jquery-3.3.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="/user/assets/js/script.js"></script>
 </head>
 
 <body>
@@ -27,10 +36,11 @@
     {{>auto-header}}
     {{/if}}
     {{{body}}}
-  <script src="/auto/auto-payment.js"></script>
-  <script src="/admin/assets/js/auto.js"></script>
+  
+  <script src="/admin/assets/js/auto-scripts.js"></script>
+
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="/admin/assets/vendor/jquery/dist/jquery.min.js"></script>
+
   <script src="/admin/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/admin/assets/vendor/js-cookie/js.cookie.js"></script>
   <script src="/admin/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>

@@ -1,0 +1,88 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Requests</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Auto Drivers</a></li>
+                        </ol>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Autos</h3>
+                </div>
+                <div class="table-responsive">
+                    {{#if accepted}}
+                    <div class="alert col-md-11 ml-auto mr-auto" id="alert" role="alert" style=" height:50px; background-color:#b7d7e8;color:black; ">
+                       Accepted Successfully !
+                    </div>
+                  {{/if}}
+                    <table class="table align-items-center table-flush" id="data_tables">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="sort" data-sort="name">Drivers Name</th>
+                                <th scope="col" class="sort" data-sort="budget">Reg Number</th>
+                                <th scope="col" class="sort" data-sort="status">RCbook</th>
+                                <th scope="col">License</th>
+                                <th scope="col" class="sort" data-sort="completion">Location</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {{#each requests}}
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <div class="media-body">
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
+                                        </div>
+                                    </div>
+                                </th> 
+                                <td class="budget">
+                                    {{this.regno}}
+                                </td>
+
+                                <td>
+                                    <a href="/auto/auto-rcbooks/{{this._id}}.jpg" data-lightbox="/auto/auto-rcbooks/{{this._id}}.jpg" data-title="RC Book"
+                                     class="btn btn-sm btn-primary">View</a>
+                                </td>
+
+                                <td>
+                                    <a href="/auto/auto-lisences/{{this._id}}.jpg" data-lightbox="/auto/auto-rcbooks/{{this._id}}.jpg" data-title="License"
+                                     class="btn btn-sm btn-primary">View</a>
+                                </td>
+                                <td>
+                                    {{this.location}}
+                                </td>
+                                <td class="text-center">
+                                    <a href="/admin/accept-auto/{{this._id}}" class="btn btn-sm btn-warning">Accept</a>
+                                    <a href="#" class="btn btn-sm btn-danger">Reject</a>
+                                </td>
+                            </tr>
+                          
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    setTimeout(function(){
+        $('#alert').css('display','none')
+    },3000)
+</script>
+</div>

@@ -26,27 +26,38 @@
                     <h3 class="mb-0">Travel Loctions</h3>
                 </div>
 
-                <form class="container">
+                <form class="container" action="/auto/add-destinations" method="POST">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">To Location</label>
-                                <input type="number" class="form-control" name="kilometer">
+                                <input type="text" class="form-control" name="location">
+                                <input type="hidden" class="form-control" name="auto" value="{{autoDriver._id}}">
+                                <input type="hidden" class="form-control" name="from" value="{{autoDriver.location}}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="">Kilometer</label>
-                               <select name="" id="" class="form-control">
-                                   <option value="">1</option>
-                                    <option value="">2</option>
-                                     <option value="">3</option>
+                                <label for="">Kilometer from <small>({{autoDriver.location}})</small></label>
+                               <select name="kilometer" id="kilo"  class="form-control">
+                                   <option value="" selected disabled>--select--</option>
+                                   {{#each km}}
+                                    <option value="{{this.kilometer}}">{{this.kilometer}}</option>
+                                    {{/each}}
                                </select>
                             </div>
                         </div>
                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Charge</label>
+                                <input type="number" class="form-control" name="charge" id="rate" readonly>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

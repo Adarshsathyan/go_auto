@@ -36,63 +36,27 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each feedbacks}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    adarsg@gmail.com
+                                    {{this.email}}
                                 </td>
                                 <td>
-                                    8766545432
+                                    {{this.mobile}}
                                 </td>
                                 <td>
-                                    Very good travel experience. Thankyou.
+                                   {{this.message}}
                                 </td>
                                 
                             </tr>
-                           <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    adarsg@gmail.com
-                                </td>
-                                <td>
-                                    8766545432
-                                </td>
-                                <td>
-                                    Very good travel experience. Thankyou.
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    adarsg@gmail.com
-                                </td>
-                                <td>
-                                    8766545432
-                                </td>
-                                <td>
-                                    Very good travel experience. Thankyou.
-                                </td>
-                                
-                            </tr>
+                           {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -118,66 +82,28 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each report_auto}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    kl02bj4547
+                                   {{this.regno}}
                                 </td>
                                 <td>
-                                    8766545432546
+                                    {{this.lisenceno}}
                                 </td>
                                 <td>
-                                   Aneesh
+                                   {{this.reported}}
                                 </td>
-                                <td>Drive have charged more than ruppes </td>
+                                <td>{{this.message}}</td>
                                 
                             </tr>
-                           <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    kl02bj4547
-                                </td>
-                                <td>
-                                    8766545432546
-                                </td>
-                                <td>
-                                   Aneesh
-                                </td>
-                                <td>Drive have charged more than ruppes </td>
-                                
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    kl02bj4547
-                                </td>
-                                <td>
-                                    8766545432546
-                                </td>
-                                <td>
-                                   Aneesh
-                                </td>
-                                <td>Drive have charged more than ruppes </td>
-                                
-                            </tr>
+                           {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -203,46 +129,28 @@
                             </tr>
                         </thead>
                         <tbody class="list">
+                            {{#each report_user}}
                             <tr>
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                            <span class="name mb-0 text-sm">{{this.name}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td class="budget">
-                                    demo@gmail.com
+                                    {{this.email}}
                                 </td>
                                 <td>
-                                    87665454325
+                                    {{this.mobile}}
                                 </td>
                                 <td>
-                                   Aneesh
+                                   {{this.reported}}
                                 </td>
-                                <td>Drive have charged more than ruppes </td>
+                                <td>{{this.message}}</td>
                                 
                             </tr>
-                           <tr>
-                                <th scope="row">
-                                    <div class="media align-items-center">
-                                        <div class="media-body">
-                                            <span class="name mb-0 text-sm">Adarsh</span>
-                                        </div>
-                                    </div>
-                                </th>
-                                <td class="budget">
-                                    demo@gmail.com
-                                </td>
-                                <td>
-                                    87665454325
-                                </td>
-                                <td>
-                                   Aneesh
-                                </td>
-                                <td>Drive have charged more than ruppes </td>
-                                
-                            </tr>
+                           {{/each}}
                         </tbody>
                     </table>
                 </div>

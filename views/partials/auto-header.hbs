@@ -1,8 +1,10 @@
+{{#if profileView}}
+{{else}}
 <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
         <!-- Brand -->
         <div class="sidenav-header  align-items-center">
-            <a class="navbar-brand" href="/admin/home">
+            <a class="navbar-brand" href="/auto/home">
                 <img src="/admin/assets/img/brand/blue.png" class="navbar-brand-img" alt=""
                     style=" height: 61px; width: 130px; margin-right: 34px;">
 
@@ -13,8 +15,8 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav ">
-                    <li class="nav-item">
-                        <a class="nav-link " href="/auto/inde">
+                    <li class="nav-item"> 
+                        <a class="nav-link " href="/auto/home">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
@@ -28,7 +30,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/auto/booking">
                             <i class="ni ni-delivery-fast text-primary"></i>
-                            <span class="nav-link-text">Bookings</span>
+                            <span class="nav-link-text">Bookings {{#if autoBooked}}<span class="badge-dot badge badge-lg"> <sup> 
+                    <i class="bg-danger ml-1"></i></sup></span>{{/if}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -44,9 +47,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="/auto/feedback">
                             <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">Reports</span>
+                            <span class="nav-link-text">Feedbacks</span>
                         </a>
                     </li>
 
@@ -81,121 +84,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            <i class="ni ni-bell-55"></i>
+                            <span class="badge badge-dot mr-2">
+                                <i class="bg-danger"></i> 
+                                <span >{{autoDriver.drive}}</span>
+                                </span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-xl  dropdown-menu-right  py-0 overflow-hidden">
-                            <!-- Dropdown header -->
-                            <div class="px-3 py-3">
-                                <h6 class="text-sm text-muted m-0">You have <strong class="text-primary">13</strong>
-                                    notifications.</h6>
-                            </div>
-                            <!-- List group -->
-                            <div class="list-group list-group-flush">
-                                <a href="#!" class="list-group-item list-group-item-action">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <img alt="Image placeholder" src="/admin/assets/img/theme/team-1.jpg"
-                                                class="avatar rounded-circle">
-                                        </div>
-                                        <div class="col ml--2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="mb-0 text-sm">John Snow</h4>
-                                                </div>
-                                                <div class="text-right text-muted">
-                                                    <small>2 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#!" class="list-group-item list-group-item-action">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <img alt="Image placeholder" src="/admin/assets/img/theme/team-2.jpg"
-                                                class="avatar rounded-circle">
-                                        </div>
-                                        <div class="col ml--2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="mb-0 text-sm">John Snow</h4>
-                                                </div>
-                                                <div class="text-right text-muted">
-                                                    <small>3 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#!" class="list-group-item list-group-item-action">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <img alt="Image placeholder" src="/admin/assets/img/theme/team-3.jpg"
-                                                class="avatar rounded-circle">
-                                        </div>
-                                        <div class="col ml--2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="mb-0 text-sm">John Snow</h4>
-                                                </div>
-                                                <div class="text-right text-muted">
-                                                    <small>5 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm mb-0">Your posts have been liked a lot.</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#!" class="list-group-item list-group-item-action">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <img alt="Image placeholder" src="/admin/assets/img/theme/team-4.jpg"
-                                                class="avatar rounded-circle">
-                                        </div>
-                                        <div class="col ml--2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="mb-0 text-sm">Admin</h4>
-                                                </div>
-                                                <div class="text-right text-muted">
-                                                    <small>2 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm mb-0">Let's meet at Starbucks at 11:30. Wdyt?</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#!" class="list-group-item list-group-item-action">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <!-- Avatar -->
-                                            <img alt="Image placeholder" src="/admin/assets/img/theme/team-5.jpg"
-                                                class="avatar rounded-circle">
-                                        </div>
-                                        <div class="col ml--2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 class="mb-0 text-sm">John Snow</h4>
-                                                </div>
-                                                <div class="text-right text-muted">
-                                                    <small>3 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm mb-0">A new issue has been reported for Argon.</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <!-- View all -->
-                            <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View
-                                all</a>
-                        </div>
+                        
                     </li>
 
                 </ul>
@@ -205,7 +99,7 @@
                             aria-expanded="false">
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    <img alt="Image placeholder" src="/admin/assets/img/theme/team-4.jpg">
+                                    <img alt="Image placeholder" src="/auto/auto-profile/{{autoDriver._id}}.jpg">
                                 </span>
                                 <div class="media-body  ml-2  d-none d-lg-block">
                                     <span class="mb-0 text-sm  font-weight-bold">{{autoDriver.name}}</span>
@@ -214,7 +108,7 @@
                         </a>
                         <div class="dropdown-menu  dropdown-menu-right ">
                             </a>
-                            <a href="#!" class="dropdown-item">
+                            <a href="/auto/change-pass" class="dropdown-item">
                                 <i class="ni ni-settings-gear-65 text-danger"></i>
                                 <span>Change Password</span>
                             </a>
@@ -222,6 +116,10 @@
                             <a href="/auto/profile" class="dropdown-item">
                                 <i class="ni ni-single-02 text-danger"></i>
                                 <span>My Profile</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="/auto/invoice/{{autoDriver._id}}" class="dropdown-item">
+                                <i class="ni ni-badge text-danger"></i>
+                                <span>Payment Reciept</span>
                             <div class="dropdown-divider"></div>
                             <a href="/auto/logout" class="dropdown-item">
                                 <i class="ni ni-button-power text-danger"></i>
@@ -233,3 +131,4 @@
             </div>
         </div>
     </nav>
+    {{/if}}

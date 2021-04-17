@@ -1,0 +1,277 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-xl-4 order-xl-2">
+            <div class="card card-profile">
+                <img src="/admin/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 order-lg-2">
+                        <div class="card-profile-image">
+                            <a href="#">
+                                <img src="/auto/auto-profile/{{autoDriver._id}}.jpg" class="rounded-circle">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                    <div class="d-flex justify-content-between">
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-profile-stats d-flex justify-content-center">
+                                <div>
+                                    <span class="status h5 ">{{bookings}}</span>
+                                    <span class="description">Bookings</span>
+                                </div>
+                                <div>
+                                    <span class="status badge badge-success">{{autoDriver.drive}}</span>
+                                    <span class="description">Status</span>
+                                </div>
+                                <div>
+                                    <span class="status h5 ">{{autoDriver.joined}}</span>
+                                    <span class="description">Joined</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h5 class="h3">
+                           {{autoDriver.name}}
+                        </h5>
+                        <div class="h5 font-weight-300">
+                            <i class="ni location_pin mr-2"></i>{{autoDriver.location}}
+                        </div>
+                        <div class="h5 mt-4">
+                            <i class="ni business_briefcase-24 mr-2"></i>Vehicle Regno - {{autoDriver.regno}}
+                        </div>
+                        <div>
+                            <i class="fa fa-star text-success "></i>
+                            <p class="badge badge-success">4.1</p>
+                           
+                        </div>
+                        <div>
+                            {{#if profileView}}
+                            <a href="#" onclick="rate('{{autoDriver._id}}')" class="btn btn-sm btn-primary mt-1">Click to Rate</a>
+                            <a href="#" onclick="auto_report('{{autoDriver._id}}')"  class="btn btn-sm btn-danger mt-1">Report</a>
+                            {{else}}
+                            <a href="/auto/edit-profile" class="btn btn-sm btn-primary mt-1">Edit</a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+            <div class="card">
+                 {{#if booking}}
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Current Status</h3>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                <div class="card-body">
+                     {{#if booking}}
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="sort" data-sort="name">User</th>
+                                <th scope="col" class="sort" data-sort="budget">From</th>
+                                <th scope="col" class="sort" data-sort="status">To</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <div class="media-body">
+                                            <span class="name mb-0 text-sm">Adarsh</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="budget">
+                                     {{booking.from}}
+                                </td>
+                                <td class="budget">
+                                    {{booking.to}}
+                                </td>
+
+                                <td>
+                                    {{booking.charge}}/-
+                                </td>
+                                <td class="text-left">
+                                    <span class="badge badge-dot mr-2">
+                                        <i class="bg-warning"></i>
+                                        <span class="status">{{autoDriver.drive}}</span>
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    </div>
+                    {{else}}
+                    {{/if}}
+                    
+                    <br>
+                    <h3>Recent Drives</h5>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="sort" data-sort="name">User</th>
+                                <th scope="col" class="sort" data-sort="budget">From</th>
+                                <th scope="col" class="sort" data-sort="status">To</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Date</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {{#each drives}}
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <div class="media-body">
+                                            <span class="name mb-0 text-sm">{{this.customer}}</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="budget">
+                                    {{this.from}}
+                                </td>
+                                <td class="budget">
+                                    {{this.to}}
+                                </td>
+
+                                <td>
+                                   {{this.charge}}/-
+                                </td>
+                                <td>
+                                    {{this.date}}
+                                </td>
+                                
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer pt-0">
+        <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6">
+                <div class="copyright text-center  text-lg-left  text-muted">
+                    &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1"
+                        target="_blank">Creative Tim</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                    <li class="nav-item">
+                        <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About
+                            Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="http://blog.creative-tim.com" class="nav-link" target="_blank">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md"
+                            class="nav-link" target="_blank">MIT License</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</div>
+<div class="modal fade" id="rateFeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rate and Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                
+                <form method="POST" action="/rate" >
+                    <div class="form-group">
+                        <label for="">Rate </label>
+                    <input type="number" class="form-control col-md-2" max="5" min="0" name="rate" style="display: inline;height:25px;" required>
+                    <span class="text-dark h5 ml-2" style="display: inline;">/ 5</span>
+                    </div>
+                    <input type="hidden" name="autoId" value="{{autoDriver._id}}" >
+                    <input type="hidden" name="userId" value="{{userDetails._id}}">
+                    <input type="hidden" name="name" value="{{userDetails.name}}">
+                   <input type="hidden" name="mobile" value="{{userDetails.mobile}}">
+                   <input type="hidden" name="email" value="{{userDetails.username}}">
+                     
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Message:</label>
+                        <textarea class="form-control" name="message" id="message"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button  class="btn text-white " style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Send message</button>
+            </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <form method="POST" action="/auto-report">
+
+                    <input type="hidden" name="userId" value="{{userDetails._id}}">
+                    <input type="hidden" name="autoId" value="{{autoDriver._id}}">
+                    <input type="hidden" name="name" value="{{autoDriver.name}}">
+                    <input type="hidden" name="regno" value="{{autoDriver.regno}}">
+                    <input type="hidden" name="lisenceno" value="{{autoDriver.lisenceno}}">
+                    <input type="hidden" name="reported" value="{{userDetails.name}}">
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Issue:</label>
+                        <textarea class="form-control" name="message" id="message"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn text-white "
+                            style="background-image: linear-gradient(to right, #334be6, rgb(204, 13, 188));">Report</button>
+                            <p><small>Reporting auto will cancel the order.</small></p>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

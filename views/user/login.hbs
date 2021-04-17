@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/user/login/assets/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="/user/login/assets/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/user/login/assets/css/bootstrap.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="/user/login/assets/css/style.css">
+
+    <title>Login | User</title>
+  </head>
+  <body>
+  
+
+  
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 order-md-2">
+          <img src="/user/login/assets/images/undraw_secure_login_pdn4.svg" alt="Image" class="img-fluid">
+        </div>
+        <div class="col-md-6 contents">
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="mb-4">
+              <h3>Sign In to <strong>Go Auto</strong></h3>
+              {{#if err}}
+              <p class="mb-4">Invalid username or password</p>
+              {{else}}
+              <p class="mb-4">Do not have an account ? Please signup</p>
+              {{/if}}
+            </div>
+            <form action="/login" method="post">
+              <div class="form-group first">
+                <label for="username">Username (xyz@gmail.com)</label>
+                <input type="email" class="form-control" name="username">
+
+              </div>
+              <div class="form-group last mb-4">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password">
+                
+              </div>
+              
+              <div class="d-flex mb-5 align-items-center">
+               <a href="/signup" class="forgot-pass">Signup</a></span>
+                  
+                </label>
+                <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
+              </div>
+
+              <button  class="btn text-white btn-block" style="background-color:#4d7ae3 ;">Log In</button>
+
+             
+            </form>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+    <script src="/user/login/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/user/login/assets/js/popper.min.js"></script>
+    <script src="/user/login/assets/js/bootstrap.min.js"></script>
+    <script src="/user/login/assets/js/main.js"></script>
+  </body>
+</html>

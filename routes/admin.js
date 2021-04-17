@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const adminHelper=require('../helpers/admin-helper')
 
+
+
 //to check whether admin is logged in
 let verifyLogin=(req,res,next)=>{
   if(req.session.adminLoggedIn){
@@ -44,14 +46,22 @@ router.get('/logout',(req,res,next)=>{
 });
 
 //view home page
-router.get('/home',verifyLogin, (req,res,next)=>{
-  res.render('admin/index',{admin:true} );
+router.get('/home',verifyLogin, (req,res,next)=>{ 
+  adminHelper.getRequests().then((result)=>{
+    req.session.autoRequest=result
+    res.render('admin/index',{admin:true,notify:req.session.autoRequest,changedPass:req.session.adminPassChange} );
+    req.session.adminPassChange=null
+  }).catch(()=>{
+    res.render('admin/index',{admin:true,changedPass:req.session.adminPassChange});
+    req.session.adminPassChange=null
+  })
+  
 });
 
 //view autos
 router.get('/auto',verifyLogin,(req,res,next)=>{
   adminHelper.getAllAuto().then((autos)=>{
-    res.render('admin/auto-drivers',{admin:true,autos,deleted:req.session.deleted});
+    res.render('admin/auto-drivers',{admin:true,autos,deleted:req.session.deleted,autos,notify:req.session.autoRequest});
     req.session.deleted=false
   })
 });
@@ -70,6 +80,19 @@ router.get('/block-auto/:id',verifyLogin,(req,res,next)=>{
   })
 })
 
+//block user
+router.get('/block-user/:id',verifyLogin,(req,res)=>{
+  adminHelper.blockUser(req.params.id).then((blocked)=>{
+    if(blocked.status==="1"){
+      res.redirect('/admin/users')
+    }else{
+      res.redirect('/admin/users')
+    }
+  }).catch(()=>{
+    res.redirect('/admin/users')
+  })
+})
+
 //unblock user
 router.get('/unblock-auto/:id',verifyLogin,(req,res,next)=>{
   
@@ -85,6 +108,19 @@ router.get('/unblock-auto/:id',verifyLogin,(req,res,next)=>{
   })
 })
 
+//unblock users
+router.get('/unblock-user/:id',verifyLogin,(req,res)=>{
+  adminHelper.unblockUser(req.params.id).then((unblocked)=>{
+    if(unblocked.status==="1"){
+      res.redirect('/admin/blockeduser')
+    }else{
+      res.redirect('/admin/blockeduser')
+    }
+  }).catch(()=>{
+    res.redirect('/admin/blockeduser')
+  })
+})
+
 //delete auto-driver
 router.get('/delete-auto/:id',verifyLogin,(req,res,next)=>{
   adminHelper.deleteAuto(req.params.id).then((status)=>{
@@ -93,58 +129,88 @@ router.get('/delete-auto/:id',verifyLogin,(req,res,next)=>{
   })
 })
 
+
+//delete user
+router.get('/delete-user/:id',verifyLogin,(req,res)=>{
+  adminHelper.deleteUser(req.params.id).then((status)=>{
+    req.session.deleteUser=true
+    res.redirect('/admin/users')
+  })
+})
+
+
 //view auto profile
 router.get('/view-auto/:id',verifyLogin,(req,res,next)=>{
-  res.render('admin/auto-profile',{admin:true})
+  res.render('admin/auto-profile',{admin:true,notify:req.session.autoRequest})
 })
+
 
 //view users
 router.get('/users',verifyLogin, (req,res,next)=>{
-  res.render('admin/users',{admin:true} );
+  adminHelper.getUsers().then((users)=>{
+    res.render('admin/users',{admin:true,notify:req.session.autoRequest,users,deletedUser:req.session.deletedUser});
+    req.session.deletedUser=false
+  })
 });
+
 
 //view blocked autos
 router.get('/blockedauto',verifyLogin,(req,res,next)=>{
   adminHelper.getBlockedAuto().then((blockedAutos)=>{
-    res.render('admin/blocked_auto', {admin:true,blockedAutos});
+    res.render('admin/blocked_auto', {admin:true,blockedAutos,notify:req.session.autoRequest});
   })
  
 });
 
 //view blocked user
 router.get('/blockeduser',verifyLogin, (req,res,next)=> {
-  res.render('admin/blocked_user', {admin:true});
+  adminHelper.getBlockedUsers().then((blockedUsers)=>{
+    res.render('admin/blocked_user', {admin:true,notify:req.session.autoRequest,blockedUsers});
+  })
+  
 });
 
 //view auto statuses
 router.get('/status',verifyLogin, (req,res,next)=>{
-  res.render('admin/auto-status',{admin:true} );
+  adminHelper.getAuto().then((autos)=>{
+    res.render('admin/auto-status',{admin:true,notify:req.session.autoRequest,autos});
+  })
+ 
 });
 
 //view feedbacks & reports
 router.get('/feedback',verifyLogin, (req,res,next)=>{
-  res.render('admin/feedback',{admin:true} );
+  adminHelper.getFeedback().then((feedbacks)=>{
+    adminHelper.getAutoReport().then((report_auto)=>{
+      adminHelper.getUserReport().then((report_user)=>{
+        res.render('admin/feedback',{admin:true,notify:req.session.autoRequest,feedbacks,report_auto,report_user} );
+      })
+    
+    })
+    
+  })
+  
 });
 
 
 //view the trave charges
 router.get('/travelcharge',verifyLogin, (req,res,next)=>{
   adminHelper.getCharge().then((charges)=>{
-  res.render('admin/travel-charge',{admin:true,charges});
+  res.render('admin/travel-charge',{admin:true,charges,notify:req.session.autoRequest});
   })
 });
 
 
 //add travel charges
 router.get('/addtravelrate',verifyLogin, (req,res,next)=>{
-    res.render('admin/add-travel-charge',{admin:true});
+    res.render('admin/add-travel-charge',{admin:true,notify:req.session.autoRequest});
 });
 
 
 //edit charge entered
 router.get('/editcharge/:id',verifyLogin,(req,res,next)=>{
   adminHelper.editCharge(req.params.id).then((details)=>{
-    res.render('admin/edit-travel-rate',{admin:true,details})
+    res.render('admin/edit-travel-rate',{admin:true,details,notify:req.session.autoRequest})
   }).catch((err)=>{
     res.send(err)
   })
@@ -171,4 +237,45 @@ router.post('/addtravelrate',verifyLogin,(req,res,next)=>{
     res.redirect('/admin/travelcharge')
   })
 })
+
+//auto requests
+router.get('/auto-request',verifyLogin,(req,res)=>{
+  adminHelper.getRequests().then((requests)=>{
+    res.render('admin/auto-request',{admin:true,requests,accepted:req.session.accepted,notify:req.session.autoRequest})
+    req.session.accepted=null
+  })
+
+})
+
+//accept auto
+router.get('/accept-auto/:id',verifyLogin,(req,res)=>{
+  adminHelper.acceptAuto(req.params.id).then(()=>{
+    req.session.accepted=true
+    req.session.autoRequest=null
+    adminHelper.getRequests().then((result)=>{ 
+      req.session.autoRequest=result
+    })
+    res.redirect('/admin/auto-request')
+  })
+})
+
+//change password
+router.get('/change-pass',verifyLogin,(req,res)=>{
+  res.render('admin/change-password',{admin:true,admin:req.session.admin,passChangeErr:req.session.passChangeErr})
+  req.session.passChangeErr=null
+})
+
+//change password post request
+router.post('/change-pass',verifyLogin,(req,res)=>{
+  adminHelper.changePass(req.body).then((response)=>{
+    if(response.status){
+      req.session.adminPassChange=true
+      res.redirect('/admin/home')
+    }else{
+      req.session.passChangeErr=true
+      res.redirect('/admin/change-pass')
+    }
+  })
+})
+
 module.exports = router;

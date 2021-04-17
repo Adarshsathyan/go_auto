@@ -1,0 +1,261 @@
+<!-- banner section -->
+<section id="home" class="w3l-banner py-5">
+    <div class="container py-lg-5 py-md-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-sm-12 mt-lg-0 mt-4">
+                <span class="subhny-title mb-2">Fast and Easy</span>
+                <h3 class="mb-4">Travel<br>
+                    Safe </h3>
+                <p>Book your auto here and travel ! </p>
+                <div class="mt-sm-5 mt-4">
+                    <a class="btn text-white btn-style" style="background-color:#4d7ae3;" href="#auto">Book<span
+                            class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-8 col-sm-10 mt-lg-0 mt-5">
+                <div class="img-effect text-lg-center">
+                    <img src="/user/assets/images/auto1.jpg" alt="banner" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="w3l-products py-5">
+    <div class="header-section text-center mx-auto">
+        <h3 class="hny-title text-center mb-5">Search By Location</h3>
+    </div>
+    <div class="container">
+        <center>
+            <div class="form-group container ">
+                <form method="post" class="row ">
+                    <div class="col-md-1 ml-4 col-1 "></div>
+                    <input type="search" placeholder="from.." name="from" required="required" id="from"
+                        class="form-control  col-md-4 col-3 " style="height: 50px;">
+                    <div class=" ml-3"></div>
+                    <input type="search" placeholder="to.." name="to" required="required" id="to"
+                        class="form-control  col-md-4 col-3" style="height: 50px;">
+                    <a href="" id="submit" class="col-md-2 ml-2 col-3 btn text-white"
+                        style="background-color:#4d7ae3 ;">Go <span class='fa fa-search text-white'></span></a>
+                </form>
+            </div>
+    </div>
+    </center>
+
+
+</section>
+<!-- //banner section -->
+<section class="w3l-cts py-5" id="auto">
+    <div class="container py-lg-3">
+        <div class="header-section text-center mx-auto">
+            <span class="subhny-title text-center mb-2">Quick Pick</span>
+            <h3 class="hny-title text-center mb-5">Nearby Autos</h3>
+        </div>
+        <div class="mt-5">
+            <div class="mx-auto">
+                <!--Horizontal Tab-->
+                <div class="container">
+
+
+                    <div class="row">
+                        {{#if search}}
+                        {{#each search}}
+                        <div class="col-md-3 mb-2 ">
+                            <div class="card p-2">
+                                <img src="/user/assets/images/auto-driver.jpg" style="width: 100%;" class="card-img-top"
+                                    alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{this.regno}}</h5>
+                                    <p class="card-text">{{this.location}}</p>
+                                    <p class="text-warning mb-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </p>
+                                    <a href="/book-auto/{{this._id}}" class="btn text-white"
+                                        style="background-color:#4d7ae3 ; ">Book</a>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                        
+                        {{else if noSearch}}
+                        <div class="container">
+        
+                            <div class="table-responsive">
+                                <img src="/user/assets/images/nothing.svg" alt="" style="display:block;margin:0 auto; "
+                                    class="col-md-4 ml-auto mr-auto">
+                                <div>
+                                    <h3 class=" text-center ml-5 mt-3 mb-5">No Auto Found !</h3>
+                                    
+                                </div>
+                            </div>
+                            {{else}}
+                            {{#each autos}}
+                            <div class="col-md-3 mb-2 ">
+                                <div class="card p-2">
+                                    <img src="/user/assets/images/auto-driver.jpg" style="width: 100%;"
+                                        class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{this.regno}}</h5>
+                                        <p class="card-text">{{this.location}}</p>
+                                        <p class="text-warning mb-2">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </p>
+                                        <a href="/book-auto/{{this._id}}" class="btn text-white"
+                                            style="background-color:#4d7ae3 ; ">Book</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {{/each}}
+                            {{/if}}
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- //our products -->
+<!-- /bottom-grids-->
+<section class="w3l-bottom-grids-6 py-5">
+    <div class="container py-lg-5 py-md-4">
+        <span class="subhny-title text-center mb-2">Online book</span>
+        <h3 class="hny-title text-center mb-5">Why GoAuto?</h3>
+        <div class="grids-area-hny main-cont-wthree-fea row">
+            <div class="col-lg-4 col-md-6 grids-feature">
+                <div class="area-box">
+                    <span class="fa fa-globe"></span>
+                    <h4><a href="#feature" class="title-head">Rides on demand</a></h4>
+                    <p>Request a ride at any time and on any day of the year.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 grids-feature mt-md-0 mt-4">
+                <div class="area-box box-active">
+                    <span class="fa fa-money"></span>
+                    <h4><a href="#feature" class="title-head">Budget-friendly options</a></h4>
+                    <p>Compare prices on every kind of ride, from daily commutes to special evenings out.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 grids-feature mt-lg-0 mt-4">
+                <div class="area-box">
+                    <span class="fa fa-map"></span>
+                    <h4><a href="#feature" class="title-head">An easy way to get around</a></h4>
+                    <p>Tap and let your driver take you where you want to go</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //bottom-grids-->
+<!-- home page block2 grids -->
+<section class="w3l-grids-3 py-5">
+    <div class="container py-lg-5 py-md-4">
+        <div class="row bottom-ab-grids">
+            <div class="col-lg-6 bottom-ab-left pr-lg-5">
+                <span class="subhny-title mb-2">Your saftey matters</span>
+                <h3 class="hny-title mb-4">Peace of mind is designed into your experience.</h3>
+                <p class=""></p>
+                <ul class="cont-4 mt-4">
+                    <li><span class="fa fa-check"></span>We are millions of riders and drivers who share Community
+                        Guidelines and depend on one another to do the right thing.</li>
+                    <li><span class="fa fa-check"></span>Get 24/7 support in the app for any questions or safety
+                        concerns you might have.</li>
+                    <li><span class="fa fa-check"></span>Tell your loved ones where you are. Get help with the tap of a
+                        button. Technology makes travel safer than ever before. </li>
+                </ul>
+                <a href="about.html" class="btn btn-style text-white mt-lg-5 mt-4"
+                    style="background-color: #4d7ae3;">Read More <span class="fa fa-chevron-right"></span></a>
+            </div>
+            <div class="col-lg-6 bottom-right-grids mt-lg-0 mt-5">
+                <img src="https://www.uber-assets.com/image/upload/q_auto:eco,c_fill,w_1152,h_270/v1536163144/assets/27/d1f66e-c9c5-455a-b912-234700f4c0d8/original/whyRideWithUs_desktop.svg"
+                    alt="" class="img-fluid" style="width: 100%;height:360px;" />
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<!-- //home page block2 grids -->
+
+<!-- services page block 2 -->
+<section class="w3l-features py-5" id="work">
+    <div class="call-w3 py-lg-5 py-md-4">
+        <div class="container">
+            <div class="row main-cont-wthree-2">
+                <div class="col-lg-5 feature-grid-left pr-lg-5">
+                    <span class="subhny-title mb-2">Faster is better.</span>
+                    <h3 class="hny-title mb-md-4 mb-2">Sit at Home
+                        We Will Take Care</h3>
+                    <p class="text-para">The app gives you the power to get where you want to go with access to
+                        different types of rides across more than 10,000 cities.
+                    </p>
+                    <a href="#url" class="btn text-white btn-style mt-lg-5 mt-4"
+                        style="background-color: #4d7ae3;">Discover More</a>
+                </div>
+                <div class="col-lg-7 feature-grid-right mt-lg-0 mt-5">
+                    <div class="call-grids-w3 d-grid">
+                        <div class="grids-1 box-wrap">
+                            <div class="icon">
+                                <span class="fa fa-clock-o" aria-hidden="true"></span>
+                            </div>
+                            <h4><a href="#feature" class="title-head">Fast Pick up
+                                </a></h4>
+                        </div>
+                        <div class="grids-1 box-wrap">
+                            <div class="icon">
+                                <span class="fa fa-mobile" aria-hidden="true"></span>
+                            </div>
+                            <h4><a href="#feature" class="title-head">Simple and easy
+                                </a></h4>
+                        </div>
+                        <div class="grids-1 box-wrap">
+                            <div class="icon">
+                                <span class="fa fa-map-marker" aria-hidden="true"></span>
+                            </div>
+                            <h4><a href="#feature" class="title-head">Wide
+                                    Location</a></h4>
+                        </div>
+                        <div class="grids-1 box-wrap">
+                            <div class="icon">
+                                <span class="fa fa-user-circle-o" aria-hidden="true"></span>
+                            </div>
+                            <h4><a href="#feature" class="title-head">Report
+                                </a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //services page block 2 -->
+
+
+<script>
+    $('#submit').on('click', function () {
+        let from = $('#from').val()
+        let to = $('#to').val()
+        $.ajax({
+            url: '/search-auto',
+            method: 'post',
+            data: {
+                from: from,
+                to: to
+            },
+            success: (response) => {
+                if (response.autos) {
+
+                }
+            }
+        })
+    })
+</script>
