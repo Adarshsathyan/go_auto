@@ -225,6 +225,17 @@ module.exports = {
         })
     },
 
+    //reject auto
+    rejectAuto:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).updateOne({_id:objectId(autoId)},{$set:{
+                status:"0"
+            }}).then(()=>{
+                resolve()
+            })
+        })
+    },
+
     //get al registered users
     getUsers:()=>{
         return new Promise((resolve,reject)=>{
@@ -294,6 +305,65 @@ module.exports = {
           
                 
           
+        })
+    },
+
+    //get total auto
+    getTotalAuto:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find().toArray().then((result)=>{
+                if(result){
+                    let total_auto = result.length
+                    resolve(total_auto)
+                }else{
+                    resolve(0)
+                }
+               
+            })
+        })
+    },
+
+    //get all user
+    getTotalUser:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_COLLECTION).find().toArray().then((result)=>{
+                if(result){
+                    let total_user = result.length
+                    resolve(total_user)
+                }else{
+                    resolve(0)
+                }
+            })
+        })
+    },
+
+    //get accpeted auto
+    getAcceptedAuto:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"2"}).toArray().then((result)=>{
+                if(result){
+                    let total_auto = result.length
+                    resolve(total_auto)
+                }else{
+                    resolve(0)
+                }
+               
+            })
+        })
+    },
+
+    //get revenue
+    getRevenue:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"2"}).toArray().then((result)=>{
+                if(result){
+                    let number = parseInt(result.length)
+                    let revenue = number*1000
+                    resolve(revenue)
+                }else{
+                    resolve(0)
+                }
+            })
         })
     }
 

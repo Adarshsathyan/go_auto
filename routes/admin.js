@@ -46,13 +46,19 @@ router.get('/logout',(req,res,next)=>{
 });
 
 //view home page
-router.get('/home',verifyLogin, (req,res,next)=>{ 
+router.get('/home',verifyLogin, async(req,res,next)=>{ 
+  let total_auto = await adminHelper.getTotalAuto()
+  let total_user = await adminHelper.getTotalUser()
+  let accepeted_auto = await adminHelper.getAcceptedAuto()
+  let revenue = await adminHelper.getRevenue()
   adminHelper.getRequests().then((result)=>{
     req.session.autoRequest=result
-    res.render('admin/index',{admin:true,notify:req.session.autoRequest,changedPass:req.session.adminPassChange} );
+    res.render('admin/index',{admin:true,notify:req.session.autoRequest,changedPass:req.session.adminPassChange,total_auto,
+      total_user,accepeted_auto,revenue} );
     req.session.adminPassChange=null
   }).catch(()=>{
-    res.render('admin/index',{admin:true,changedPass:req.session.adminPassChange});
+    res.render('admin/index',{admin:true,changedPass:req.session.adminPassChange,total_auto,
+      total_user,accepeted_auto,revenue});
     req.session.adminPassChange=null
   })
   
@@ -255,6 +261,14 @@ router.get('/accept-auto/:id',verifyLogin,(req,res)=>{
     adminHelper.getRequests().then((result)=>{ 
       req.session.autoRequest=result
     })
+    res.redirect('/admin/auto-request')
+  })
+})
+
+//reject auto
+router.get('/reject-auto/:id',(req,res)=>{
+  adminHelper.rejectAuto(req.params.id).then(()=>{
+    req.session.autoReques=null
     res.redirect('/admin/auto-request')
   })
 })
