@@ -63,19 +63,22 @@ router.post('/signup', (req, res, next) => {
     if (response.status) {
       req.session.autoDriver = response.autoDriver
       //req.session.autoLoggedIn=true
-      if (req.files) {
-        if (req.files.rcbook) {
-          let rcbook = req.files.rcbook
-          rcbook.mv('./public/auto/auto-rcbooks/' + response.autoDriver._id + '.jpg')
-        } if (req.files.lisence) {
-          let lisence = req.files.lisence
-          lisence.mv('./public/auto/auto-lisences/' + response.autoDriver._id + '.jpg')
-        } if (req.files.autophoto) {
-          let photo = req.files.autophoto
-          photo.mv('./public/auto/auto-profile/' + response.autoDriver._id + '.jpg')
-        }
-      }
-      res.redirect('/auto/payment/' + response.autoDriver._id)
+        
+          if (req.files) {
+            if (req.files.rcbook) {
+              let rcbook = req.files.rcbook
+              rcbook.mv('./public/auto/auto-rcbooks/' + response.autoDriver._id + '.jpg')
+            } if (req.files.lisence) {
+              let lisence = req.files.lisence
+              lisence.mv('./public/auto/auto-lisences/' + response.autoDriver._id + '.jpg')
+            } if (req.files.autophoto) {
+              let photo = req.files.autophoto
+              photo.mv('./public/auto/auto-profile/' + response.autoDriver._id + '.jpg')
+            }
+          }
+          res.redirect('/auto/payment/' + response.autoDriver._id)
+      
+      
     } else {
       req.session.autosignupErr = true
       res.redirect('/auto/signup')
@@ -103,9 +106,18 @@ router.get('/razorpay/:id', (req, res, next) => {
 //verify the payment
 router.post('/verify-payment', (req, res, next) => {
   autoHelper.verifyPayment(req.body).then(() => {
-    autoHelper.changePaidStatus(req.body['order[receipt]']).then(() => {
-      req.session.autoRequest = true
-      res.json({ status: true })
+    autoHelper.changePaidStatus(req.body['order[receipt]']).then(async() => {
+      let admin_num = await autoHelper.getAdminNum()
+      client.messages
+      .create({
+        body: 'An auto have registered please confim.',
+        from: '+12245019575',
+        to: "+91"+admin_num
+      }).then((msg)=>{
+        req.session.autoRequest = true
+        res.json({ status: true })
+      })
+     
     })
   }).catch((err) => {
     res.json({ status: false })
@@ -368,6 +380,7 @@ router.post('/forgot-pass', (req, res) => {
 
 //verify otp landing page
 router.get('/verify-otp', (req, res) => {
+  
   res.render('auto/verify-otp')
 })
 
@@ -376,6 +389,8 @@ router.post('/verify', (req, res) => {
     if (response.valid) {
       req.session.verifiedOtp = true
       res.redirect('/auto/new-pass')
+    }else{
+      res.redirect('/auto/verify-otp')
     }
   })
 })

@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const adminHelper=require('../helpers/admin-helper')
+const accountSid = "AC33edf996551919434ee6a3d9664217ed";
+const authToken = "7291649537bf825e7441f23534f5a176";
+const twilio = require('twilio');
+
+const client = new twilio(accountSid, authToken);
 
 
 
@@ -255,21 +260,39 @@ router.get('/auto-request',verifyLogin,(req,res)=>{
 
 //accept auto
 router.get('/accept-auto/:id',verifyLogin,(req,res)=>{
-  adminHelper.acceptAuto(req.params.id).then(()=>{
-    req.session.accepted=true
-    req.session.autoRequest=null
-    adminHelper.getRequests().then((result)=>{ 
-      req.session.autoRequest=result
-    })
-    res.redirect('/admin/auto-request')
+  adminHelper.acceptAuto(req.params.id).then(async()=>{
+    let auto_num = await adminHelper.getAutoNumber(req.params.id)
+
+    client.messages
+        .create({
+          body: 'GoAuto have accepted your request. Please login with the credentials.',
+          from: '+12245019575',
+          to: "+91"+auto_num
+        }).then((msg)=>{
+          req.session.accepted=true
+          req.session.autoRequest=null
+          adminHelper.getRequests().then((result)=>{ 
+            req.session.autoRequest=result
+          })
+          res.redirect('/admin/auto-request')
+        })
   })
 })
 
 //reject auto
 router.get('/reject-auto/:id',(req,res)=>{
-  adminHelper.rejectAuto(req.params.id).then(()=>{
-    req.session.autoReques=null
-    res.redirect('/admin/auto-request')
+  adminHelper.rejectAuto(req.params.id).then(async()=>{
+    let auto_num = await adminHelper.getAutoNumber(req.params.id)
+    client.messages
+    .create({
+      body: 'Your request for GoAuto have been rejected because of some verification error. Payment willbe Refunded within 24hrs',
+      from: '+12245019575',
+      to: "+91"+auto_num
+    }).then((msg)=>{
+      req.session.autoRequest=null
+      res.redirect('/admin/auto-request')
+    })
+    
   })
 })
 
@@ -292,4 +315,34 @@ router.post('/change-pass',verifyLogin,(req,res)=>{
   })
 })
 
+
+//change phonenumber
+router.get('/change-number',verifyLogin,(req,res)=>{
+  res.render('admin/change-number',{admin:true,admin:req.session.admin,changed:req.session.numChanged,changeFail:req.session.numChangeFail})
+  
+  req.session.numChanged=null
+  req.session.numChangeFail=null
+})
+
+//post request for changing mobile number
+router.post('/change-number',verifyLogin,(req,res)=>{
+  
+  adminHelper.changeMobile(req.body).then((result)=>{
+    if(result.status){
+      req.session.numChanged=true
+      res.redirect('/admin/change-number')
+    }else{
+      req.session.numChangeFail=true
+      res.redirect('/admin/change-number')
+    }
+   
+  })
+})
+
+
+//contacts page
+router.get('/contact',verifyLogin,async(req,res)=>{
+  let contacts = await adminHelper.getContacts()
+  res.render('admin/contacts',{admin:true,notify:req.session.autoRequest,contacts})
+})
 module.exports = router;

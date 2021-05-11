@@ -133,7 +133,13 @@ module.exports = {
     deleteAuto:(autoId)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.AUTO_COLLECTION).removeOne({_id:objectId(autoId)}).then((response)=>{
-                resolve({status:true})
+                db.get().collection(collections.TRAVELPLACES_COLLECTION).remove({auto:autoId}).then(()=>{
+                    db.get().collection(collections.DRIVE_COLLECTION).remove({autoId:objectId(autoId)}).then(()=>{
+                        resolve({status:true})
+                    })  
+                    
+                })
+                
             })
         })
     },
@@ -363,6 +369,49 @@ module.exports = {
                 }else{
                     resolve(0)
                 }
+            })
+        })
+    },
+    //get the auto number for sending sms
+    getAutoNumber:(autoId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((result)=>{
+                resolve(result.mobile)
+            })
+        })
+    },
+
+    //change mobile number
+    changeMobile:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+            let admin = await db.get().collection(collections.ADMIN_COLLECTION).findOne({_id:objectId(details.adminId)})
+            
+            if(admin){
+                // details.password = await bcrypt.hash(details.password,10)
+                
+                bcrypt.compare(details.password,admin.password).then((status)=>{
+                    
+                    if(status){
+                        db.get().collection(collections.ADMIN_COLLECTION).updateOne({_id:objectId(details.adminId)},{$set:{
+                            mobile:details.mobile
+                        }}).then(()=>{
+                            resolve({status:true})
+                        })
+                    }else{
+                        resolve({status:false})
+                    }
+                })
+            }else{
+                resolve({status:false})
+            }
+        })
+    },
+
+    //get contacts
+    getContacts:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.CONTACT_COLLECTION).find().toArray().then((result)=>{
+                resolve(result)
             })
         })
     }
