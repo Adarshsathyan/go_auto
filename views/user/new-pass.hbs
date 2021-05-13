@@ -42,7 +42,7 @@
             <form action="/new-pass" method="post" class="mt-5">
               <div class="form-group first">
                 <label for="password">New Password</label>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control" name="password"  minlength="8" max="14">
                 <input type="hidden" name="userId" value="{{details._id}}">
               </div>
             
