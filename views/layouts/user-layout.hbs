@@ -14,65 +14,172 @@
     <link rel="stylesheet" href="/user/assets/css/style-starter.css">
     <script src="/user/assets/js/jquery-3.3.1.min.js"></script>
     <script src="/user/assets/js/script.js"></script>
+    <style>
+        .preloader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 9999999999;
+            background: #dadde0;
+            top: 0;
+            left: 0;
+        }
+
+        .loader {
+            position: absolute;
+            top: 43%;
+            left: 0;
+            right: 0;
+            transform: translateY(-43%);
+            text-align: center;
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+        }
+
+        .box {
+            width: 100%;
+            height: 100%;
+            background: rgb(68, 77, 158);
+            animation: animate .5s linear infinite;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .shadow {
+            width: 100%;
+            height: 5px;
+            background: #000;
+            opacity: 0.1;
+            position: absolute;
+            top: 59px;
+            left: 0;
+            border-radius: 50%;
+            animation: shadow .5s linear infinite;
+        }
+
+
+        @keyframes loader {
+            0% {
+                left: -100px
+            }
+
+            100% {
+                left: 110%;
+            }
+        }
+
+        @keyframes animate {
+            17% {
+                border-bottom-right-radius: 3px;
+            }
+
+            25% {
+                transform: translateY(9px) rotate(22.5deg);
+            }
+
+            50% {
+                transform: translateY(18px) scale(1, .9) rotate(45deg);
+                border-bottom-right-radius: 40px;
+            }
+
+            75% {
+                transform: translateY(9px) rotate(67.5deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(90deg);
+            }
+        }
+
+        @keyframes shadow {
+            50% {
+                transform: scale(1.2, 1);
+            }
+        }
+    </style>
 
 </head>
 
 <body>
     {{>user-header}}
+    <div class="preloader">
+        <div class="loader">
+            <div class="shadow"></div>
+            <div class="box"></div>
+        </div>
+    </div>
     {{{body}}}
     {{>user-footer}}
 
-     <script>
-                // When the user scrolls down 20px from the top of the document, show the button
-                window.onscroll = function () {
-                    scrollFunction()
-                };
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
 
-                function scrollFunction() {
-                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                        document.getElementById("movetop").style.display = "block";
-                    } else {
-                        document.getElementById("movetop").style.display = "none";
-                    }
-                }
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
 
-                // When the user clicks on the button, scroll to the top of the document
-                function topFunction() {
-                    document.body.scrollTop = 0;
-                    document.documentElement.scrollTop = 0;
-                }
-            </script>
-            <!-- /move top -->
-        </footer>
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <!-- /move top -->
+    </footer>
 
-         <!-- Common jquery plugin -->
+    <!-- Common jquery plugin -->
 
-        <script src="/user/assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
-        <!-- responsive tabs -->
-        <script src="/user/assets/js/jquery-1.9.1.min.js"></script>
+    <script src="/user/assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
+    <!-- responsive tabs -->
+    <script src="/user/assets/js/jquery-1.9.1.min.js"></script>
 
-        <script src="/user/assets/js/easyResponsiveTabs.js"></script>
+    <script src="/user/assets/js/easyResponsiveTabs.js"></script>
+    <script>
+        (function ($) {
+            "use strict";
 
-        <!--Plug-in Initialisation-->
-        <script type="text/javascript">
-            $(document).ready(function () {
-                //Horizontal Tab
-                $('#parentHorizontalTab').easyResponsiveTabs({
-                    type: 'default', //Types: default, vertical, accordion
-                    width: 'auto', //auto or any width like 600px
-                    fit: true, // 100% fit in a container
-                    tabidentify: 'hor_1', // The tab groups identifier
-                    activate: function (event) { // Callback function if tab is switched
-                        var $tab = $(this);
-                        var $info = $('#nested-tabInfo');
-                        var $name = $('span', $info);
-                        $name.text($tab.text());
-                        $info.show();
-                    }
-                });
+            jQuery(document).ready(function ($) {
+
             });
-        </script>
-       <!-- //counter-->
+
+            jQuery(window).load(function () {
+                 $(".preloader").fadeOut(100); // this will be active for 
+
+            });
+
+        }(jQuery));
+    </script>
+
+    <!--Plug-in Initialisation-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Horizontal Tab
+            $('#parentHorizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true, // 100% fit in a container
+                tabidentify: 'hor_1', // The tab groups identifier
+                activate: function (event) { // Callback function if tab is switched
+                    var $tab = $(this);
+                    var $info = $('#nested-tabInfo');
+                    var $name = $('span', $info);
+                    $name.text($tab.text());
+                    $info.show();
+                }
+            });
+        });
+    </script>
+    <!-- //counter-->
     <script src="/user/assets/js/owl.carousel.js"></script><!-- owl carousel -->
     <!-- script for tesimonials carousel slider -->
     <script>
@@ -97,48 +204,48 @@
         })
     </script>
     <!-- //script for tesimonials carousel slider -->
-        <!--/MENU-JS-->
-        <script>
-            $(window).on("scroll", function () {
-                var scroll = $(window).scrollTop();
+    <!--/MENU-JS-->
+    <script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
 
-                if (scroll >= 80) {
-                    $("#site-header").addClass("nav-fixed");
-                } else {
-                    $("#site-header").removeClass("nav-fixed");
-                }
-            });
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
 
-            //Main navigation Active Class Add Remove
-            $(".navbar-toggler").on("click", function () {
-                $("header").toggleClass("active");
-            });
-            $(document).on("ready", function () {
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
                 if ($(window).width() > 991) {
                     $("header").removeClass("active");
                 }
-                $(window).on("resize", function () {
-                    if ($(window).width() > 991) {
-                        $("header").removeClass("active");
-                    }
-                });
             });
-        </script>
-        <!--//MENU-JS-->
+        });
+    </script>
+    <!--//MENU-JS-->
 
-        <!-- disable body scroll which navbar is in active -->
-        <script>
-            $(function () {
-                $('.navbar-toggler').click(function () {
-                    $('body').toggleClass('noscroll');
-                })
-            });
-        </script>
-        <!-- //disable body scroll which navbar is in active -->
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+    <!-- //disable body scroll which navbar is in active -->
 
-        <!--bootstrap-->
-        <script src="/user/assets/js/bootstrap.min.js"></script>
-        <!-- //bootstrap-->
+    <!--bootstrap-->
+    <script src="/user/assets/js/bootstrap.min.js"></script>
+    <!-- //bootstrap-->
 
 </body>
 

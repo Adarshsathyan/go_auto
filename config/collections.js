@@ -9,6 +9,7 @@ module.exports={
     DRIVE_COLLECTION:'drives',
     FEEDBACK_COLLECTION:'feedback',
     REPORT_AUTO:"auto_report",
-    REPORT_USER:'user_report'
+    REPORT_USER:'user_report',
+    CONTACT_COLLECTION:'contact'
 
 }

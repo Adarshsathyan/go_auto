@@ -2,10 +2,16 @@ var db = require('../config/connection')
 var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 const objectId = require("mongodb").ObjectID
+
+//for sending sms
 const accountSid = "AC33edf996551919434ee6a3d9664217ed";
 const authToken = "7291649537bf825e7441f23534f5a176";
 const twilio = require('twilio');
 const client = new twilio(accountSid, authToken);
+
+//for sending otp
+var otpAuth = require('../config/otpauth');
+const twilioOtp = require('twilio')(otpAuth.accountSId, otpAuth.authToken)
 
 module.exports = {
     //user signup
@@ -16,12 +22,18 @@ module.exports = {
             if (user) {
                 resolve({ status: false })
             } else {
-                userDetails.password = await bcrypt.hash(userDetails.password, 10)
-                db.get().collection(collections.USER_COLLECTION).insertOne(userDetails).then((response) => {
-                    response.user = response.ops[0]
-                    response.status = true
-                    resolve(response)
-                })
+                let mobile = await db.get().collection(collections.USER_COLLECTION).findOne({mobile:userDetails.mobile})
+                if(mobile){
+                    resolve({status:false})
+                }else{
+                    userDetails.password = await bcrypt.hash(userDetails.password, 10)
+                    db.get().collection(collections.USER_COLLECTION).insertOne(userDetails).then((response) => {
+                        response.user = response.ops[0]
+                        response.status = true
+                        resolve(response)
+                    })
+                }
+               
             }
         })
     },
@@ -62,7 +74,7 @@ module.exports = {
     //get all auto for user not logged in
     getAllAutos: () => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.AUTO_COLLECTION).find().limit(4).toArray().then((autos) => {
+            db.get().collection(collections.AUTO_COLLECTION).find({status:"2"}).limit(4).toArray().then((autos) => {
                 resolve(autos)
             })
         })
@@ -246,6 +258,80 @@ module.exports = {
 
             })
         })
-    }
+    },
+    
 
+    //contact post requset
+    contactAdmin:(details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.CONTACT_COLLECTION).insertOne(details).then(()=>{
+                resolve()
+            })
+        })
+    },
+
+    //send otp for forgoted password
+    sentOtp:(mobile)=>{
+        return new Promise(async(resolve,reject)=>{
+            let response={}
+            let user = await db.get().collection(collections.USER_COLLECTION).findOne({mobile:mobile.mobile})
+            
+            if(user){
+                twilioOtp
+                    .verify
+                    .services(otpAuth.serviceID)
+                    .verifications
+                    .create({
+                        to:"+91" + mobile.mobile,
+                        channel:"sms"
+                    }).then((data)=>{
+                        response.data=data
+                        response.user=user
+                        resolve(response)
+                    })
+            }else{
+                let data = {status:false}
+                response.data=data
+                resolve(response)
+            }
+        })
+    },
+
+    //verify the otp for forgot password
+    verifyOtp:(mobile,otpDetails)=>{
+        return new Promise((resolve,reject)=>{
+          
+            twilioOtp
+                .verify
+                .services(otpAuth.serviceID)
+                .verificationChecks
+                .create({
+                    to:mobile,
+                    code:otpDetails.otp
+                }).then((data)=>{
+                    
+                    resolve(data)
+                    
+                })
+        })
+    },
+
+
+    //change password by forgot password
+    changeForgotPassword:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+            
+            let user = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(details.userId)})
+            if(user){
+                details.password = await bcrypt.hash(details.password,10)
+                db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(details.userId)},{$set:{
+                    password:details.password
+                }}).then((response)=>{
+                    resolve({status:true})
+                })
+            }else{
+                resolve({status:false})
+            }
+        })
+    },
 }

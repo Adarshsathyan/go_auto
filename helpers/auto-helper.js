@@ -338,6 +338,7 @@ module.exports={
                 name:autoDetails.name,
                 username:autoDetails.username,
                 location:autoDetails.location,
+                mobile:autoDetails.mobile
             }}).then(()=>{
                 db.get().collection(collections.AUTO_COLLECTION).findOne({_id:objectId(autoId)}).then((auto)=>{
                     resolve(auto)
@@ -412,7 +413,8 @@ module.exports={
                         resolve(response)
                     })
             }else{
-                response.data.status=false
+                let data = {status:false}
+                response.data=data
                 resolve(response)
             }
         })
@@ -519,6 +521,15 @@ module.exports={
                 }else{
                     resolve(0)
                 }
+            })
+        })
+    },
+
+    //to get the admin number for autosignup to give a message to admin
+    getAdminNum:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ADMIN_COLLECTION).findOne().then((result)=>{
+                resolve(result.mobile)
             })
         })
     }

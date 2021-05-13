@@ -28,15 +28,21 @@
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="/user/assets/js/script.js"></script>
     
+    
 </head>
 
 <body>
   {{#if admin}}
     {{>admin-header}}
+  
+
     {{else if auto}}
     {{>auto-header}}
+   
+
     {{/if}}
     {{{body}}}
+    <script src="/user/assets/js/jquery-1.9.1.min.js"></script>
   
   <script src="/admin/assets/js/auto-scripts.js"></script>
   <script src="/admin/assets/graph.js"></script>
