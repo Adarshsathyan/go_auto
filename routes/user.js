@@ -98,7 +98,7 @@ router.post('/signup',(req,res)=>{
             
             res.redirect('/')
         }else{
-            req.session.userErr=true
+            req.session.userErr=true 
             res.redirect('/signup')
         }
     })

@@ -295,7 +295,7 @@ module.exports = {
                 resolve(response)
             }
         })
-    },
+    }, 
 
     //verify the otp for forgot password
     verifyOtp:(mobile,otpDetails)=>{
