@@ -184,6 +184,7 @@ module.exports = {
     //send feedback
     sendFeedback: (feedback) => {
         return new Promise((resolve, reject) => {
+            feedback.autoId=objectId(feedback.autoId)
             db.get().collection(collections.FEEDBACK_COLLECTION).insertOne(feedback).then(() => {
                 resolve()
             })
@@ -295,7 +296,7 @@ module.exports = {
                 resolve(response)
             }
         })
-    },
+    }, 
 
     //verify the otp for forgot password
     verifyOtp:(mobile,otpDetails)=>{
@@ -334,4 +335,27 @@ module.exports = {
             }
         })
     },
+
+    //change password manually by user
+    changePassword:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(details.userId)})
+            if(user){
+                bcrypt.compare(details.password1,user.password).then(async(status)=>{
+                    if(status){
+                        details.password = await bcrypt.hash(details.password,10)
+                        db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(details.userId)},{$set:{
+                            password:details.password
+                        }}).then(()=>{
+                            resolve({status:true})
+                        })
+                    }else{
+                        resolve({status:false})
+                    }
+                })
+            }else{
+                resolve({status:false})
+            }
+        })
+    }
 }

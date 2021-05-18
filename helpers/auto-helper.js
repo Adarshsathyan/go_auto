@@ -469,7 +469,9 @@ module.exports={
     //get rating number
     getRating:(autoId)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.FEEDBACK_COLLECTION).find({autoId:autoId}).toArray().then((feedbacks)=>{
+            autoId = 
+            db.get().collection(collections.FEEDBACK_COLLECTION).find({autoId:objectId(autoId)}).toArray().then((feedbacks)=>{
+                
                 let rate =[]
                 feedbacks.forEach(element => {
                    rate.push(parseInt(element.rate))

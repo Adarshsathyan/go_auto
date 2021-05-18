@@ -32,7 +32,7 @@
                                         <p class="card-text h6 text-dark mt-2">Location - <span
                                                 style="float: right;">{{auto.location}}</span></p>
                                         <i class="fa fa-star text-success  mt-4 "></i>
-                                        <p class="badge badge-success mt-4">4.1</p>
+                                        <p class="badge badge-success mt-4">{{rating}}</p>
 
                                         <a href="/auto-profile/{{auto._id}}" class="btn btn-sm text-white mt-3"
                                             style="background-color: #4d7ae3 ;float:right;"> View</a>
@@ -52,7 +52,7 @@
                                         </p>
                                         <p class="card-text h6 text-dark mt-2 ">&#8377; {{booking.charge}}</p>
                                         <i class="fa fa-star text-success  mt-2 "></i>
-                                        <p class="badge badge-success">4.1</p>
+                                        <p class="badge badge-success">{{rating}}</p>
                                         <a href="#" onclick="report_auto('{{auto._id}}')" style="float: right;"
                                             class="btn text-white btn-sm mr-2 btn-danger">Report</a>
                                         <a href="tel:{{auto.mobile}}" class="btn text-white btn-sm mr-2"

@@ -51,6 +51,11 @@
                                     <span >My Account</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item" id="change-password">
+                                    <i class="fa fa-lock"></i>
+                                    <span >Change Password</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a href="/logout" class="dropdown-item">
                                     <i class="fa fa-sign-out"></i>
                                     <span >Logout</span>
@@ -99,3 +104,92 @@
         </div>
     </section>
 </header>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" >
+          <div class="form-group">
+            <label for="password1" class="col-form-label">Old password</label>
+            <input type="password" name="password1" class="form-control" id="password1">
+            <input type="hidden" name="userId" value="{{userDetails._id}}" id="userId">
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-form-label">New password (min 8 characters )</label>
+            <input type="password" name="password" class="form-control" id="password" minlength="8" maxlength="14" >
+          </div>
+          <div class="modal-footer">
+            <button  class="btn btn-dark" data-dismiss="modal">Cancel</button>
+            <a href="#" class="btn btn-success" id="change">Change</a>
+          </div>
+        </form>
+      </div>
+      
+ 
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="changed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Password Changed successfully !
+      </div>
+      <div class="modal-footer">
+        <a type="button" href="#" class="btn btn-dark btn-sm" id="ok">Ok</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#change-password').on('click',function(){
+        $('#changepassword').modal('show')
+    })
+
+    $('#change').on('click',function(){
+
+    let password1 = document.getElementById('password1').value
+    let password = document.getElementById('password').value
+    let userId = document.getElementById('userId').value
+    $.ajax({
+      url:'/change-pass',
+      data:{
+        password,
+        password1,
+        userId
+      },
+      method:'post',
+      success:(response)=>{
+        if(response.status){
+          $('#changepassword').modal('hide')
+          $("#changed").modal('show')
+          $('#ok').on('click',function(){
+            location.reload()
+          })
+          
+        }else{
+          alert("Invalid password")
+        }
+      }
+
+    })
+
+  })
+</script>

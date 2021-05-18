@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-md-4 ">
-                <div class="card " style=" height:29rem;">
+                <div class="card " style=" height:100%;">
                     <img class="card-img-top"
                         src="/auto/auto-profile/{{autoDetails._id}}.jpg" style="width:100% ;"
                         alt="Card image cap">
@@ -17,7 +17,7 @@
                         <p class="card-text h6 text-dark mt-2 font-weight-bolder">Name - <span style="float: right;">{{autoDetails.name}}</span></p>
                         <p class="card-text h6 text-dark mt-2 font-weight-bolder">Location - <span style="float: right;">{{autoDetails.location}}</span>
                         </p>
-                        <i class="fa fa-star text-success mt-4 "></i> <i class="badge badge-success font-weight-bolder"> 4.1</i>
+                        <i class="fa fa-star text-success mt-4 "></i> <i class="badge badge-success font-weight-bolder"> {{rating}}</i>
                         <a href="/auto-profile/{{autoDetails._id}}" class="btn text-white mt-3" style="background-color: #4d7ae3; float:right;"> View</a>
                     </div>
                 </div>

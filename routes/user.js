@@ -98,7 +98,7 @@ router.post('/signup',(req,res)=>{
             
             res.redirect('/')
         }else{
-            req.session.userErr=true
+            req.session.userErr=true 
             res.redirect('/signup')
         }
     })
@@ -114,9 +114,10 @@ router.get('/logout',(req,res)=>{
 
 //get book auto
 router.get('/book-auto/:id',verifyLogin,(req,res)=>{
-    userHelper.getAutoDetails(req.params.id).then((autoDetails)=>{
+    userHelper.getAutoDetails(req.params.id).then(async(autoDetails)=>{
+        let rating = await autoHelper.getRating(req.params.id)
         userHelper.getChargeDetails().then((places)=>{
-            res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places})
+            res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places,rating})
         }) 
     })
 })
@@ -140,10 +141,11 @@ router.post('/charge',verifyLogin,(req,res)=>{
 
 //get bookings
 router.get('/bookings/:id',verifyLogin,(req,res)=>{
-    userHelper.getBookings(req.params.id).then((response)=>{
-
+    userHelper.getBookings(req.params.id).then(async(response)=>{
+        let rating = await autoHelper.getRating(response.auto._id)
+        
         res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',booking:response.booking,
-    auto:response.auto})
+    auto:response.auto,rating})
     }).catch(()=>{
         res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',noBookings:true})
     })
@@ -153,11 +155,11 @@ router.get('/bookings/:id',verifyLogin,(req,res)=>{
 router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
     autoHelper.getProfileDetails(req.params.id).then((details)=>{
         
-        userHelper.getAutoDriver(req.params.id).then((autoDriver)=>{
+        userHelper.getAutoDriver(req.params.id).then(async(autoDriver)=>{
             let bookings = details.drives.length
-            
+            let rating = await autoHelper.getRating(req.params.id)
             res.render('user/auto-profile',{auto:true,profileView:true,userDetails:req.session.userDetails
-                ,booking:details.booking,drives:details.drives,autoDriver,bookings})
+                ,booking:details.booking,drives:details.drives,autoDriver,bookings,rating})
             })
         })
        
@@ -191,7 +193,7 @@ router.post('/edit-profile/:id',verifyLogin,(req,res)=>{
 
 //rate and feedbacks
 router.post('/rate',verifyLogin,(req,res)=>{
-    console.log(req.body);
+    
     userHelper.sendFeedback(req.body).then(()=>{
         res.redirect('/profile/'+req.body.userId)
     })
@@ -316,4 +318,19 @@ router.post('/new-pass',(req,res)=>{
       }
    })
 })
+
+
+//change password
+router.post('/change-pass',verifyLogin,(req,res)=>{
+    userHelper.changePassword(req.body).then((response)=>{
+        
+         if(response.status){
+             res.json({status:true})
+         }else{
+             res.json({status:false})
+         }
+    })
+ 
+ })
+ 
 module.exports = router;
