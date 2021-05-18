@@ -316,4 +316,19 @@ router.post('/new-pass',(req,res)=>{
       }
    })
 })
+
+
+//change password
+router.post('/change-pass',verifyLogin,(req,res)=>{
+    userHelper.changePassword(req.body).then((response)=>{
+        
+         if(response.status){
+             res.json({status:true})
+         }else{
+             res.json({status:false})
+         }
+    })
+ 
+ })
+ 
 module.exports = router;
