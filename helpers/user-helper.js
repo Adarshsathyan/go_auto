@@ -184,6 +184,7 @@ module.exports = {
     //send feedback
     sendFeedback: (feedback) => {
         return new Promise((resolve, reject) => {
+            feedback.autoId=objectId(feedback.autoId)
             db.get().collection(collections.FEEDBACK_COLLECTION).insertOne(feedback).then(() => {
                 resolve()
             })
