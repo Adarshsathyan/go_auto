@@ -23,7 +23,7 @@ router.get('/',(req, res, next)=> {
     if(req.session.userLoggedIn){
         userHelper.getAuto(req.session.userDetails.location).then((autos)=>{
             res.render('user/index',{layout:'./user-layout',user:true,userDetails:req.session.userDetails,autos,search:req.session.seacrhAuto,
-            noSearch:req.session.noSearch})
+            noSearch:req.session.noSearch,title:"Home"})
             req.session.seacrhAuto=null
             req.session.noSearch=null
             
@@ -31,7 +31,7 @@ router.get('/',(req, res, next)=> {
     }else{
         userHelper.getAllAutos().then((autos)=>{
             res.render('user/index',{layout:'./user-layout',user:true,userDetails:req.session.userDetails,autos,search:req.session.seacrhAuto,
-            noSearch:req.session.noSearch
+            noSearch:req.session.noSearch,title:"Home"
         })
             req.session.seacrhAuto=null
             req.session.noSearch=null
@@ -42,7 +42,7 @@ router.get('/',(req, res, next)=> {
 
 //select which type of login
 router.get('/select-login',(req, res, next)=> {
-    res.render('user/select-login',{layout:'./user-layout',user:true})
+    res.render('user/select-login',{layout:'./user-layout',user:true,title:"Select Login"})
 });
 
 //login page
@@ -50,7 +50,7 @@ router.get('/login',(req,res,next)=>{
     if(req.session.userLoggedIn){
         res.redirect('/')
     }else{
-        res.render('user/login',{layout:null,err:req.session.userErr, userPassChange:req.session.userPassChange})
+        res.render('user/login',{layout:null,err:req.session.userErr, userPassChange:req.session.userPassChange,title:"Login"})
         req.session.userPassChange=null
         req.session.userErr=false
     }
@@ -76,7 +76,7 @@ router.get('/signup',(req,res,next)=>{
     if(req.session.userLoggedIn){
         res.redirect('/')
     }else{
-        res.render('user/signup',{layout:null,err:req.session.userErr})
+        res.render('user/signup',{layout:null,err:req.session.userErr,title:"Signup"})
         req.session.userErr=false
     }
     
@@ -116,8 +116,14 @@ router.get('/logout',(req,res)=>{
 router.get('/book-auto/:id',verifyLogin,(req,res)=>{
     userHelper.getAutoDetails(req.params.id).then(async(autoDetails)=>{
         let rating = await autoHelper.getRating(req.params.id)
+        let userBooking = await userHelper.getUserBooking(req.session.userDetails._id)
+        if(userBooking.userId===req.session.userDetails._id){
+            userBooking=true
+        }else{
+            userBooking=false
+        }
         userHelper.getChargeDetails().then((places)=>{
-            res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places,rating})
+            res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places,rating,title:"Book auto",userBooking})
         }) 
     })
 })
@@ -144,10 +150,10 @@ router.get('/bookings/:id',verifyLogin,(req,res)=>{
     userHelper.getBookings(req.params.id).then(async(response)=>{
         let rating = await autoHelper.getRating(response.auto._id)
         
-        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',booking:response.booking,
+        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',booking:response.booking,title:"Bookings",
     auto:response.auto,rating})
     }).catch(()=>{
-        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',noBookings:true})
+        res.render('user/bookings',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',noBookings:true,title:"Bookings"})
     })
 })
 
@@ -159,7 +165,7 @@ router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
             let bookings = details.drives.length
             let rating = await autoHelper.getRating(req.params.id)
             res.render('user/auto-profile',{auto:true,profileView:true,userDetails:req.session.userDetails
-                ,booking:details.booking,drives:details.drives,autoDriver,bookings,rating})
+                ,booking:details.booking,drives:details.drives,autoDriver,bookings,rating,title:"Auto profile"})
             })
         })
        
@@ -171,7 +177,7 @@ router.get('/auto-profile/:id',verifyLogin,(req,res)=>{
 router.get('/profile/:id',verifyLogin,(req,res)=>{
     userHelper.getUserDetails(req.params.id).then((userDetails)=>{
         userHelper.rideDetails(req.params.id).then((rides)=>{
-            res.render('user/profile',{user:true,userDetails:userDetails,rides,layout:'./user-layout'})
+            res.render('user/profile',{user:true,userDetails:userDetails,rides,layout:'./user-layout',title:"Profile"})
         })
         
     })
@@ -232,12 +238,12 @@ router.post('/search-auto',(req,res)=>{
 
 //about page
 router.get('/about',(req,res)=>{
-    res.render('user/about',{layout:'./user-layout',userDetails:req.session.userDetails})
+    res.render('user/about',{layout:'./user-layout',userDetails:req.session.userDetails,title:"About"})
 })
 
 //contact page
 router.get('/contact',(req,res)=>{
-    res.render('user/contact',{layout:'./user-layout',userDetails:req.session.userDetails,contacted:req.session.contacted})
+    res.render('user/contact',{layout:'./user-layout',userDetails:req.session.userDetails,contacted:req.session.contacted,title:"Contact"})
     req.session.contacted=null
 })
 
@@ -252,7 +258,7 @@ router.post('/contact',(req,res)=>{
 
 //forgot password
 router.get('/forgot-pass',(req,res)=>{
-    res.render('user/forgot-pass',{layout:null,otpErr:req.session.otpErr})
+    res.render('user/forgot-pass',{layout:null,otpErr:req.session.otpErr,title:"Forgot Password"})
     req.session.otpErr=null
 })
 
@@ -274,7 +280,7 @@ router.post('/forgot-pass',(req,res)=>{
 //verifyotp get page
 router.get('/verify-otp',(req,res)=>{
     if(req.session.otpSent){
-        res.render('user/verify-otp',{layout:null,wrongotp:req.session.wrongOtp})
+        res.render('user/verify-otp',{layout:null,wrongotp:req.session.wrongOtp,title:"Verify OTP"})
         req.session.wrongOtp=null
     }else{
         res.redirect('/forgot-pass')
@@ -298,7 +304,7 @@ router.post('/verify-otp',(req,res)=>{
 //new password for fogotted passowrd
 router.get('/new-pass',(req,res)=>{
     if(req.session.verifiedOtp){
-        res.render('user/new-pass',{layout:null,details: req.session.userPassChanger ,changeErr:req.session.changeErr})
+        res.render('user/new-pass',{layout:null,details: req.session.userPassChanger ,changeErr:req.session.changeErr,title:"New Password"})
         req.session.changeErr=null
     }else{
         res.render('/error')

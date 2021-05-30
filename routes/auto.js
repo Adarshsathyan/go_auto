@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
   if (req.session.autoLoggedIn) {
     res.redirect('/auto/home')
   } else {
-    res.render('auto/login', { loginErr: req.session.loginErr })
+    res.render('auto/login', { loginErr: req.session.loginErr ,title:"Auto Login"})
     req.session.loginErr = false
   }
 });
@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
 
 //signup page
 router.get('/signup', (req, res, next) => {
-  res.render('auto/signup', { error: req.session.autosignupErr })
+  res.render('auto/signup', { error: req.session.autosignupErr,title:"Auto Signup" })
   req.session.autosignupErr = false
 });
 
@@ -89,7 +89,7 @@ router.post('/signup', (req, res, next) => {
 
 //payment for registration
 router.get('/payment/:id', (req, res, next) => {
-  res.render('auto/payment', { autoId: req.params.id })
+  res.render('auto/payment', { autoId: req.params.id,title:"Payment" })
 });
 
 
@@ -133,7 +133,7 @@ router.get('/profile', verifyLogin, (req, res, next) => {
     
     res.render('auto/profile', { 
       auto: true, autoBooked: req.session.autoBooked, autoDriver: req.session.autoDriver
-      , booking: details.booking, drives: details.drives, bookings,rating
+      , booking: details.booking, drives: details.drives, bookings,rating,title:"Auto profile"
     })
   })
 
@@ -142,7 +142,7 @@ router.get('/profile', verifyLogin, (req, res, next) => {
 
 //edit profile form
 router.get('/edit-profile', verifyLogin, (req, res, next) => {
-  res.render('auto/edit-profile', { auto: true, autoBooked: req.session.autoBooked, autoDriver: req.session.autoDriver })
+  res.render('auto/edit-profile', { auto: true, autoBooked: req.session.autoBooked, autoDriver: req.session.autoDriver,title:"Edit profile" })
 })
 
 //update profile
@@ -167,7 +167,7 @@ router.get('/home', verifyLogin, async(req, res, next) => {
   console.log(total_booking);
   res.render('auto/index', {
     auto: true, autoDriver: req.session.autoDriver,
-    autoBooked: req.session.autoBooked, changedPass: req.session.autoPassChange,total_booking,total_travel,total_place,ratings
+    autoBooked: req.session.autoBooked, changedPass: req.session.autoPassChange,total_booking,total_travel,total_place,ratings,title:"Auto Home"
   })
   req.session.autoPassChange = null
 });
@@ -186,7 +186,7 @@ router.get('/status', verifyLogin, (req, res, next) => {
     }
     res.render('auto/status', {
       auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, available: available
-      , offline: offline
+      , offline: offline,title:"Auto status"
     })
   })
 
@@ -202,10 +202,10 @@ router.get('/booking', verifyLogin, (req, res, next) => {
     } else {
       req.session.drive = null
     }
-    res.render('auto/booking', { auto: true, autoDriver: req.session.autoDriver, booking, drive: req.session.drive, autoBooked: req.session.autoBooked })
+    res.render('auto/booking', { auto: true, autoDriver: req.session.autoDriver, booking, drive: req.session.drive, autoBooked: req.session.autoBooked ,title:"Auto bokings"})
   }).catch(() => {
     req.session.catchErr = true
-    res.render('auto/booking', { auto: true, autoDriver: req.session.autoDriver, catchErr: req.session.catchErr, drive: req.session.drive })
+    res.render('auto/booking', { auto: true, autoDriver: req.session.autoDriver, catchErr: req.session.catchErr, drive: req.session.drive,title:"Auto bookings" })
   })
 
 });
@@ -214,7 +214,7 @@ router.get('/booking', verifyLogin, (req, res, next) => {
 //get the added places details
 router.get('/travel-places', verifyLogin, (req, res, next) => {
   autoHelper.getPlaces(req.session.autoDriver._id).then((places) => {
-    res.render('auto/places', { auto: true, autoDriver: req.session.autoDriver, places, autoBooked: req.session.autoBooked })
+    res.render('auto/places', { auto: true, autoDriver: req.session.autoDriver, places, autoBooked: req.session.autoBooked,title:"Travel places" })
   })
 });
 
@@ -222,7 +222,7 @@ router.get('/travel-places', verifyLogin, (req, res, next) => {
 //add destinations
 router.get('/add-destinations', verifyLogin, (req, res, next) => {
   autoHelper.getKm().then((km) => {
-    res.render('auto/add-destinations', { auto: true, autoDriver: req.session.autoDriver, km, autoBooked: req.session.autoBooked })
+    res.render('auto/add-destinations', { auto: true, autoDriver: req.session.autoDriver, km, autoBooked: req.session.autoBooked,title:"Add places" })
   })
 });
 
@@ -244,9 +244,9 @@ router.post('/take-charge', verifyLogin, (req, res, next) => {
 //view users travlled
 router.get('/users', verifyLogin, (req, res, next) => {
   autoHelper.getUsersTravelled(req.session.autoDriver._id).then((drives) => {
-    res.render('auto/users', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, drives })
+    res.render('auto/users', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, drives,title:"Users travelled" })
   }).catch(() => {
-    res.render('auto/users', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, drives })
+    res.render('auto/users', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, drives,title:"Users travelled" })
   })
 
 });
@@ -291,7 +291,7 @@ router.get('/invoice/:id', (req, res) => {
     } else {
       req.session.confirmed = null
     }
-    res.render('auto/invoice', { autoDetails, confirmed: req.session.confirmed })
+    res.render('auto/invoice', { autoDetails, confirmed: req.session.confirmed,title:"Invoice" })
   })
 
 })
@@ -319,7 +319,7 @@ router.post('/change-status/:id', (req, res) => {
 router.get('/edit-place/:id', verifyLogin, (req, res) => {
   autoHelper.getPlaceDetails(req.params.id).then((charges) => {
     autoHelper.getKm().then((km) => {
-      res.render('auto/edit-places', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, charges, km })
+      res.render('auto/edit-places', { auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked, charges, km,title:"Edit place" })
     })
 
   })
@@ -338,7 +338,7 @@ router.post('/edit-place/:id', (req, res) => {
 router.get('/change-pass/', verifyLogin, (req, res) => {
   res.render('auto/change-pass', {
     auto: true, autoDriver: req.session.autoDriver, autoBooked: req.session.autoBooked
-    , passChangeErr: req.session.passChangeErr
+    , passChangeErr: req.session.passChangeErr,title:"Change password"
   })
   req.session.passChangeErr = null
 })
@@ -358,7 +358,7 @@ router.post('/change-pass', verifyLogin, (req, res) => {
 
 //forgot password landing page
 router.get('/forgot-pass', (req, res) => {
-  res.render('auto/forgot-pass', { otpErr: req.session.otpErr })
+  res.render('auto/forgot-pass', { otpErr: req.session.otpErr,title:"Forgot password" })
   req.session.otpErr = null
 })
 
@@ -381,7 +381,7 @@ router.post('/forgot-pass', (req, res) => {
 //verify otp landing page
 router.get('/verify-otp', (req, res) => {
   
-  res.render('auto/verify-otp')
+  res.render('auto/verify-otp',{title:"Verify OTP"})
 })
 
 router.post('/verify', (req, res) => {
@@ -397,7 +397,7 @@ router.post('/verify', (req, res) => {
 
 //page for new password
 router.get('/new-pass', (req, res) => {
-  res.render('auto/new-pass', { details: req.session.PassChanger })
+  res.render('auto/new-pass', { details: req.session.PassChanger ,title:"New password"})
 })
 
 //change password based on forgot passowrd
@@ -416,7 +416,7 @@ router.post('/change-forgot-pass', (req, res) => {
 //auto feedbacks
 router.get('/feedback',verifyLogin,(req,res)=>{
   autoHelper.getFeedbacks(req.session.autoDriver._id).then((feedbacks)=>{
-    res.render('auto/feedback',{ auto: true, autoDriver: req.session.autoDriver,feedbacks, autoBooked: req.session.autoBooked})
+    res.render('auto/feedback',{ auto: true, autoDriver: req.session.autoDriver,feedbacks, autoBooked: req.session.autoBooked,title:"Feedbacks"})
   })
  
 })
