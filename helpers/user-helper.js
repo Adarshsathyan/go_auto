@@ -357,5 +357,17 @@ module.exports = {
                 resolve({status:false})
             }
         })
+    },
+
+    //get the booking or checking if the user have any another booking
+    getUserBooking:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let booking = await db.get().collection(collections.BOOKING_COLLECTION).findOne({userId:userId})
+            if(booking){
+                resolve(booking)
+            }else{
+                resolve({status:true})
+            }
+        })
     }
 }

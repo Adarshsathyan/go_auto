@@ -24,7 +24,7 @@ router.get('/', (req,res,next)=>{
   if(req.session.adminLoggedIn){
     res.redirect('/admin/home')
   }else{
-    res.render('admin/login',{adminErr:req.session.adminErr} );
+    res.render('admin/login',{adminErr:req.session.adminErr,title:"Login"} );
     req.session.adminErr=false
   }
   
@@ -59,11 +59,11 @@ router.get('/home',verifyLogin, async(req,res,next)=>{
   adminHelper.getRequests().then((result)=>{
     req.session.autoRequest=result
     res.render('admin/index',{admin:true,notify:req.session.autoRequest,changedPass:req.session.adminPassChange,total_auto,
-      total_user,accepeted_auto,revenue} );
+      total_user,accepeted_auto,revenue,title:"Home"} );
     req.session.adminPassChange=null
   }).catch(()=>{
     res.render('admin/index',{admin:true,changedPass:req.session.adminPassChange,total_auto,
-      total_user,accepeted_auto,revenue});
+      total_user,accepeted_auto,revenue,title:"Home"});
     req.session.adminPassChange=null
   })
   
@@ -72,7 +72,7 @@ router.get('/home',verifyLogin, async(req,res,next)=>{
 //view autos
 router.get('/auto',verifyLogin,(req,res,next)=>{
   adminHelper.getAllAuto().then((autos)=>{
-    res.render('admin/auto-drivers',{admin:true,autos,deleted:req.session.deleted,autos,notify:req.session.autoRequest});
+    res.render('admin/auto-drivers',{admin:true,autos,deleted:req.session.deleted,autos,notify:req.session.autoRequest,title:"Autos"});
     req.session.deleted=false
   })
 });
@@ -152,14 +152,14 @@ router.get('/delete-user/:id',verifyLogin,(req,res)=>{
 
 //view auto profile
 router.get('/view-auto/:id',verifyLogin,(req,res,next)=>{
-  res.render('admin/auto-profile',{admin:true,notify:req.session.autoRequest})
+  res.render('admin/auto-profile',{admin:true,notify:req.session.autoRequest,title:"Auto Profile"})
 })
 
 
 //view users
 router.get('/users',verifyLogin, (req,res,next)=>{
   adminHelper.getUsers().then((users)=>{
-    res.render('admin/users',{admin:true,notify:req.session.autoRequest,users,deletedUser:req.session.deletedUser});
+    res.render('admin/users',{admin:true,notify:req.session.autoRequest,users,deletedUser:req.session.deletedUser,title:"Users"});
     req.session.deletedUser=false
   })
 });
@@ -168,7 +168,7 @@ router.get('/users',verifyLogin, (req,res,next)=>{
 //view blocked autos
 router.get('/blockedauto',verifyLogin,(req,res,next)=>{
   adminHelper.getBlockedAuto().then((blockedAutos)=>{
-    res.render('admin/blocked_auto', {admin:true,blockedAutos,notify:req.session.autoRequest});
+    res.render('admin/blocked_auto', {admin:true,blockedAutos,notify:req.session.autoRequest,title:"Blocked autos"});
   })
  
 });
@@ -176,7 +176,7 @@ router.get('/blockedauto',verifyLogin,(req,res,next)=>{
 //view blocked user
 router.get('/blockeduser',verifyLogin, (req,res,next)=> {
   adminHelper.getBlockedUsers().then((blockedUsers)=>{
-    res.render('admin/blocked_user', {admin:true,notify:req.session.autoRequest,blockedUsers});
+    res.render('admin/blocked_user', {admin:true,notify:req.session.autoRequest,blockedUsers,title:"Blocked users"});
   })
   
 });
@@ -184,7 +184,7 @@ router.get('/blockeduser',verifyLogin, (req,res,next)=> {
 //view auto statuses
 router.get('/status',verifyLogin, (req,res,next)=>{
   adminHelper.getAuto().then((autos)=>{
-    res.render('admin/auto-status',{admin:true,notify:req.session.autoRequest,autos});
+    res.render('admin/auto-status',{admin:true,notify:req.session.autoRequest,autos,title:"Status"});
   })
  
 });
@@ -194,7 +194,7 @@ router.get('/feedback',verifyLogin, (req,res,next)=>{
   adminHelper.getFeedback().then((feedbacks)=>{
     adminHelper.getAutoReport().then((report_auto)=>{
       adminHelper.getUserReport().then((report_user)=>{
-        res.render('admin/feedback',{admin:true,notify:req.session.autoRequest,feedbacks,report_auto,report_user} );
+        res.render('admin/feedback',{admin:true,notify:req.session.autoRequest,feedbacks,report_auto,report_user,title:"Feedbacks"} );
       })
     
     })
@@ -207,21 +207,21 @@ router.get('/feedback',verifyLogin, (req,res,next)=>{
 //view the trave charges
 router.get('/travelcharge',verifyLogin, (req,res,next)=>{
   adminHelper.getCharge().then((charges)=>{
-  res.render('admin/travel-charge',{admin:true,charges,notify:req.session.autoRequest});
+  res.render('admin/travel-charge',{admin:true,charges,notify:req.session.autoRequest,title:"Travel charge"});
   })
 });
 
 
 //add travel charges
 router.get('/addtravelrate',verifyLogin, (req,res,next)=>{
-    res.render('admin/add-travel-charge',{admin:true,notify:req.session.autoRequest});
+    res.render('admin/add-travel-charge',{admin:true,notify:req.session.autoRequest,title:"Add travel charge"});
 });
 
 
 //edit charge entered
 router.get('/editcharge/:id',verifyLogin,(req,res,next)=>{
   adminHelper.editCharge(req.params.id).then((details)=>{
-    res.render('admin/edit-travel-rate',{admin:true,details,notify:req.session.autoRequest})
+    res.render('admin/edit-travel-rate',{admin:true,details,notify:req.session.autoRequest,title:"Edit travel charge"})
   }).catch((err)=>{
     res.send(err)
   })
@@ -252,7 +252,7 @@ router.post('/addtravelrate',verifyLogin,(req,res,next)=>{
 //auto requests
 router.get('/auto-request',verifyLogin,(req,res)=>{
   adminHelper.getRequests().then((requests)=>{
-    res.render('admin/auto-request',{admin:true,requests,accepted:req.session.accepted,notify:req.session.autoRequest})
+    res.render('admin/auto-request',{admin:true,requests,accepted:req.session.accepted,notify:req.session.autoRequest,title:"Requests"})
     req.session.accepted=null
   })
 
@@ -298,7 +298,7 @@ router.get('/reject-auto/:id',(req,res)=>{
 
 //change password
 router.get('/change-pass',verifyLogin,(req,res)=>{
-  res.render('admin/change-password',{admin:true,admin:req.session.admin,passChangeErr:req.session.passChangeErr})
+  res.render('admin/change-password',{admin:true,admin:req.session.admin,passChangeErr:req.session.passChangeErr,title:"Change password"})
   req.session.passChangeErr=null
 })
 
@@ -318,7 +318,7 @@ router.post('/change-pass',verifyLogin,(req,res)=>{
 
 //change phonenumber
 router.get('/change-number',verifyLogin,(req,res)=>{
-  res.render('admin/change-number',{admin:true,admin:req.session.admin,changed:req.session.numChanged,changeFail:req.session.numChangeFail})
+  res.render('admin/change-number',{admin:true,admin:req.session.admin,changed:req.session.numChanged,changeFail:req.session.numChangeFail,title:"Change number"})
   
   req.session.numChanged=null
   req.session.numChangeFail=null
@@ -343,6 +343,6 @@ router.post('/change-number',verifyLogin,(req,res)=>{
 //contacts page
 router.get('/contact',verifyLogin,async(req,res)=>{
   let contacts = await adminHelper.getContacts()
-  res.render('admin/contacts',{admin:true,notify:req.session.autoRequest,contacts})
+  res.render('admin/contacts',{admin:true,notify:req.session.autoRequest,contacts,title:"Contacts"})
 })
 module.exports = router;
