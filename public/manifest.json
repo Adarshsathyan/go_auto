@@ -3,11 +3,13 @@
     "short_name": "GoAuto",
     "start_url": "/",
     "display": "standalone",
+    "scope":"/",
     "background_color": "#fff",
     "theme_color": "#3f51b5",
     "icons": [
         {
             "src": "/pwa/icon-pwa64x64.png",
+            
             "type": "imgae/png",
             "sizes": "64x64"
         },

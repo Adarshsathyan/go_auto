@@ -128,7 +128,7 @@ router.get('/book-auto/:id',verifyLogin,(req,res)=>{
              userBooking=false
         }
         
-        userHelper.getChargeDetails().then((places)=>{
+        userHelper.getChargeDetails(req.params.id).then((places)=>{
             res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places,rating,title:"Book auto",userBooking})
         }) 
     })
