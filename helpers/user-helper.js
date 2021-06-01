@@ -82,6 +82,7 @@ module.exports = {
 
     //get autodetails for booking
     getAutoDetails: (autoId) => {
+        
         return new Promise((resolve, reject) => {
             db.get().collection(collections.AUTO_COLLECTION).findOne({ _id: objectId(autoId) }).then((auto) => {
                 resolve(auto)
@@ -90,9 +91,9 @@ module.exports = {
     },
 
     //get from and to locations
-    getChargeDetails: () => {
+    getChargeDetails: (autoId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.TRAVELPLACES_COLLECTION).find().toArray().then((result) => {
+            db.get().collection(collections.TRAVELPLACES_COLLECTION).find({auto:autoId}).toArray().then((result) => {
                 resolve(result)
             })
         })
