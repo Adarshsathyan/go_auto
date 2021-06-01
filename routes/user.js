@@ -115,13 +115,19 @@ router.get('/logout',(req,res)=>{
 //get book auto
 router.get('/book-auto/:id',verifyLogin,(req,res)=>{
     userHelper.getAutoDetails(req.params.id).then(async(autoDetails)=>{
+        
         let rating = await autoHelper.getRating(req.params.id)
         let userBooking = await userHelper.getUserBooking(req.session.userDetails._id)
-        if(userBooking.userId===req.session.userDetails._id){
-            userBooking=true
+        if(userBooking){
+            if(userBooking.userId===req.session.userDetails._id){
+                userBooking=true
+            }else{
+                userBooking=false
+            }
         }else{
-            userBooking=false
+             userBooking=false
         }
+        
         userHelper.getChargeDetails().then((places)=>{
             res.render('user/book-auto',{user:true,userDetails:req.session.userDetails,layout:'./user-layout',autoDetails,places,rating,title:"Book auto",userBooking})
         }) 

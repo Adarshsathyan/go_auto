@@ -11,14 +11,6 @@ var fileUpload = require("express-fileupload")
 var db=require('./config/connection')
 var session=require('express-session')
 var app = express();
-// const publicVapidKey='BEaWUyheW0dqWHMfHY-cTEQFxk3GUXycsUvQ3w03EZNeGFC3rx8aLAmrEeK6yCz5RIZgERz1viaUDivAIO9MbUI';
-// const privateVapidKey='KPRS6a4w6mOGFRLmcpITp0MECc5jTFtKHQdQmhYmcN8';
-// const webPush = require('web-push')
-
-
-// // //web-push
-// webPush.setVapidDetails('mailto:test@example.com', publicVapidKey, privateVapidKey);
-
 
 
 // view engine setup
