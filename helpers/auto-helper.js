@@ -1,10 +1,10 @@
 var db = require('../config/connection')
 var bcrypt = require('bcrypt')
-var collections = require('../config/collections')
+var collections = require('../config/collections');
+require('dotenv').config()
 var Razorpay = require('razorpay');
 const objectId = require("mongodb").ObjectID;
-var otpAuth = require('../config/otpauth');
-const twilio = require('twilio')(otpAuth.accountSId, otpAuth.authToken)
+const twilio = require('twilio')(process.env.ACCOUNTSID, process.env.AUTHTOKEN)
 
 
 var instance = new Razorpay({
@@ -402,7 +402,7 @@ module.exports={
             if(auto){
                 twilio
                     .verify
-                    .services(otpAuth.serviceID)
+                    .services(process.env.SERVICEID)
                     .verifications
                     .create({
                         to:"+91" + phoneDetails.mobile,
@@ -427,7 +427,7 @@ module.exports={
             console.log("MObile",mobile,"Otp",otpDetails);
             twilio
                 .verify
-                .services(otpAuth.serviceID)
+                .services(process.env.SERVICEID)
                 .verificationChecks
                 .create({
                     to:mobile,

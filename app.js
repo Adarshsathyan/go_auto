@@ -11,7 +11,7 @@ var fileUpload = require("express-fileupload")
 var db=require('./config/connection')
 var session=require('express-session')
 var app = express();
-
+require('dotenv').config()
 
 // view engine setup
 app.use(function(req, res, next) {

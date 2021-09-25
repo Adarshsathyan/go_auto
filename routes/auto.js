@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let autoHelper = require('../helpers/auto-helper')
-const accountSid = "AC33edf996551919434ee6a3d9664217ed";
-const authToken = "7291649537bf825e7441f23534f5a176";
-const twilio = require('twilio');
-const client = new twilio(accountSid, authToken);
+
 
 
 //verifylogin
@@ -106,18 +103,9 @@ router.get('/razorpay/:id', (req, res, next) => {
 //verify the payment
 router.post('/verify-payment', (req, res, next) => {
   autoHelper.verifyPayment(req.body).then(() => {
-    autoHelper.changePaidStatus(req.body['order[receipt]']).then(async() => {
-      let admin_num = await autoHelper.getAdminNum()
-      client.messages
-      .create({
-        body: 'An auto have registered please confim.',
-        from: '+12245019575',
-        to: "+91"+admin_num
-      }).then((msg)=>{
-        req.session.autoRequest = true
-        res.json({ status: true })
-      })
-     
+    autoHelper.changePaidStatus(req.body['order[receipt]']).then(() => {
+      req.session.autoRequest = true
+      res.json({ status: true })
     })
   }).catch((err) => {
     res.json({ status: false })
@@ -254,20 +242,11 @@ router.get('/users', verifyLogin, (req, res, next) => {
 //change drive status
 router.get('/change-drive/:id', verifyLogin, (req, res) => {
   autoHelper.changeDriveStatus(req.params.id).then((response) => {
-    console.log(response);
     if (response.auto.drive === "Ondrive") {
-      client.messages
-        .create({
-          body: 'Your booking have accepted by the auto. To cancel the auto please call/contact the auto.',
-          from: '+12245019575',
-          to: "+91"+response.booking.usermobile
-        })
-        .then((m => {
-          req.session.drive = true
-          req.session.autoDriver = response.auto
-          req.session.autoBooked = null
-          res.json({ status: true })
-        }));
+        req.session.drive = true
+        req.session.autoDriver = response.auto
+        req.session.autoBooked = null
+        res.json({ status: true })
     } else {
       res.json({ status: false })
     }

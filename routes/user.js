@@ -2,13 +2,6 @@ var express = require('express');
 var router = express.Router();
 const userHelper=require('../helpers/user-helper')
 const autoHelper=require('../helpers/auto-helper')
-const webPush = require('web-push')
-
-// router.post('/book-notification',(req,res)=>{
-//     let subscription = req.body
-//     const payload = JSON.stringify({title:"You Have Booking"+req.session.userDetails.name})
-//     webPush.sendNotification(subscription,payload).catch(err=>console.log(err))
-// })
   
 const verifyLogin=(req,res,next)=>{
     if(req.session.userLoggedIn){

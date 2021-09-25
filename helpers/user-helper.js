@@ -2,16 +2,11 @@ var db = require('../config/connection')
 var bcrypt = require('bcrypt')
 var collections = require('../config/collections')
 const objectId = require("mongodb").ObjectID
-
-//for sending sms
-const accountSid = "AC33edf996551919434ee6a3d9664217ed";
-const authToken = "7291649537bf825e7441f23534f5a176";
-const twilio = require('twilio');
-const client = new twilio(accountSid, authToken);
+require('dotenv').config()
 
 //for sending otp
-var otpAuth = require('../config/otpauth');
-const twilioOtp = require('twilio')(otpAuth.accountSId, otpAuth.authToken)
+
+const twilioOtp = require('twilio')(process.env.ACCOUNTSID, process.env.AUTHTOKEN)
 
 module.exports = {
     //user signup
@@ -120,27 +115,7 @@ module.exports = {
             bookDetails.date = today
             bookDetails.autoId = objectId(bookDetails.autoId)
             db.get().collection(collections.BOOKING_COLLECTION).insertOne(bookDetails).then((response) => {
-                automobile = "+91" + String(bookDetails.automobile)
-                usermobile = "+91" + String(bookDetails.usermobile)
-                client.messages
-                    .create({
-                        body: 'Hello Auto You have a booking from ' + bookDetails.from + ' to ' + bookDetails.to + '. Passenger is waiting at ' + bookDetails.landmark + ". Date :" + bookDetails.date + " Sender : GoAuto",
-                        from: '+12245019575',
-                        to: automobile
-                    })
-                    .then((message => {
-                        //sending booking placed sms to passenger
-                        client.messages
-                            .create({
-                                body: 'Your Booking from '+bookDetails.from+' to '+bookDetails.to+' have confirmed .',
-                                from: '+12245019575',
-                                to: usermobile
-                            })
-                            .then((message => {
-                                resolve(response.ops[0].userId)
-                            }));
-
-                    }));
+                    resolve(response.ops[0].userId)
             })
         })
     },
@@ -281,7 +256,7 @@ module.exports = {
             if(user){
                 twilioOtp
                     .verify
-                    .services(otpAuth.serviceID)
+                    .services(process.env.SERVICEID)
                     .verifications
                     .create({
                         to:"+91" + mobile.mobile,
@@ -305,7 +280,7 @@ module.exports = {
           
             twilioOtp
                 .verify
-                .services(otpAuth.serviceID)
+                .services(process.env.SERVICEID)
                 .verificationChecks
                 .create({
                     to:mobile,

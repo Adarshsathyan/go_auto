@@ -1,12 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const adminHelper=require('../helpers/admin-helper')
-const accountSid = "AC33edf996551919434ee6a3d9664217ed";
-const authToken = "7291649537bf825e7441f23534f5a176";
-const twilio = require('twilio');
-
-const client = new twilio(accountSid, authToken);
-
 
 
 //to check whether admin is logged in
@@ -260,39 +254,15 @@ router.get('/auto-request',verifyLogin,(req,res)=>{
 
 //accept auto
 router.get('/accept-auto/:id',verifyLogin,(req,res)=>{
-  adminHelper.acceptAuto(req.params.id).then(async()=>{
-    let auto_num = await adminHelper.getAutoNumber(req.params.id)
-
-    client.messages
-        .create({
-          body: 'GoAuto have accepted your request. Please login with the credentials.',
-          from: '+12245019575',
-          to: "+91"+auto_num
-        }).then((msg)=>{
-          req.session.accepted=true
-          req.session.autoRequest=null
-          adminHelper.getRequests().then((result)=>{ 
-            req.session.autoRequest=result
-          })
-          res.redirect('/admin/auto-request')
-        })
+  adminHelper.acceptAuto(req.params.id).then(()=>{
+    res.redirect('/admin/auto-request')
   })
 })
 
 //reject auto
 router.get('/reject-auto/:id',(req,res)=>{
   adminHelper.rejectAuto(req.params.id).then(async()=>{
-    let auto_num = await adminHelper.getAutoNumber(req.params.id)
-    client.messages
-    .create({
-      body: 'Your request for GoAuto have been rejected because of some verification error. Payment willbe Refunded within 24hrs',
-      from: '+12245019575',
-      to: "+91"+auto_num
-    }).then((msg)=>{
-      req.session.autoRequest=null
-      res.redirect('/admin/auto-request')
-    })
-    
+    res.redirect('/admin/auto-request')
   })
 })
 

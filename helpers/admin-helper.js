@@ -5,14 +5,6 @@ const objectId = require("mongodb").ObjectID
 
 module.exports = {
     
-    // doSign:(details) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         details.password = await bcrypt.hash(details.password, 10)
-    //         db.get().collection(collections.ADMIN_COLLECTION).insertOne(details).then((response) => {
-    //             resolve(response.ops[0])
-    //         })
-    //     })
-    // }
 
     //admin authentication
     adminLogin:(adminData)=>{
