@@ -1,21 +1,23 @@
-const mongoClient=require('mongodb').MongoClient
-const state={
-    db:null
-}
+const mongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
-module.exports.connect=function (done){
-    const url='mongodb://localhost:27017'
-    const dbname='go_auto'
+const state = {
+    db: null
+};
 
-    mongoClient.connect(url,(err,data)=>{
+module.exports.connect = function (done) {
+    const url = process.env.URL;
+    const dbname = process.env.DB_NAME;
+
+    mongoClient.connect(url, (err, data) => {
         if (err) return done(err)
-        state.db=data.db(dbname)
+        state.db = data.db(dbname);
         done()
-    })
+    });
 
 
-    
+
 }
-module.exports.get=function(){
+module.exports.get = function () {
     return state.db
-}
+};
