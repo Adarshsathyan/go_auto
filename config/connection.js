@@ -10,14 +10,14 @@ module.exports.connect = function (done) {
     const dbname = process.env.DB_NAME;
 
     mongoClient.connect(url, (err, data) => {
-        if (err) return done(err)
+        if (err) return done(err);
         state.db = data.db(dbname);
-        done()
+        done();
     });
 
 
 
 }
 module.exports.get = function () {
-    return state.db
+    return state.db;
 };
